@@ -1,11 +1,16 @@
 # The URL the site will be built for
-base_url = "https://example.com"
+base_url = "https://lymslive.github.io"
+
+title = "沉思涧"
 
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
 # Whether to build a search index to be used later on by a JavaScript library
 build_search_index = false
+
+# https://www.getzola.org/themes/deepthought/
+theme = "DeepThought"
 
 [markdown]
 # Whether to do syntax highlighting
@@ -14,3 +19,22 @@ highlight_code = true
 
 [extra]
 # Put all your custom variables here
+
+navbar_items = [
+    { code = "en", nav_items = [
+        { url = "$BASE_URL/", name = "Home" },
+        { url = "$BASE_URL/blog", name = "Blog" },
+        { url = "$BASE_URL/docs", name = "Docs" },
+        { url = "$BASE_URL/tags", name = "Tags" },
+        { url = "$BASE_URL/categories", name = "Categories" },
+    ] },
+]
+
+[extra.author]
+name = "lymslive"
+avatar = "images/avatar.png"
+
+[extra.social]
+github = "lymslive"
+email = "403708621@qq.com"
+
