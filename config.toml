@@ -3,6 +3,8 @@ base_url = "https://lymslive.github.io"
 
 title = "沉思涧"
 
+default_language = "zh"
+
 # Whether to automatically compile all Sass files in the sass directory
 compile_sass = true
 
@@ -11,6 +13,11 @@ build_search_index = false
 
 # https://www.getzola.org/themes/deepthought/
 theme = "DeepThought"
+
+taxonomies = [
+    { name = "categories", feed = true, paginate_by = 10 },
+    { name = "tags", feed = true, paginate_by = 10 },
+]
 
 [markdown]
 # Whether to do syntax highlighting
@@ -21,12 +28,15 @@ highlight_code = true
 # Put all your custom variables here
 
 navbar_items = [
-    { code = "en", nav_items = [
-        { url = "$BASE_URL/", name = "Home" },
-        { url = "$BASE_URL/blog", name = "Blog" },
-        { url = "$BASE_URL/docs", name = "Docs" },
-        { url = "$BASE_URL/tags", name = "Tags" },
-        { url = "$BASE_URL/categories", name = "Categories" },
+    { code = "zh", nav_items = [
+        { url = "$BASE_URL/", name = "首页" },
+        { url = "$BASE_URL/blog", name = "博客" },
+        { url = "$BASE_URL/book", name = "书册" },
+        { url = "$BASE_URL/think", name = "文思" },
+        { url = "$BASE_URL/young", name = "旧章" },
+        { url = "$BASE_URL/tags", name = "标签" },
+        { url = "$BASE_URL/categories", name = "分类" },
+        { url = "$BASE_URL/resume", name = "简历" },
     ] },
 ]
 
