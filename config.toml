@@ -33,10 +33,10 @@ navbar_items = [
         { url = "$BASE_URL/blog", name = "博客" },
         { url = "$BASE_URL/book", name = "书册" },
         { url = "$BASE_URL/think", name = "文思" },
-        { url = "$BASE_URL/young", name = "旧章" },
+        { url = "$BASE_URL/white", name = "白学" },
         { url = "$BASE_URL/tags", name = "标签" },
         { url = "$BASE_URL/categories", name = "分类" },
-        { url = "$BASE_URL/resume", name = "简历" },
+#       { url = "$BASE_URL/resume", name = "简历" },
     ] },
 ]
 
