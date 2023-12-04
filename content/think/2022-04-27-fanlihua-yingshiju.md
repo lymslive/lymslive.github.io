@@ -2,8 +2,8 @@
 title = "樊梨花电视剧改编略谈"
 authors = ["七阶子"]
 [taxonomies]
-categories = ["影视评论"]
-tags = []
+categories = ["文艺鉴赏"]
+tags = ["影视"]
 +++
 <!-- # 樊梨花电视剧改编略谈 -->
 

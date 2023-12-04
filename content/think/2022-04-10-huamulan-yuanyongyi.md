@@ -2,8 +2,8 @@
 title = "老剧新看之《花木兰》电视剧袁咏仪、赵文卓版"
 authors = ["七阶子"]
 [taxonomies]
-categories = ["影视评论"]
-tags = []
+categories = ["文艺鉴赏"]
+tags = ["影视"]
 +++
 <!-- # 老剧新看之《花木兰》电视剧袁咏仪、赵文卓版 -->
 
