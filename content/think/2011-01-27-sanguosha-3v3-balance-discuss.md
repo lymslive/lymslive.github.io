@@ -1,7 +1,7 @@
 +++
 title = "也谈三国杀3v3平衡性之个人见解"
 [taxonomies]
-categories = ["文艺鉴赏"]
+categories = ["天马行空"]
 tags = ["游戏","桌游"]
 +++
 <!-- # 也谈三国杀3v3平衡性之个人见解 -->

@@ -1,7 +1,7 @@
 +++
 title = "uno游戏漫谈"
 [taxonomies]
-categories = ["文艺鉴赏"]
+categories = ["天马行空"]
 tags = ["游戏","桌游"]
 +++
 <!-- # uno游戏漫谈 -->
