@@ -867,7 +867,13 @@ $ systemctl start fcgiwrap.socket
 那可以在 `fcgiwrap.service` 单元文件的 `[Unit]` 段下增加
 `Requires=fcgiwrap.socket` ，这个依赖表示启动 `fcgiwrap.service` 时会先启动
 `fcgiwrap.socket` 。于是 `systemctl start fcgiwrap` 会同时启动 socket 与
-service 。
+service 。不过如果想直接启动服务，不如不要 `fcgiwrap.socket` 单元，只用
+`fcgiwrap.service` 单元，然后在它的启动命令中直接加命令行参数创建所需的
+`socket` ，即改成这样：
+
+```
+ExecStart=/usr/sbin/fcgiwrap -s /var/run/fcgiwrap.sock
+```
 
 另外，可参考一下 `fcgiwrap.c` 源码，看它如何用 `sd_listen_fds` 与
 `SD_LISTEN_FDS_START` 实现从 `systemd` 传递的 socket 启动，以及当不从
