@@ -204,11 +204,7 @@ tags = ["动漫"]
 
 ## 附：笔者其他相关文章
 
-* [归童心，看动画片《水漫金山》](./gui-tongxin-kan-shuimanjinshan)
-* [品一品《水漫金山》之细节点滴](./pinping-shuimanjinshan-xijie)
-* [“白蛇”传还是“许仙”传？——央白主人公奇论](./yangbai-xuxianzhuan)
+* [归童心，看动画片《水漫金山》](/white/gui-tongxin-kan-shuimanjinshan)
+* [品一品《水漫金山》之细节点滴](/white/pinping-shuimanjinshan-xijie)
+* [“白蛇”传还是“许仙”传？——央白主人公奇论](/white/yangbai-xuxianzhuan)
 
-<hr>
-转载去源：
-
-* 白学会公众号： https://mp.weixin.qq.com/s/DZQIrE0skre-mcTj-En33w https://mp.weixin.qq.com/s/lbBzloZkzYE-JPsJX7Qdvw

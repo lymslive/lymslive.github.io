@@ -2,7 +2,7 @@
 title = "渐行渐远的白蛇传电视剧改编"
 [taxonomies]
 categories = ["文艺鉴赏"]
-tags = ["影视","白蛇传"]
+tags = ["影视"]
 +++
 <!-- # 渐行渐远的白蛇传电视剧改编 -->
 <!-- 去源：知乎 https://zhuanlan.zhihu.com/p/62639593 -->

@@ -2,7 +2,7 @@
 title = "19版新白剧情评论之成亲前后"
 [taxonomies]
 categories = ["文艺鉴赏"]
-tags = ["影视","白蛇传"]
+tags = ["影视"]
 +++
 <!-- # 19版新白剧情评论之成亲前后 -->
 <!-- 去源：知乎 https://www.zhihu.com/question/318682175/answer/655393576 -->
