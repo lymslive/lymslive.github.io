@@ -212,14 +212,111 @@ namespace math
 // ...
 ```
 
-这是合法的。因为 `namespace` 关键字的意思它不是定义或创建命名空间，它只是打开
-命名空间，所以可以在同一个源文件（编译单元）中多次打开与关闭某个命名空间。
-只要保证在同一个命名空间中不会对同一个实体（变量，函数，类等）进行重复定义，但
-可以重复声明。也无需在某处预先创建命名空间，当然也可以只跟个空大括号假装在创建
-命名空间，统一列在一起或许对项目管理有清晰规范之意味。如：
+这是合法的。因为 `namespace` 关键字的意思它不是定义或创建命名空间，并不会重复
+定义命名空间，它只是打开命名空间，所以可以在同一个源文件（编译单元）中多次打开
+与关闭某个命名空间。只要保证在同一个命名空间中不会对同一个实体（变量，函数，类
+等）进行重复定义，但可以重复声明。也无需在某处预先创建命名空间，当然也可以只跟
+个空大括号假装在创建命名空间，统一列在一起或许对项目管理有清晰规范之意味。如：
 
 ```c++
 // 本项目将创建、划分为以下命名空间：
 namespace math {}
 namespace physic {}
 ```
+
+### 引入命名空间的使用： using
+
+再次回顾 C 风格的命名前缀，若以全名引入命名空间内的变量如 `math::value_` 并不
+比命名前缀 `math_value_` 精简。但在同一个命名空间引用其他变量，可以省略命名空
+间限定符，达到精简书写的目的。比如在各自命名空间内对 `GetValue()` 函数的实现，
+就可以直接使用 `value_` ，若只能用 C 风格前缀，则无论在哪都必须明确写成
+`math_value_` 或 `physic_value_` 。
+
+像这样 C++ 命名空间内不必加前缀的写法有个好处是，将部分代码拷到另一个命名空间
+后可以不改变量名，保持更多的命名风格统一。
+
+在命名空间外，或引用其他命名空间的符号时，C++ 也有语法功能可以省略命名空间限定
+符，精简命名空间前缀的书写。这就是用关键字 `using` 引入命名空间符号的作用，但
+这个功能注意不得滥用，得慎用。`using` 又主要分为两种用法：
+
+* 导入全部符号，`using namespace xxx;` 其中 `xxx` 为某个命名空间的名字。
+* 导入特定符号，`using xxx::symbol;` 其中 `symbol` 为某空间内具体的某个符号。
+
+全部导入的示例如：
+
+```c++
+// sample3.cpp
+#include <iostream>
+int main (int argc, char* argv[])
+{
+    {
+        using namespace math;
+        SetValue(111);
+        std::cout << "value in math: " << GetValue() << std::endl;
+    }
+    {
+        using namespace physic;
+        SetValue(222);
+        std::cout << "value in pyhsic: " << GetValue() << std::endl;
+    }
+
+    using namespace std;
+    cout << "value in math: " << math::GetValue() << endl;
+    cout << "value in math: " << physic::GetValue() << endl;
+    return 0;
+}
+```
+
+被 `using` 导入的符号的有效范围，就在写 `using` 语句的那个作用域内，即它所在那
+个大括号范围内，更准确点，是从写下 `using` 语句开始到闭大括号之间。若 `using`
+不在任何大括号内，那就是作用于当前文件（编译单元）的范围。所以在上例中，在
+`using namespace std` 之前，必须写全名 `std::cout` 与 `std::endl` ，在那之前才
+能简写为 `cout` 与 `endl` 。而前面的 `using namespace math` 与 `using
+namespace physic` 在离开大括号后又不可见了，故又必须加上 `::` 限定符写全名。
+
+为什么说 `using` 要慎用？因为滥用 `using` 也可能导致符号冲突。不能因为贪图书写
+的简便而使命名空间的划分形同虚设，那就本末倒置了。比如，在上例中，我们不能将
+`using namespace math` 与 `using namespace physic` 这两个语句并列写在同一个作
+用范围，因为它们之间有相同的符号。
+
+特别地，我们也不能滥用标准命名空间 `using namespace std` ，因为 `std` 包含了太
+多的符号，很可能一不小心就冲突了。底线是只能在一个 `.cpp` 源文件中使用该语句，
+红线是不能在头文件中使用。因为我们无法保证在将来这个头文件会有多少个源文件
+`include` 它。
+
+所以，在较大的文件级作用域，更建议只使用特定导入的 `using` 语法，只导入当前真
+的需要部分使用符号。如：
+
+```c++
+// sample4.cpp
+#include <iostream>
+// using namespace std; //< 不建议使用
+using std::cout;
+using std::endl;
+int main (int argc, char* argv[])
+{
+    {
+        using namespace math;
+        SetValue(111);
+        cout << "value in math: " << GetValue() << endl;
+    }
+    {
+        using namespace physic;
+        SetValue(222);
+        cout << "value in pyhsic: " << GetValue() << endl;
+    }
+
+    return 0;
+}
+```
+
+很多 C++ 教程的示例代码，都会不假思索地将 `using namespace std` 当作起手式，实
+在是流毒无穷。那只不过因为教学性质的代码为了精简写法，以突出当前上下文要讲解的
+语法特性。但在实际工程项目中请三思而后用，当然个人玩具项目代码随意。
+
+据个人的开发习惯，是几乎不对 `std` 使用 `using` 的，全都显式写上 `std::` 前缀
+，这能很直观地表示所用符号（函数或类）来自标准库。尤其是对于一些不太常用的标准
+库，别人不一定能一眼就意识到它是被收录于标准库的东西。所以始终多写几个字符的标
+准库前缀是值得的，只有在嵌套模板容器中会显得特别长可能引起不适感，如
+`std::map<std::string, std::string>` ，对于这种，尤其用 `using` 省前缀写成
+`map<string, string>` ，不如就用 `typedef` 重定义为更有针对性的类型名。
