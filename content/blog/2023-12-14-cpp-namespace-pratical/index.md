@@ -19,7 +19,7 @@ tags = ["C++"]
 解决命名冲突，但更主要的作用是从项目整体宏观上抽象出模块的分组与组织。
 <!-- more -->
 
-## 命名前缀与命名空间
+## 从 C 命名前缀到 C++ 命名空间
 
 在纯 C 中，为了保持语言特性的简单，对该问题的妥协策略或推荐实践是在抽象出模块
 后为每个函数（及结构体）的命名添加统一的代表模块的前缀，例如：
@@ -44,7 +44,7 @@ mymod::another_method();
 然而，命名空间与命名前缀是有本质不同的，设计思想上的不同。相同的前缀只是个表象，
 并且命名空间的前缀在具体使用中有可能被简化或省略。
 
-## C++ 命名空间基本概念
+## C++ 命名空间基本概念详解
 
 在 C++ 可以用 `namespace` 打开一个命名空间，其后接一个空间名，然后是一对大括号，
 大括号内可以是其他任何合法 C++ 代码，包括嵌套的命名空间。不同命名空间里面的标
@@ -392,7 +392,7 @@ using StrMap = std::map<std::string, T>;
 // StrMap<int> 等效 std::map<std::string, int>;
 ```
 
-### 类与命名空间
+### 类与命名空间的相关性
 
 首先要意识到一个事情，C++ 的类也起着命名空间的作用，想想不同类可以有同名成员，
 这就显而易见。另外，类的静态成员（与方法）在类外使用的形式，也与命名空间完全相
@@ -562,3 +562,221 @@ void math::SetValue(int value)
 类，只好分别针对每个方法用 `::` 打开与类关联的命名空间，完成方法实现代码。如果
 说命名空间的函数定义移到外面的写法有什么优势的话，我唯一想到的是可以减少缩进层
 次，对于复杂函数与嵌套命名空间，缩进太多也是难看。
+
+基于命名空间与类的相似性，再考虑一种特殊的类，只有静态方法或成员的类。在某个宣
+称一切皆类的语言中，因其无法定义自由函数，很容易就定义出这样的类，大约长这样子
+：
+
+```c++
+class CMath
+{
+public:
+    static int Add(int a, int b) { return a + b; }
+    static int Sub(int a, int b) { return a - b; }
+    // ...
+};
+```
+
+这是合法的 C++ 代码，但没必要这样写，用 `namespace` 是更好的选择，不必反复写
+`static` 关键字。故可改写成：
+
+```c++
+namespace math
+{
+    int Add(int a, int b) { return a + b; }
+    int Sub(int a, int b) { return a - b; }
+    // ...
+}
+```
+
+### 命名空间与类的嵌套
+
+命名空间与类都可以嵌套，形成多层次的作用域空间，这是很直接的语法扩展。
+
+最常见的是将类放在某个命名空间，而类也起着命名空间的作用。如上节定义的
+`Circle` 类，就很适合放在 `math` 命名空间。而 `math` 与 `physic`命名空间也可以
+再放在另一个更大的命名空间，不妨取名`sci` 。于是代码框架形如：
+
+```c++
+namespace sci
+{
+    namespace math
+    {
+        double PI = 3.14159;
+        struct Circle
+        {
+            double x;
+            double y;
+            double r;
+            double Area() { return PI * r * r; }
+            static double Area(double r) { return PI * r * r; }
+        };
+    }
+
+    namespace phsyic
+    {
+        double G = 9.80;
+        // ...
+    }
+}
+```
+
+类 `Circle` 定义在嵌套的命名空间中，在外部使用该类时也只要用命名空间限定符
+`::` 依次给出全名即可，并如其他难度：
+
+```c++
+int main()
+{
+    sci::math::Circle c;
+    c.r = 2.0;
+    std::cout << "c.Area() = " << c.Area() << std::endl;
+    std::cout << "Circle::Area(3.0) = " << sci::math::Circle::Area(3.0) << std::endl;
+    std::cout << "c.Area(3.0) = " << c.Area(3.0) << std::endl;
+}
+```
+
+如果真嫌全限定的名字太长，在合适的地方可以考虑使用 `using` 。另外在上例特意在
+`Circle` 类中重载了成员函数与静态函数都取名 `Area` 。请注意在无实例情况下通过
+`::` 级联取到静态函数是很长的路径，但也能通过定义一个实例来访问静态方法，这也
+极大化简了写法。
+
+类可以放在命名空间中，但反过来，命名空间却不能放在类中。事实上，命名空间也不能
+放在函数中，它只能放在全局空间或其他命名空间中。如果需要在类中定义一个类似子空
+间的东西，可以定义为子类。如：
+
+```c++
+namespace sci { namespace math {
+double PI = 3.14159;
+
+struct Circle
+{
+    double x;
+    double y;
+    double r;
+    struct Impl
+    {
+        static double Area(double r) { return PI * r * r;}
+    };
+    double Area() { return Impl::Area(this->r); }
+    static double Area(double r) { return Impl::Area(r); }
+};
+}}
+```
+
+这里，全静态方法的类 `Impl` 却是可以伪装成一个子命名空间。
+
+事实上，命名空间嵌套的语法并不难，难的是对实际项目的业务功能抽象，如何用命名空
+间来组织代码能提高代码可读性与可维护性。这可能是与设计类继承体系不同的思维方式
+，而类的继承思想已逐渐被新兴语言抛弃了。
+
+### 匿名空间
+
+前文多次提到，全局空间就是没有命名空间。还有另一个命名空间，它虽然有用
+`namespace` 开辟一个命名空间，却是没有名字，直接跟一对大括号，这就是匿名空间。
+匿名空间不能被其他源文件（编译单元）所访问，因为它没有名字，无法用 `using` 导
+入。所以只能在当前文件访问，并且无需 `::` 限定符，相当于 C 语言文件级的静态函
+数（内部链接）。
+
+其实匿名空间就是用来完美取代静态函数的，多文件内有多个静态函数时，用匿名空间封
+装可精简重复的 `static` 关键字。更重要的是，在 C++ 中，`static` 关键字是被滥用
+的，有多重涵义，以致可以当作 C++ 初级面试题了。所以在有其他方法可不用 `static`
+时尽量不用 `static` 。
+
+仍取上节的示例，假如我们觉得 `Circle::Impl` 内部类的求面积函数比较通用，想提到
+（限当前文件）全局作用域来，或者说可以从其他地方抄过 C 函数的实现来，那就可以
+放在文件开头的匿名空间中。如：
+
+
+```c++
+namespace // static
+{
+    double area(double r) { return 3.14159 * r * r;}
+}
+
+namespace sci { namespace math {
+    struct Circle
+    {
+        double x;
+        double y;
+        double r;
+        double Area() { return area(this->r); }
+        static double Area(double r) { return area(r); }
+    };
+}}
+```
+
+另外说明一下，这里将匿名空间的求面积函数名改为小写的 `area` ，需要与
+`Cirle::Area` 方法名区分，否则虽能编译通过，却会在调用 `Circle::Area` 函数时发
+生无限递归，因为就近原则，里面的 `Area` 方法名会屏蔽外面匿名空间的 `Area` 函数
+名，那就始终调用自己了。
+
+其实，匿名空间不仅可以放在全局空间中，也可以放在其他命名空间中，其本质意义是在
+匿名空间内定义的符号也自己提升到父空间中可见。自 C++11 后，还有另一个命名空间
+叫内联空间，也可以将自身内部的符号提升到父空间中。但是内联空间与匿名空间不同的
+是它仍然有名字，仍然可以给出包括自身空间名的全限定名称来访问，但匿名空间内的符
+号因其无名只能通过父空间来访问。另外内联空间在其他文件也可访问，即可进行外部链
+接。
+
+内联命名空间的主要作用是版本控制。默认版本或当前版本可以省略版本名只用到父空间
+的限定名，但也允许指定版本的空间名使用全限定名。仍以之前求圆面积的实现举例，还
+是将其放到 `math` 命名空间，然后将不同精度的圆周率计算划分为不同版本：
+
+```c++
+namespace sci { namespace math {
+    namespace v1
+    {
+        double PI = 3.14;
+        double area(double r) { return PI * r * r;}
+    }
+    inline namespace v2
+    {
+        double PI = 3.14159;
+        double area(double r) { return PI * r * r;}
+    }
+    struct Circle
+    {
+        double x;
+        double y;
+        double r;
+        double Area() { return area(this->r); }
+        static double Area(double r) { return area(r); }
+    };
+}}
+
+#include <iostream>
+int main()
+{
+    sci::math::Circle c;
+    c.r = 2.0;
+    std::cout << "c.Area() = " << c.Area() << std::endl;
+    std::cout << "v1 area = " << sci::math::v1::area(c.r) << std::endl;
+    std::cout << "v2 area = " << sci::math::v2::area(c.r) << std::endl;
+    std::cout << "v? area = " << sci::math::area(c.r) << std::endl;
+}
+```
+
+该示例输出为：
+
+```
+c.Area() = 12.5664
+v1 area = 12.56
+v2 area = 12.5664
+v? area = 12.5664
+```
+
+因为 `math` 空间下面的 `v2` 空间被标记为 `inline` ，所以 `v2` 空间算是当前版本
+的默认实现，其内的符号在父空间 `math` 直接可见，也即有 `math::PI ==
+math::v2::PI == 3.14159` 。
+
+内联空间对库开发者比较有用，可用于保持兼容性。而匿名空间对普通开发者比较实用，
+C 风格的静态函数可弃之了。
+
+## C++ 项目利用命名空间的实践探讨
+
+### 基本原则
+
+### 目标为可执行文件的项目
+
+### 目标为动态链接库的项目
+
+## 总结
