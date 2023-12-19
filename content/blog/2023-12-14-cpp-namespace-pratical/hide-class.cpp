@@ -37,4 +37,10 @@ void Bar(CMyClass* pObject)
     pObject->Bar();
 }
 
+void Work(/* arguments */)
+{
+    CMyClass obj(/* arguments */);
+    obj.Foo();
+    obj.Bar();
+}
 }

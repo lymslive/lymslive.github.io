@@ -940,55 +940,300 @@ Builder 模式。当获得一个对象后，就按 C 函数的方式将该对象
 将上例改成支持多态，头文件形如：
 
 ```c++
-// hide-class.h
+// hide-interface.h
 namespace mymod {
-    struct IMyInterface {
+    struct Interface {
+        virtual ~Interface() {}
         virtual void Foo() = 0;
         virtual void Bar() = 0;
-    }
-    IMyInterface* NewObject(/* init-args */);
-    void FreeObject(IMyInterface* pObject);
-    void Foo(IMyInterface* pObject);
-    void Bar(IMyInterface* pObject);
+    };
+    Interface* CreateObject(int arg);
+    void FreeObject(Interface* pObject);
 } // end of namespace
 ```
 
 源文件形如：
 
 ```c++
-// hide-class.cpp
-#include "hide-class.h"
+// hide-interface.cpp
+#include "hide-interface.h"
+#include <stdio.h>
 namespace mymod {
-struct CMyClass : public IMyInterface {
-    CMyClass(/* init-args */);
-    virtual void Foo() override { /* todo */ }
-    virtual void Bar() override { /* todo */ }
+    struct CHisClass : public Interface {
+        CHisClass() {}
+        virtual void Foo() override { printf("CHisClass:Foo\n"); }
+        virtual void Bar() override { printf("CHisClass:Bar\n"); }
+    };
 
-    // data member ...
+    struct CHerClass : public Interface {
+        CHerClass() {}
+        virtual void Foo() override { printf("CHerClass:Foo\n"); }
+        virtual void Bar() override { printf("CHerClass:Bar\n"); }
+    };
+
+    Interface* CreateObject(int arg) {
+        if (arg == 1) {
+            return new CHisClass();
+        } else {
+            return new CHerClass();
+        }
+    }
+    void FreeObject(Interface* pObject) {
+        delete pObject;
+    }
+} // end of namespace
+```
+
+这里将 `NewObject()` 函数改成 `CreateObject()` ，并且实现上根据参数创建不同的
+具体子类，这就更像工厂函数了。然后也不需要其他自由函数来转发对象方法了，因为在
+创建出对象后，可以直接使用接口方法了，一个使用的示例如：
+
+```c++
+// use-interface.cpp
+#include "hide-interface.h"
+
+int main()
+{
+    mymod::Interface* p = mymod::CreateObject(1);
+    p->Foo();
+    mymod::FreeObject(p);
+    p = mymod::CreateObject(2);
+    p->Bar();
+    mymod::FreeObject(p);
+}
+```
+
+输出：
+
+```
+CHisClass:Foo
+CHerClass:Bar
+```
+
+这用起来就更有面向对象的特征了，但这不应成为追求目标。在 C++ 中，如非必要，也
+不建议滥用虚函数多态继承。对于不需多态的简单类，就按前面的 `hide-class.h` 示例
+隐藏实现即可，用 C 风格的函数转发对象方法也没问题。如果定要支持用户用对象的方
+法，也可以通过常见的 `Impl` 内部类实现。
+
+例如头文件可这么写：
+
+```c++
+// hide-impl.h
+namespace mymod {
+struct CMyClass
+{
+    struct Impl;
+    CMyClass();
+    ~CMyClass();
+    void Foo();
+    void Bar();
+
+private:
+    Impl* pImpl = nullptr;
+};
+} // end of namespace
+```
+
+源文件这么写：
+
+```c++
+// hide-impl.cpp
+#include "hide-impl.h"
+#include <stdio.h>
+namespace mymod {
+struct CMyClass::Impl {
+    void Foo() { printf("Impl::Foo\n"); }
+    void Bar() { printf("Impl::Bar\n"); }
 };
 
-IMyInterface* NewObject(/* init-args */) {
-    CMyClass* pObject = new CMyclass(/* init-args */);
-    return pObject;
+CMyClass::CMyClass() {
+    pImpl = new Impl;
 }
-void FreeObject(IMyInterface* pObject) {
-    delete pObject;
+CMyClass::~CMyClass() {
+    delete pImpl;
 }
 
-void Foo(IMyInterface* pObject) {
-    pObject->Foo();
+void CMyClass::Foo() {
+    pImpl->Foo();
 }
-void Bar(IMyInterface* pObject) {
-    pObject->Bar();
+void CMyClass::Bar() {
+    pImpl->Bar();
 }
 } // end of namespace
 ```
 
-如此，在头文件中，要么只有纯数据的结构体（传参），要么只有纯函数虚类接口。这才
-简单明晰，类设计把数据与方法放在一起，反而是个复杂的东西，隐藏在实现中就好了。
+如果不想将内部实现定义成子类 `CMyClass::Impl` ，也可以直接在同级命名空间定义个
+辅助类 `mymod::CMyClassImpl` ，并无太大差别，我推荐用子类，更显空间层次感。对
+该类的一个使用示例如：
+
+```c++
+// use-imple.cpp
+#include "hide-impl.h"
+int main()
+{
+    mymod::CMyClass obj;
+    obj.Foo();
+    obj.Bar();
+}
+```
+
+输出：
+
+```
+Impl::Foo
+Impl::Bar
+```
+
+这看起来与常规使用类对象没啥区别了。但是再审视一下在头文件 `hide-impl.h` 定义
+的 `CMyClass` 类，若非教程示例性代码，可能就没那么简单了。它定义了构造函数，那
+就是非平凡 (non-trivial) 类了，而且既然定义构造与析构，那四件套（或六件套）的
+其他套装还要不要定义呢？就是拷贝构造函数，拷贝赋值函数，移动构造函数与移动赋值
+函数。一般来说，类中有指针成员，那这六件套都得考虑，否则这个类暴露给了用户，说
+不准哪天就给你捅出漏子来。所以说，C++ 的类是个很复杂的东西，不如全移到源文件去
+，隔离用户，不给用户压力。
+
+不妨再分析一下业务需求。假设用户代码（其他源文件）的典型用法，就是创建该类的一
+个对象，再依次调用其 `Foo` 与 `Bar` 两道工序方法，那其实在头文件甚至不用暴露这
+个类的存在，只要在源文件中再添加一个函数 `Work`，组合这样的工序流，如：
+
+```c++
+// hide-class.cpp
+namespace mymod {
+// ...
+void Work(/* arguments */)
+{
+    CMyClass obj(/* arguments */);
+    obj.Foo();
+    obj.Bar();
+}
+} // end of namespace
+```
+
+然后在头文件中只要导出 `Work` 这一个函数，其余的都用不上删了，然后在外面也就只
+要调用 `mymod::Work` 函数能完成任务就行，完全不用管它内部是用类来实现还是其他
+什么来实现。
+
+所以，在头文件该写什么，要根据具体项目分析而定。总之以导出最小化为原则，以函数
+为主，不要有类。如果项目复杂，可以允许有纯数据的结构体（传参），或纯虚函数的
+接口类。其实若不限纯 C 语法的话，（在命名空间内）也不妨有重载函数声明，新式的
+枚举类 `enum class` ，以及 `std::function` 类型代替函数指针用于设置回调函数
+参数（这或可代替虚函数表实现多态需求）……这些 C++ 特性，也不会增加太大的复杂
+性及影响声明与实现的分离布局。
 
 ### 目标为可执行文件的项目
 
+C++ 项目按最终编译的成品分，主要分为两类，一是可执行文件，二是动态链接库，其实
+还有一类是静态库，不过那几乎是将各个目标文件的简单打包，故此不多作讨论。
+
+先看可执行文件，它需要一个入口 `main` 函数，这是唯一例外的自己写的却不能放入
+命名空间的函数，但我们可以尽可能将它写得简单，只一行转调。比如我们可以设计一个
+命名空间来代表整个应用程序，不妨叫 `app` （或 `exe` ？），将程序的主要入口逻辑
+写在该空间的一个函数，也可以叫 `main` ，不过这个单词较为敏感，我更喜欢取名为
+`run` 。然后在全局空间的 `main` 就只要写一行调用，并且之后基本不需改动了。大致
+结构形如：
+
+```c++
+// app.cpp
+namespace app {
+int run(int argc, char* argv[]) // main
+{
+    // todo: 命令行参数与配置解析
+    // todo：业务逻辑处理
+}
+} // end of namespace
+
+int main(int argc, char* argv[])
+{
+    return app::run();
+}
+```
+
+如果涉及比较复杂的命令行参数或配置处理，可以增设一个子空间 `app::cli` 或
+`app::conf` 。至于业务逻辑该怎么划分命名空间，那是具体项目具体分析了，这其实是
+需求分析与整体设计，与 C++ 语言的关系反不是很密切。
+
 ### 目标为动态链接库的项目
 
+动态链接库的项目，其实也有些必须的代码必须放到全局空间来，那就是需要导出的 C
+函数，可以被其他程序链接或运行时加载的函数最好用 C 接口。这部分函数一般还要用
+`extern C` 声明，避免 C++ 对函数符号的修饰。
+
+可以专门设计一个命名空间 `dll` 来承接欲导出的动态链接库函数，并根据 C 习惯为这
+些导出 C 函数取个统一前缀。比如头文件大致如下：
+
+```c++
+// dll.h
+namespace dll
+{
+    void Foo();
+    void Bar();
+} // end of namespace
+
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+    void mydll_foo();
+    void mydll_bar();
+#ifdef __cplusplus
+}
+#endif
+```
+
+源文件大致如下：
+
+```c++
+// dll.cpp
+#include "dll.h"
+#include "foo.h"
+#include "bar.h"
+
+namespace dll
+{
+    void Foo()
+    {
+        foo::Work();
+    }
+    void Bar()
+    {
+        bar::Work();
+    }
+} // end of namespace
+
+void mydll_foo()
+{
+    dll::Foo();
+}
+
+void mydll_bar()
+{
+    dll::Bar();
+}
+```
+
+以上，`extern C` 只要在头文件声明即可，在源文件实现时可不加，如不确定，也可加
+上。此外更常见的是将 `extern C` 及其前后大括号放在条件编译中，这是考虑当作纯 C
+编译时没有 `extern C` 语法。于是总体上看，由 `extern C` 导出的 C 函数转调 `dll` 
+空间的相应函数，但实际业务肯定也不可能全写在 `dll` 命名空间，一般是分在其他命
+名空间，因此 `app` 空间的函数也只做一层转发而已。
+
+另外注意，用 gcc 编译 linux 的动态链接库 `.so` 时，符号是默认导出的，而在
+windows 编译动态链接库 `.dll` 时，符号是默认不导出的。因此，要精确控制只导出那
+些设计为要导出的 C 函数，需要添加额外属性标注及调整相关编译链接参数，具体技术
+细节就非本文想涉及的了。
+
 ## 总结
+
+本文在厘清 C++ 有关命名空间的相关语法特性的基础，结合实际开发经验，尝试提出
+“C with namespace”的 C++ 开发范式，在面向对象编程思想出现反思潮的当下，C
+with namespace 也许是比 C with class 更简单易用的一种范式。命名空间不仅是避免
+符号冲突的手段，更是对业务抽象进行模块化划分的体现。因此，合理使用命名空间，再
+结合严格规范的头文件与源文件进行声明与实现的分离，能有效地改善 C++ 项目代码的
+组织结构，提升代码可读性与可维护性。
+
+在计算机编程界，自从 C++ 在 C 语言的基础上发展壮大以来，期间常有新兴语言诞生，
+宣称自己是“更好的 C”，其拥趸者更是热切期待它们能取代万恶复杂 C++。事实上，
+C++ 从来就是更好的 C 。作为多范式编程语言，C++ 可以自由应对灵活多变的需求。如
+果觉得 C++ 太复杂了，也可以有意识地在实际的具体的项目为之做减法。本文从较为宏
+观的项目代码组织层面上，提出用命名空间及隐藏实现来隔离 C++ 的复杂度，希望能为
+广大 C++ 开发者提供一种思想启迪。
