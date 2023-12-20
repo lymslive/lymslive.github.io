@@ -4,6 +4,8 @@ draft = false
 [taxonomies]
 categories = ["程序设计"]
 tags = ["C++"]
+[extra]
+toc = true
 +++
 
 众所周知，C++ 算是 C 的超集，提供了非常丰富的高级特性。对一般 C++ 开发者而言，

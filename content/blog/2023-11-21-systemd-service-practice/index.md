@@ -3,6 +3,8 @@ title = "探索 systemd 管理服务之旅"
 [taxonomies]
 categories = ["工具使用"]
 tags = ["linux","systemd"]
+[extra]
+toc = true
 +++
 <!-- # 探索 systemd 管理服务之旅 -->
 
