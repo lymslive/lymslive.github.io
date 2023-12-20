@@ -175,7 +175,28 @@
   <footer class="footer py-4">
     <div class="content has-text-centered">
       <p>
-        Built with
+        Contact
+        <a class="has-text-black" href="mailto:{{ config.extra.social.email }}" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/{{ config.extra.social.github }}/{{ config.extra.social.github }}.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
         <span class="icon-text">
           <span class="icon">
             <i class="fas fa-code"></i>
@@ -188,15 +209,6 @@
             <i class="fas fa-heart"></i>
           </span>
           <span>love</span>
-        </span>
-      </p>
-      <p>
-        Powered by
-        <span class="icon-text">
-          <span class="icon">
-            <i class="fas fa-power-off"></i>
-          </span>
-          <span>zola</span>
         </span>
       </p>
     </div>
