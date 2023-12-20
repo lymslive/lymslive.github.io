@@ -1,6 +1,6 @@
 namespace // static
 {
-    double area(double r) { return 3.14159 * r * r;}
+    double Area(double r) { return 3.14159 * r * r;}
 }
 
 namespace sci { namespace math {
@@ -9,8 +9,8 @@ namespace sci { namespace math {
         double x;
         double y;
         double r;
-        double Area() { return area(this->r); }
-        static double Area(double r) { return area(r); }
+        double Area() { return ::Area(this->r); }
+        static double Area(double r) { return ::Area(r); }
     };
 }}
 

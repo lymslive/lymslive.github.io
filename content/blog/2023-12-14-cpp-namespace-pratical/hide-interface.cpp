@@ -3,15 +3,17 @@
 
 namespace mymod {
     struct CHisClass : public Interface {
+        int value_ = 11;
         CHisClass() {}
-        virtual void Foo() override { printf("CHisClass:Foo\n"); }
-        virtual void Bar() override { printf("CHisClass:Bar\n"); }
+        virtual void Foo() override { printf("CHisClass::Foo %d\n", value_); }
+        virtual void Bar() override { printf("CHisClass:Bar %d\n", value_); }
     };
 
     struct CHerClass : public Interface {
+        int value_ = 22;
         CHerClass() {}
-        virtual void Foo() override { printf("CHerClass:Foo\n"); }
-        virtual void Bar() override { printf("CHerClass:Bar\n"); }
+        virtual void Foo() override { printf("CHerClass::Foo %d\n", value_); }
+        virtual void Bar() override { printf("CHerClass::Bar %d\n", value_); }
     };
 
     Interface* CreateObject(int arg) {
