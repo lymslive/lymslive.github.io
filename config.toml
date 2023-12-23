@@ -36,13 +36,14 @@ navbar_items = [
         { url = "$BASE_URL/think", name = "文思" },
         { url = "$BASE_URL/white", name = "白学" },
         { url = "$BASE_URL/tags", name = "标签" },
-        { url = "$BASE_URL/categories", name = "分类" },
+        { url = "$BASE_URL/categories", name = "归类" },
 #       { url = "$BASE_URL/resume", name = "简历" },
     ] },
 ]
 
 [extra.author]
-name = "lymslive"
+# name = "lymslive"
+name = "七阶子"
 avatar = "images/avatar.png"
 
 [extra.social]

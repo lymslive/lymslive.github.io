@@ -2,7 +2,7 @@
 title = "couttast: 轻量级单元测试框架介绍"
 [taxonomies]
 categories = ["程序设计"]
-tags = ["C++","单元测试"]
+tags = ["C++","unittest"]
 +++
 <!-- # couttast: 轻量级单元测试框架介绍 -->
 
