@@ -20,7 +20,7 @@ struct json_t {
             } num_;
             bool b;
             string* str;
-        } scaler_;
+        } scalar_;
         union Polymer {
             vector<json_t>* array;
             map<string, json_t>* object;
