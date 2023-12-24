@@ -37,7 +37,7 @@ navbar_items = [
         { url = "$BASE_URL/white", name = "白学" },
         { url = "$BASE_URL/tags", name = "标签" },
         { url = "$BASE_URL/categories", name = "归类" },
-        { url = "$BASE_URL/resume", name = "简历" },
+#       { url = "$BASE_URL/resume", name = "简历" },
     ] },
 ]
 
