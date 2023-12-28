@@ -21,7 +21,10 @@ $(FILE_INTAR): $(TAR_DIR)/% : %
 
 $(TAR_DIR): $(FILE_INTAR)
 
+CUR_TIME = $(shell date +%s)
+
 echo:
+	@echo CUR_TIME = $(CUR_TIME)
 	@echo TAR_DIR = $(TAR_DIR)
 	@echo TAR_NAME = $(TAR_NAME)
 	@echo FILE_LIST = $(FILE_LIST)

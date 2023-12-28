@@ -369,7 +369,191 @@ tar:
 
 ### 容器化应用任务
 
-### 启动方式切换
+现在，假设要赶容器化的潮流，想把我们的服务程序也放在容器中去运行。容器运行的前
+提是先要做个镜像。严肃点说，编译也该放在容器中去，更容易保证环境一致性。不过本
+文为了故事的简单性，就仍用之前通过 `make build` 编译出的程序，打成镜像，也相当
+于另一种方式的打包。
+
+于是也就可再利用上节打包过程中建立的 `my-program-release/` 目录，这里收集了我
+们程序运行所需的文件，拷进镜像就成了。也就说把这个目录当成 `docker build` 命令
+的 context （路径参数），只把这个目录的内容发到 docker 引擎中作为构建镜像的原
+料。这比把当前目录（整个项目根目录）发过去更高效，虽然也可以用 `.dockerignore`
+忽略大量不必要文件（如 `src/` 与 `log/`），但仍不如搞一个清爽的目录。把这个目
+录当成制作镜像的依赖，那就容易写出 makefile 了：
+
+```make
+IMAGE_TAG = $(SERVER_NAME):latest
+image: $(TAR_DIR)
+    docker build $(TAR_DIR) -t $(IMAGE_TAG) -f ./Dockerfile
+```
+
+而 Dockerfile 的内容也可以很简单，如：
+
+```docker
+FROM contos:7
+RUN mkdir /workspace
+COPY ./* /workspace
+WORKDIR /workspace
+```
+
+就是选个操作系统镜像基底，在根目录下建个 `/workspace` 作为容器的工作目录，再把
+context 即 `my-program-release/` 目录下的所有内容拷到镜像的 `/workspace` 中。
+当然可以根据项目需要在 Dockerfile 中添加更多内容，这不多说。其实笔者向来推荐把
+Dockerfile 本身也打进镜像中，将来运行容器时可以进去查到到这个文件，作为参考大
+致了解该镜像是怎么来的。于是，可以把 Dockerfile 就放在 my-program-release 子目
+录，而不是放在项目根目录。这样，在上面的 `make image` 目标下的 `docker build`
+命令就不必加 `-f ./Dockerfile` 参数了。
+
+另一个问题，`image` 目标依赖的 `TAR_DIR` ，也即 -release 目录的依赖与准备，若
+按前面的叙述，分离到单独的 `tar.mk` 文件中了，在主控 makefile 文件中看不到它了
+。有两个解决方案，一种是在 makefile 用中 `include tar.mk` 命令将那个文件包含进
+来；一种是将 `image` 目标也写到 `tar.mk` 中，然后在 makefile 转调命令
+`make image -f tar.mk` 。
+
+镜像做好之后，需要先本地启个容器来测试。也就是说 `make start` 时不再跑 `bin/`
+目录下的程序，而是运行容器，执行容器中的 `/workspace/bin/my-program` 。当然我
+们可以先建个 `start.docker` 目标来表示这种启动方式。大概写法如下：
+
+```make
+CONTAINER_NAME = --name $(SERVER_NAME)
+CONTAINER_VOL = -v log:/workspace/log
+CONTAINER_CMD = -d bin/$(SERVER_NAME)
+start.docker:
+    docker run $(CONTAINER_VOL) $(CONTAINER_NAME) $(IMAGE_TAG) $(CONTAINER_CMD)
+```
+
+容器启动往往涉及相当多的选项，为此我们定义几个变量，最后组成 `docker run` 命令
+行参数，主要包括如下几部分：
+
+* -v 挂载卷，把日志目录挂载为当前的 log/ 子目录，
+* --name 为容器取个名字，同服务程序名，方便其他 docker 引用
+* 镜像名
+* 要在容器中执行的命令，让程序在容器内的前台运行即可，不需 `nohup ... &`，
+  `-d` 是 `docker run` 的选项，将容器置于后台运行。
+
+在容器中跑的服务，一般还会涉及端口映射，如用 `-p` 选项，这里也不多说了。
+
+与 `start` 相对应的 `stop` 任务就简单多了，调个 `docker stop` 的事：
+
+```make
+stop.docker:
+    docker stop $(CONTAINER_NAME)
+```
+
+在本地的单机容器通过基本的验证测试后，就可以通过 `docker push` 推送到镜像仓库
+了，这个命令与 `git push` 很像，对于商业项目，应该是推送到公司内部的镜像仓库。
+这个目标任务的实现也简单：
+
+```make
+DOCKER_REGISTRY = my.company.com/my-project
+IMAGE_REMOTE = $(DOCKER_REGISTRY)/$(IMAGE_TAG)
+push.docker:
+    docker tag $(IMAGE_TAG) $(IMAGE_REMOTE)
+    docker push $(IMAGE_REMOTE)
+```
+
+这里需要配置镜像仓库地址 `DOCKER_REGISTRY` ，用 `docker tag` 命令为本地镜像多
+打个新标签，加上仓库地址前缀，然后用 `docker push` 推送新标签。另外提一下，这
+里的镜像标签中作为版本的后缀都是默认的 `:latest` ，这在严肃项目中需要对镜像作
+版本管理区分时是不良实践。所以在推送 `:latest` 之后，还要额外打个有版本标识的
+标签并推送，一般可用时间或 git 最近提交的 hash 码作为版本标识。比如增改如下：
+
+```make
+DOCKER_REGISTRY = my.company.com/my-project
+CUR_TIME = $(shell date +%s)
+IMAGE_REMOTE = $(DOCKER_REGISTRY)/$(IMAGE_TAG)
+IMAGE_VERSION = $(DOCKER_REGISTRY)/$(SERVER_NAME):$(CUR_TIME)
+push.docker:
+    docker tag $(IMAGE_TAG) $(IMAGE_REMOTE)
+    docker push $(IMAGE_REMOTE)
+    docker tag $(IMAGE_TAG) $(IMAGE_VERSION)
+    docker push $(IMAGE_VERSION)
+```
+
+### 伪目标的 touch 文件
+
+上节的容器任务，还遗留了一个问题，如何避免重新制作镜像与推送镜像？对比打 `tar`
+包就不存在这个问题，因为会生成一个 `.tar.gz` 文件，能与 `-release` 目录比较更
+新时间，所以在执行 `make tar` 时只会在需要重新打包时才会执行命令。而 `image`
+应该是个伪目标， make 它时不会在当前目录生成文件，生成的镜像被 docker 引擎统一
+管理，不是很方便追踪它的更新时间。
+
+为解决伪目标的这个问题，可以在执行完命令后 `touch` 一个文件，专门用于标记最近
+执行目标的时间，可用以与依赖比较时间。当然这还需要一个中转，可改写如下：
+
+```make
+TOUCH_DIR = .touch
+$(TOUCH_DIR):
+    mkdir -p $@
+
+image_touch = $(TOUCH_DIR)/image.touch
+image: $(image_touch)
+$(image_touch): $(TAR_DIR)
+    docker build $(TAR_DIR) -t $(IMAGE_TAG) -f ./Dockerfile
+    @mkdir -p $(TOUCH_DIR)
+    touch $@
+```
+
+以上，先规划建一个 `.touch/` 子目录，专门用于收集 `touch` 文件，隐藏目录，平时
+眼不见为净。然后让伪目录 `image` 依赖真实文件 `.touch/image.touch` ，而后者，
+就是之前第一版写的 `image` 目标与命令实现，只不过之后在执行完 `docker build`
+后加条 `touch .touch/.image.touch` 命令，为伪目标 `image` 更新对应的 touch 文
+件时间。使用时，仍然执行 `make image` ，只有当检测到 touch 文件比打包目录更旧
+了，才需制作镜像。
+
+推送镜像也同理可改造一下，它依赖的目标是制作镜像：
+
+```make
+push_touch = $(TOUCH_DIR)/push.touch
+
+push.docker: $(push_touch)
+$(push_touch): $(image_touch)
+    docker tag $(IMAGE_TAG) $(IMAGE_REMOTE)
+    touch $@
+```
+
+这样，在已经推送过最近制作的镜像时，再（由于忘记或不确定时）重复执行
+`make push.docker` 是不会触发重复推送的。
+
+其他伪目标，如有需要，都可以按这种方式加个对应的 touch 文件。是否需要重构依赖
+链都另说，至少可以作为一个曾经执行与最近执行的证据。比如 `make start` ，就可以
+加条 `touch .touch/start.touch` 命令，标记启动时间。当然，如果服务本身会写 pid
+文件，pid 文件也是启动时间的一个标记。
+
+### 多种实现方式的切换
+
+至此，我们在 makefile 中为服务程序先后实现了几种启动方式：
+
+1. 用 bash 脚本或命令行在本地启动；
+2. 用 systemctl 启动，纳入 systemd 服务管理系统；
+3. 用容器启动。
+
+显然，在某一时期，或某个环境中，你只会用到其中一种方式启动服务。现在，第 1 种
+最原始的方式占用了最简短的 `start` 目标，好像不妥当。所以再作个优化，将第 1 种
+`start` 改名为 `start.bash` ，再重新建一个 `start` 目标，让它依赖以上三者之一
+，例如，默认使用第 3 种的容器启动：
+
+```make
+start.bash:
+    # script/start.sh ...
+
+start.sd:
+    # systemctl start ...
+
+start.docker:
+    # docker run ...
+
+start: start.docker
+```
+
+这种依赖关系，如果不是伪目标，而是当成真实文件看，就有点像软链接的味道了，相当
+于这样：
+
+```bash
+ln -s start.docker start
+```
+
+停止服务的伪目标，也可以作类似的“软链接”处理。
 
 ## Makefile 脚本常用技巧
 
