@@ -389,7 +389,7 @@ image: $(TAR_DIR)
 
 而 Dockerfile 的内容也可以很简单，如：
 
-```docker
+```dockerfile
 FROM contos:7
 RUN mkdir /workspace
 COPY ./* /workspace
@@ -520,6 +520,12 @@ $(push_touch): $(image_touch)
 加条 `touch .touch/start.touch` 命令，标记启动时间。当然，如果服务本身会写 pid
 文件，pid 文件也是启动时间的一个标记。
 
+顺便提一下，若从头开始只用 `touch` 一个不存在的文件，它只会创建 0 字节的空文件，
+0 字节文件不会占用额外硬盘空间，只是在父目录的表项中多添加一记录，相当于只修改
+父目录这个“文件”。当然了，现在的硬盘并不值钱，并不需要刻意追求 0 字节文件，所
+以也可能改用 `echo ... > .touch/target.touch` 代替 `touch` 命令往目标的 touch
+文件写入一些你觉得有意义的内容。
+
 ### 多种实现方式的切换
 
 至此，我们在 makefile 中为服务程序先后实现了几种启动方式：
@@ -555,10 +561,176 @@ ln -s start.docker start
 
 停止服务的伪目标，也可以作类似的“软链接”处理。
 
+至此，小结一下，这里讨论的名为 `my-program` 的示例项目文件与目录结构大致如下：
+
+```
+my-program/
+  - .touch/
+  - build/
+  - scr/
+  - script/
+  - bin/
+  - lib/
+  - log/
+  - my-program-release/
+  - my-program-release.tar.gz
+  - makefile
+  - tar.mk
+  - CMakeLists.txt
+  - Dockerfile
+```
+
+其中，`makefile` 文件就是本文重点讨论的，把 make 当作能自定义子命令的管理脚本
+或主控脚本，它可能会调用另一个 makefile 文件 `tar.mk` 及 `script/` 目录下的脚
+本。一些伪目标的执行，可能在隐藏目录 `.touch` 下更新相应的 touch 文件的时间戳。
+
 ## Makefile 脚本常用技巧
+
+从核心功能与原理上讲，makefile 可以是简单的。但随着目标的广度与依赖的深度增加，
+makefile 也可能会逐渐变得复杂，尤其是 makefile 也支持变量、函数、条件，甚至循
+环等常规编程元素。关于具体的语法，本文没必要深入讲太细，请在需要时搜索相应的参
+考文档。除了建议对 makefile 保持简单、控制规模外，下面只讲一些笔者认为比较重要
+的几点。
 
 ### 调试手段
 
+首先，从脚本编程角度看，大多语言都应该有只检查语法而不执行的手段。make 也有个
+`-n` 选项，它只打印目标将要执行的命令，而不实际执行。它在分析 makefile 中目标
+依赖关系过程，自然也能检测出语法错误，而“业务”逻辑错误，则要从它打印的命令人工
+分析了，看它是否符合预期想执行的命令序列。
+
+```bash
+# 打印默认目标将要执行的命令
+make -n
+
+# 打印指定目标将要执行的命令
+make -n target
+
+# 检查打印命令无误时，再去掉 -n 实际执行
+make target -n
+make target
+```
+
+按命令行程序解析参数的习惯，`-n` 选项位置无关，我建议写在最后，这更方便输入命
+令行过程中的顺手修改。
+
+如果指定的目标按 make 的依赖逻辑“最新的”，`make -n` 也指出这点，不会打印任何命
+令。如果目标依赖链缺失，它会报告错误，这也是重要的诊断信息。例如，我们在前文介
+绍的最“复杂”的目标，应该是打包任务。如果从代码库拉下新鲜代码还没编译前就测试这
+个目标：
+
+```bash
+make tar -f tar.mk -n
+```
+
+它就会报错。大致原因是 `tar` 目标依赖 -release/ 目录下的文件，后者依赖编译结果
+放在 bin/ 目录下的文件，而这些待打包的各个文件，我们没有在之前的 makefile 中给
+出依赖，告诉 make 在缺失时该调用什么命令生成它们。所以 make 报告这是依赖错误。
+这个错误可大可小，毕竟正常情况下，我们不会在编译之前就搞打包操作。只要先执行
+`make build` 正常编译后，再测试 `make tar -n` 就不会报错了。
+
+当知道这个错误根源后，要修改也就容易了，虽然实际上未必重要。只要增加待打包文件
+依赖 `build` 目标就行：
+
+```make
+$(FILE_LIST): build
+```
+
+这句话告诉 make ，当你发现任何待打包文件缺失时，请先执行 `build` 目标。
+
+其次，print 大法也是调试一切编程语言或脚本的简单粗暴方案。makefile 也能用几个
+内置函数来打印消息，例如：
+
+```make
+$(info will tar these files $(FILE_LIST))
+$(warning this is just warning message)
+$(error fatol error occurs and would exit)
+```
+
+其中，`error` 函数被调用时会视为错误，打印后退出 make ，所以这一般应放在条件判
+断语句块中，或者可用于标记某个目标为弃用状态，不该再被执行。其他两个函数在打印
+消息后会继续处理 makefile 语句，以调试为目的打印建议使用 `info` ，打字省流，不
+过 `warning` 有个好处是还会打印所在文件名与行号。例如：
+
+```make
+$(warning target err should not be called)
+$(info target err should not be called)
+err:
+    $(error this target is deprressed)
+```
+
+消息打印有个恼人的地方是，如果它不是放在条件语句块内，它总是会打印出来，这在调
+试完后是每次 make 都可能出现的噪音。除了把打印注释掉，我还推荐一个办法，可以专
+门设立一个打印目标，把当前 makefile 中用到的关键变量打印出来，例如：
+
+```make
+echo:
+    @echo CUR_TIME = $(CUR_TIME)
+    @echo FILE_LIST = $(FILE_LIST)
+    @echo FILE_INTAR = $(FILE_INTAR)
+```
+
+这样，执行 `make echo` 就起到监视变量的作用了，这在你不确认某些变量操作时很有用。
+
 ### 参数传递
 
+将复杂任务拆成几个小任务，是编程的另一个基本操作。makefile 的目标，也是一种细
+粒度的拆分，或可类比为结构化编程语言最常见的函数或子过程，而目标之间的依赖，也
+就相当于过程调用。例如再回顾前面的一个示例：
+
+```make
+all: build restart log
+restart: stop start
+```
+
+当在 shell 中执行 `make all` 时，就相当于依次执行 `make build stop start log`
+这几个目标。当其他语言将一个大任务拆成几个任务再组合起来时，那些子任务的执行顺
+序也就固定了。而 make 还可以在命令行中单独激活中间某个或几个子任务，这种灵活性
+也表明 make 是面向终端用户的。
+
+在同一个 makefile 中，不同目标的过程调用，可认为不涉及参数传递，大家都使用全局
+变量。当 makefile 规模增长到一定程度，可以根据业务关联度将一部分代码拆出为独立
+的 makefile 文件，就如之前讨论的 `tar.mk` 文件。如果在主文件中用 `include` 指
+令将子文件重新包含进来，那在 make 看来，还是同一个文件。
+
+所以这里只讨论真正拆分 makefile 后，在主文件使用 `make -f sub-split.mk` 方式调
+用子文件时的一些问题。就比如，之前的 `tar.mk` 文件中，也用到了 `SERVER_NAME`
+这个变量，但是未定义。当然，可以在 `tar.mk` 补上定义，但重复代码总归不好。更好
+方式是在调用时传递参数，可以这样写：
+
+```make
+tar:
+    make -f tar.mk SERVER_NAME=$(SERVER_NAME)
+```
+
+在 make 的命令行参数约定中，`VARNAME=value` 形式表示在相应的 makefile 中增加变
+量定义。这形式有点像环境变量定义，但也认为是形如 `--option=argument` 省略前导
+`--` 的形式。因为带 `-` 或 `--` 前缀的选项，是传递给 make 程序本身使用的，而不
+是给 makefile 脚本使用的。另外，虽然 makefile 变量习惯用大写的居多，但使用小写
+也没问题。
+
+在上例中，`$(SERVER_NAME)` 先在当前 makefile 解析时被展开为它的值，所以传递给
+`tar.mk` 的变量定义就类似 `SERVER_NAME=my-program` ，也就继承了主文件的变量值。
+不过在 `tar.mk` 文件中完全没体现有这个变量定义，也是不好，在将来维护修改时可能
+感觉困惑，并且无法单独使用。因此，推荐用 `?=` 给它一个默认值，如：
+
+```make
+# tar.mk
+SERVER_NAME ?= my-program
+```
+
+这条语句，只在 `SERVER_NAME` 变量未定义时才执行，正好满足两方面的需求。
+
+对于一些复杂任务，如果不适合削足适履用 makefile 来写，完全可调用一个 bash 脚本
+或其他脚本程序来写，尤其是已经有脚本实现功能的情况下，只在 makefile 中为 make
+注册一个快速目标入口就好，这可达到简化命令行输入的效果。
+
+当被调用的其他（语言）脚本有处理命令行参数功能时，在 makefile 的某个目标下写命
+令时也只要按其要求传入选项参数即可，可适当利用 makefile 的变量展开功能达到简化
+功动态传参的效果。
+
 ## 结语
+
+## 附录：参考链接
+
+* GNU make 官方手册 [https://www.gnu.org/software/make/manual/html_node/index.html](https://www.gnu.org/software/make/manual/html_node/index.html)

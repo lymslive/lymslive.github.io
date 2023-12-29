@@ -29,3 +29,8 @@ echo:
 	@echo TAR_NAME = $(TAR_NAME)
 	@echo FILE_LIST = $(FILE_LIST)
 	@echo FILE_INTAR = $(FILE_INTAR)
+
+$(warning target err should not be called)
+$(info target err should not be called)
+err:
+	$(error this target is deprressed)
