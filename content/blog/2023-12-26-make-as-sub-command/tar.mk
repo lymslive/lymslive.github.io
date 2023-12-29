@@ -21,6 +21,12 @@ $(FILE_INTAR): $(TAR_DIR)/% : %
 
 $(TAR_DIR): $(FILE_INTAR)
 
+.PHONY: build
+$(FILE_LIST): build
+
+############################################################
+## 测试代码
+
 CUR_TIME = $(shell date +%s)
 
 echo:

@@ -139,7 +139,7 @@ help:
     @echo make restart: 重启服务
     @echo make log: 查看最近的日志
     @echo make all: 一键编译、重启、查看日志
-    @eche make help: 打印这些帮助信息
+    @echo make help: 打印这些帮助信息
 ```
 
 打印帮助的命令可以写在文件最后，但若要成为默认目标，需要在前面添加一行 `help:`
@@ -509,6 +509,7 @@ push_touch = $(TOUCH_DIR)/push.touch
 push.docker: $(push_touch)
 $(push_touch): $(image_touch)
     docker tag $(IMAGE_TAG) $(IMAGE_REMOTE)
+    # ...
     touch $@
 ```
 
@@ -727,10 +728,169 @@ SERVER_NAME ?= my-program
 
 当被调用的其他（语言）脚本有处理命令行参数功能时，在 makefile 的某个目标下写命
 令时也只要按其要求传入选项参数即可，可适当利用 makefile 的变量展开功能达到简化
-功动态传参的效果。
+功动态传参的效果，比如上文介绍的为 `docker run` 命令传参。
+
+再举个简单例子，我们在监控日志还经常需要根据某个关键字过滤，只打印匹配行，就类
+似如下命令行的意图：
+
+```bash
+tail -f last.log | grep key
+```
+
+其中，最近的日志可用类似 `ls -rt log/ | tail -1` 找出，拼起来略有复杂，值得封
+装成一个脚本，则该脚本显然应该接收一个参数表示 grep 什么 key 。简单实现如下：
+
+```bash
+#!/bin/bash
+# file: script/lastlogf.sh
+
+last=$(ls -rt log/* | tail -1)
+tail -f $last | grep $1
+```
+
+直接从命令行调用大约如下，要求实时打印含 Error 的日志：
+
+```bash
+script/lastlogf.sh Error
+```
+
+如果在 makefile 中设立一个 logf 目标，可写成如下：
+
+```make
+logf:
+    script/lastlogf.sh $(grepkey)
+```
+
+其中，`grepkey` 变量需要通过 `make` 命令行传参，写成如下：
+
+```bash
+make logf grepkey=Error
+```
+
+与前面直接调用 `script/lastlogf.sh` 输入量差似乎不多。不过当你习惯了 make 的这
+种用法，之后专为 make 调用增加新脚本时，也可以借鉴 make 那种通过环境变量的方式
+传参。例如，将脚本改写成：
+
+```bash
+#!/bin/bash
+# file: script/lastlogf.sh
+
+last=$(ls -rt log/* | tail -1)
+tail -f $last | grep $grepkey
+```
+
+对比前后两个版本，可见就只有 `$1` 与 `$grepkey` 的区别，也就相当于位置参数与命
+名参数的区别。它们各有优劣，本文不再额外展开。此外，为简便起见，这两个版本都没
+对参数判空处理，实际中在缺少（位置）参数或环境变量时，应该赋个默认值，否则会出
+错。
+
+对于后一个版本的 `lastlogf.sh` 脚本，makefile 为目标传参的写法是：
+
+```make
+logf:
+    grepkey=$(grepkey) script/lastlogf.sh
+```
+
+通过命令行执行 make 的写法却不用变，仍然是：
+
+```bash
+make logf grepkey=Error
+```
+
+但若要从命令行直接调用脚本，就要写成：
+
+```bash
+grepkey=Error script/lastlogf.sh
+```
+
+在 bash 命令行中，将 `key=val` 等式写在命令之前，表示专门为该命令（将启的进程
+）设置环境变量，而不影响当前 session 的环境变量。当然了，所谓污染当前会话的环
+境变量的影响也许没那么大，如果不在意的话，也可以先 `export` 写成：
+
+```bash
+export grepkey=Error
+script/lastlogf.sh
+```
+
+这样，当为 `grepkey` 导出环境变量后，就可免参调用脚本了。这里，我将“命名参数
+”用小写字母表示，既为输入方便，也好与常规环境变量区分。
+
+而在 makefile 中，也是能导出环境变量的，故也能这样写：
+
+```make
+# grepkey 的值由 make 的命令行参数设定
+# export 只声明要将其导出为环境变量
+export grepkey
+logf:
+    script/lastlogf.sh
+```
+
+只不过在 makefile ，由于只要一次写定，所以按之前的写法，为单行命令局部导出环境
+变量可能是更优的实现。另外，在输入 make 的命令行参数时，其实也可以将“命名参数
+”写在 `make` 前面，如：
+
+```bash
+grepkey=Error make logf
+```
+
+这种写法，也是为 make 进程设定环境变量。只不过在随后 make 进程解析 makefile 时
+，makefile 定义的变量与环境变量几乎是可互用的。但是很显然，“命名参数”前置的
+写法看起来有点，make 能将其后置，才是更符合直觉的写法。
+
+这里讨论这一番，主要是想表达一个观点，当要开发 bash 脚本与 makefile 联用时，采
+用环境变量的“命名参数”法会使风格会更统一。在 bash 脚本，引用环境变量是很方便
+的，对比其他通用脚本语言要获取环境变量可能还要经常库函数调用。不过其他编程语言
+，也大多有很好用的命令行参数解析库，能支持长横短横引导选项，有参无参混合等复杂
+情况的解析。而 bash 脚本，虽然也有内置库函数能解析命令行参数，但我觉得很不优雅
+，不如就用环境变量，再通过 make 中转一下，就妥妥的命名参数的风格。
+
+如果觉得给 make 提供命名参数，仍然要多敲不少字符，那还有一种情况，可以根据脚本
+最常用参数，在 makefile 中为脚本的典型用法设立不同的目标，以达到简化输入的目的
+。
+
+例如，也是常见的任务，假如开发机硬盘空间告急，需要删除旧日志文件。虽然写个定时
+任务也是个可行方案，但是只在必要时手动删也是个不同的选择。思路也简单，先用
+`find` 命令找到更新时间在几天的日志文件，再用 `rm` 删除之。但是我从来记不住
+find 的具体用法，所以把它封装成 bash 脚本，通过命令输入“多少天前”的参数。脚
+本实现且不论，就说写好了吧，取名为 `rmlog.sh`。然后在 makefile 中建立三个目标
+，分别表示删除 1 天前的日志，删除 7 天前的日志，与删除 30 天前的日志：
+
+```make
+log.rm1:
+    script/rmlog.sh 1
+log.rm7:
+    script/rmlog.sh 7
+log.rm30:
+    script/rmlog.sh 30
+```
+
+使用时就只要执行类似 `make log.rm7` 的命令。仅管脚本支持输入任意正整数表示几天
+前，但我表示没必要，有这三档删除给我日常使用就够了。而且 makefile 屏蔽了脚本对
+参数格式的具体要求，即使后来 `rmlog.sh` 优化升级了，增加了许多高级功能，也只要
+在 makefile 中对传参作适配，不影响 make 的终端用户。即使偶尔用户有输入非常规参
+数的需求，也可以用 `make -n` 把示例命令打印出来，让用户拷下来，在那基础上改改
+参数值，并不太需要记忆背后脚本的参数格式约定。
 
 ## 结语
+
+本文结合 Linux 开发的日常任务，介绍与探讨了将 make 当作自定义子命令的管理工具
+的清奇用法。核心要点包括：
+
+* makefile 设定的目标成为 make 可执行的子命令；
+* makefile 建立的目标依赖代表了 make 子命令的顺序与组合；
+* make 子命令以伪目标为主，可以更新对应的 touch 文件标记时间及传递依赖；
+* 可以利用 makefile 的诸多编程特性，从简单的变量与函数，到复杂的分支与循环；
+* 目标指令可调用其他 makefile 或脚本，简化常用任务的命令行输入。
+
+通过 makefile 及其组织、管理的一系列可大可小的脚本，能够简捷地在 bash 脚本层面
+实现子命令模式，从而让 make 这个古老的工具焕发现代的气息。而若想使用纯 bash 脚
+本实现子命令模式，那可能是相当复杂与困难的。
 
 ## 附录：参考链接
 
 * GNU make 官方手册 [https://www.gnu.org/software/make/manual/html_node/index.html](https://www.gnu.org/software/make/manual/html_node/index.html)
+
+## 附录：本文集源码
+
+依 makefile 的语法要求，目录下面的命令行是制表符缩进，网页渲染的代码很可能转为
+空格，不能直接复制使用，故提供本文的参考源码下载。
