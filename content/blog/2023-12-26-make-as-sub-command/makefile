@@ -26,16 +26,22 @@ restart: stop start
 ############################################################
 ## 使用 systemd 管理服务
 
-start.sd: 
+SYSTEMD_UNIT=/etc/systemd/system/$(SERVER_NAME).service
+$(SYSTEMD_UNIT): script/systemd-service-generator.sh script/systemd-template.service
+	script/systemd-service-generator.sh script/systemd-template.service
+	sudo mv $(SERVER_NAME).service $(SYSTEMD_UNIT)
+	sudo systemctl daemon-reload
+
+start.sd: $(SYSTEMD_UNIT) 
 	sudo systemctl start $(SERVER_NAME)
 
-stop.sd: 
+stop.sd: $(SYSTEMD_UNIT) 
 	sudo systemctl stop $(SERVER_NAME)
 
-status.sd: 
+status.sd: $(SYSTEMD_UNIT) 
 	systemctl status $(SERVER_NAME)
 
-restart.sd: 
+restart.sd: $(SYSTEMD_UNIT) 
 	sudo systemctl restart $(SERVER_NAME)
 
 ############################################################
