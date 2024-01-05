@@ -2,7 +2,7 @@
 title = "浅谈 GNU Make 构建项目实践"
 [taxonomies]
 categories = ["工具使用"]
-tags = ["make"]
+tags = ["linux","make"]
 +++
 <!-- # 浅谈 GNU Make 构建项目实践 -->
 
