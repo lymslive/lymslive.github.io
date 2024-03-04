@@ -39,7 +39,7 @@
               {{ macros::page_content_metadata(page=page) }}
             </div>
           </div>
-          <div class="content mt-2">
+          <div class="content mt-2 summary">
             {{ page.summary | safe }}
             <a class="has-text-danger-dark has-text-weight-semibold" href='{{ page.permalink }}'>
               Read More
@@ -66,4 +66,8 @@
     </div>
   </div>
 </section>
+{% endblock %}
+
+{% block user_custom_stylesheet %}
+<link href="/section-patch.css" rel="stylesheet" />
 {% endblock %}
