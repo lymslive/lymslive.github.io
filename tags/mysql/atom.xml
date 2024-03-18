@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - mysql</title>
+    <link href="https://lymslive.github.io/tags/mysql/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2018-07-19T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/mysql/atom.xml</id>
+    <entry xml:lang="en">
+        <title>mysql 命令行客户端使用经验</title>
+        <published>2018-07-19T00:00:00+00:00</published>
+        <updated>2018-07-19T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/mysql-cli-client-tips/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/mysql-cli-client-tips/</id>
+        
+        <summary type="html">&lt;!-- # mysql 命令行客户端使用经验 --&gt;
+&lt;p&gt;首先，Linux 命令行工具，最基本的原则是随时可查手册，&lt;code&gt;man mysql&lt;&#x2F;code&gt;。
+当用 &lt;code&gt;mysql&lt;&#x2F;code&gt; 命令从 shell 进入交互环境时，也可用 &lt;code&gt;help&lt;&#x2F;code&gt; 查询基本命令：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mysql&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; help
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;大多以 &lt;code&gt;\&lt;&#x2F;code&gt; 前缀的转义命令，即可以单独使用，也可以附加在普通查询命令末尾。
+有些大写转义命令打开某功能选项，而小写关闭对应的功能。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - json</title>
+    <link href="https://lymslive.github.io/tags/json/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-21T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/json/atom.xml</id>
+    <entry xml:lang="en">
+        <title>深入浅出理解 rapidjson 与实践</title>
+        <published>2023-12-21T00:00:00+00:00</published>
+        <updated>2023-12-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/</id>
+        
+        <summary type="html">&lt;p&gt;众所周知，JSON 是通用对象表示法。原全称是 JavaScript Object Notation ，是从
+javascript 语言流行开来的。json 在 javascript 源码中就是合法的对象字面量表示，
+可认为是后者的一个子集，语法更严格，但也更简单，基本可望文生义。后来也有人提出
+json5 的扩展语法，能支持注释等，更接近 javascript 的语法（但仍不完全一样），但
+也不如标准 json 那样流行，简单够用。&lt;&#x2F;p&gt;
+&lt;p&gt;如今，几乎所有流行与不流行的编程语言都支持 json ，能将 json 文本串解析为各自语
+言内部的对象模型表示。这是通过库来实现的，不能像 javascript 那样直接将 json 粘
+贴到源代码中就是合法对象（一般可用在 &lt;code&gt;=&lt;&#x2F;code&gt; 作右值常量），虽然有的语言可能有语法
+糖能在源代码中通过对 json 串作少量的修饰而转化为内部对象，但本质上也是经过了库
+解析。而事实上，对于大对象，长 json 串，即使 javascript 也不会直接嵌在源代码中，
+而是先从外部读入字符串，再通过 &lt;code&gt;JSON&lt;&#x2F;code&gt; 库将其解析为对象。&lt;&#x2F;p&gt;
+&lt;p&gt;Json 的字符串文本表示，也叫对象的序列化，而将 json 文本转为语言内部对象的工作
+叫反序列化。各大语言的 json 库的基本功能或主要功能就是这两个方面。本文将讨论的
+C++ ，更是有许多不同的 json 库。笔者使用最多的是 rapidjson 库，这是个老牌的经
+典 json 库，在 modern C++11 之前就存在的高性能 json 库，至今也在一众 C++ 常见
+json 库的前一梯队。所以笔者强烈推荐这个 C++ 开源库，它是 head-only 库，只要下载
+头文件，很容易集成进自己项目就发挥作用。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 中 Json 操作符重载设计探讨</title>
+        <published>2021-10-29T00:00:00+00:00</published>
+        <updated>2021-10-29T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/json-operator-overload/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/json-operator-overload/</id>
+        
+        <summary type="html">&lt;!-- # C++ 中 Json 操作符重载设计探讨 --&gt;
+&lt;!-- lymslive &#x2F; 2021-10-29 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;Json 在业界实践中颇受欢迎。实现 Json 的 C&#x2F;C++ 库也相当多，其 API 虽大同小异，
+却也不尽相同。笔者目前推崇的是 rapidjson 库，因其效率一流，是 C++ 程序员应该追
+求的一个目标。但在使用过程中又不免觉得 rapidjson 的使用 API 不够友好，尤其是设
+值修改时要多传一个内存分配器参数（Allocator），当然这也是它为了效率实现的一种
+交换。&lt;&#x2F;p&gt;
+&lt;p&gt;于是我想到了操作符重载。我在想当年的 C++ 教材学习上也算一块重要且有趣的内容了
+，然而在实际工作中，使用 C++ 操作符重载的场合很少。主要是操作符重载容易误解，
+经常不如规范选用的函数名那么能望文生义。这就说明操作符重载需要经过审慎的设计，
+要让操作符重载尽可能合理，且能让使用团队达成共识。&lt;&#x2F;p&gt;
+&lt;p&gt;而 Json 作为通用的数据结构抽象，越发显得重要与流行广泛，它不同与对具体业务的抽
+象，因此我认为对 Json 设计一套操作符重载，定义一些操作符号对于 Json 的意义，以
+简化对 Json 数据的操作，那是值得探讨的。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
