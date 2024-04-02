@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - systemd</title>
+    <link href="https://lymslive.github.io/tags/systemd/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-11-21T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/systemd/atom.xml</id>
+    <entry xml:lang="en">
+        <title>探索 systemd 管理服务之旅</title>
+        <published>2023-11-21T00:00:00+00:00</published>
+        <updated>2023-11-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/systemd-service-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/systemd-service-practice/</id>
+        
+        <summary type="html">&lt;!-- # 探索 systemd 管理服务之旅 --&gt;
+&lt;p&gt;最近学习了用 systemd 管理服务，感觉挺有趣。故有意写下自己的心路历程与人分享。
+systemd 是 linux 下的系统管理工具，功能强大，其实远不限于管理服务，不过本文暂
+且先只讨论服务。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

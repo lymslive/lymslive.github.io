@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - wget</title>
+    <link href="https://lymslive.github.io/tags/wget/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2019-06-16T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/wget/atom.xml</id>
+    <entry xml:lang="en">
+        <title>linux 下载工具 wget 使用经验</title>
+        <published>2019-06-16T00:00:00+00:00</published>
+        <updated>2019-06-16T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/download-by-wget/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/download-by-wget/</id>
+        
+        <summary type="html">&lt;!-- # linux 下载工具 wget 使用经验 --&gt;
+&lt;h2 id=&quot;jian-jie&quot;&gt;简介&lt;&#x2F;h2&gt;
+&lt;p&gt;在 linux 系统中，有两款著名工具，curl 与 wget 可用于发送 http 网络请求及下载网
+络文档。在最基本的用法中，这两个命令行工具在功能上似有重叠，都有非常多的选项参
+数。但它们侧重点不同，curl 侧重实现单次网络请求，且有个孪生库 libcurl 可植入各
+种编程语言。而 wget 就是侧重下载的纯命令行工具，默认将网络请求的回应文档保存为
+本地文件，对于大文档支持断点下载，还支持递归下载整个网站至本地镜像，这就具备了
+基础的爬虫功能！&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

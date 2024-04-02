@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - 工具使用</title>
+    <link href="https://lymslive.github.io/categories/gong-ju-shi-yong/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-26T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/categories/gong-ju-shi-yong/atom.xml</id>
+    <entry xml:lang="en">
+        <title>make 不干编译事的清奇妙用：子命令模式脚本</title>
+        <published>2023-12-26T00:00:00+00:00</published>
+        <updated>2023-12-26T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/make-as-sub-command/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/make-as-sub-command/</id>
+        
+        <summary type="html">&lt;h2 id=&quot;yin-yan&quot;&gt;引言&lt;&#x2F;h2&gt;
+&lt;p&gt;说起 make ，大家的印象想必都是 Linux 下用于编译构建 C&#x2F;C++ 项目的原始工具。后来
+随着 cmake 及其他多种构建工具的发展与流行，手搓 makefile 的情况应该越来越少
+了。而且除了 cmake ，有些构建工具是根本不必生成 makefile 就直接自己处理依赖编
+译项目了，这比借助 makefile 路径依赖还更高效些。于是 make 在构建系统的作用与地
+位就逐渐淡出了。&lt;&#x2F;p&gt;
+&lt;p&gt;不过再追溯一下 make 本源，它似乎并不是专为编译构建而诞生的。早期 Linux 的许多
+经典工具都只有简单到令人吃惊的小功能，贯彻着“一个程序只做好一件事”的哲学思想。
+所以 make 的核心功能也非常简单，就只是检测目标与依赖（文件）的关系，当依赖有更
+新时，执行相应的命令让目标也得以更新。而这个功能，明面上完全看不出来它与用 gcc
+编译 C&#x2F;C++ 项目有什么必然联系。只过在 Linux 上工作的程序员先驱们，竟然能在这么
+简单的 make 基础上，发展出完备而复杂的构建系统，也是令我们后学惊叹的。&lt;&#x2F;p&gt;
+&lt;p&gt;所以我有时在想，在如今不一定需要用 make 来构建 C&#x2F;C++ 项目的时代，利用 make 的
+核心功能与思想，还能否玩出其他有趣的花样？本文就介绍笔者在实际工作中遇到的一个
+常用场景，利用 make 来组织一堆简单小脚本，提供统一命令行用法，让 make 命令华丽
+转身，活像个能带自定义子命令的命令行工具。而子命令模式，正是当前流行的命令行工
+作方式，像 git docker systemctl 等强大的流行工具就是子命令模式。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>探索 systemd 管理服务之旅</title>
+        <published>2023-11-21T00:00:00+00:00</published>
+        <updated>2023-11-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/systemd-service-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/systemd-service-practice/</id>
+        
+        <summary type="html">&lt;!-- # 探索 systemd 管理服务之旅 --&gt;
+&lt;p&gt;最近学习了用 systemd 管理服务，感觉挺有趣。故有意写下自己的心路历程与人分享。
+systemd 是 linux 下的系统管理工具，功能强大，其实远不限于管理服务，不过本文暂
+且先只讨论服务。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>浅谈 GNU Make 构建项目实践</title>
+        <published>2019-07-06T00:00:00+00:00</published>
+        <updated>2019-07-06T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/make-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/make-practice/</id>
+        
+        <summary type="html">&lt;!-- # 浅谈 GNU Make 构建项目实践 --&gt;
+&lt;h2 id=&quot;zhai-yao&quot;&gt;摘要&lt;&#x2F;h2&gt;
+&lt;p&gt;本文简明地介绍 &lt;code&gt;make&lt;&#x2F;code&gt; 的基础原理，并组合实际项目经验，由浅入深讨论了一种实用
+的 &lt;code&gt;makefile&lt;&#x2F;code&gt; 通用规则与模板的编写方案。对其中涉及的语法功能技巧择要阐述，希望
+有助于初学者理解。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>linux 下载工具 wget 使用经验</title>
+        <published>2019-06-16T00:00:00+00:00</published>
+        <updated>2019-06-16T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/download-by-wget/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/download-by-wget/</id>
+        
+        <summary type="html">&lt;!-- # linux 下载工具 wget 使用经验 --&gt;
+&lt;h2 id=&quot;jian-jie&quot;&gt;简介&lt;&#x2F;h2&gt;
+&lt;p&gt;在 linux 系统中，有两款著名工具，curl 与 wget 可用于发送 http 网络请求及下载网
+络文档。在最基本的用法中，这两个命令行工具在功能上似有重叠，都有非常多的选项参
+数。但它们侧重点不同，curl 侧重实现单次网络请求，且有个孪生库 libcurl 可植入各
+种编程语言。而 wget 就是侧重下载的纯命令行工具，默认将网络请求的回应文档保存为
+本地文件，对于大文档支持断点下载，还支持递归下载整个网站至本地镜像，这就具备了
+基础的爬虫功能！&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>mysql 命令行客户端使用经验</title>
+        <published>2018-07-19T00:00:00+00:00</published>
+        <updated>2018-07-19T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/mysql-cli-client-tips/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/mysql-cli-client-tips/</id>
+        
+        <summary type="html">&lt;!-- # mysql 命令行客户端使用经验 --&gt;
+&lt;p&gt;首先，Linux 命令行工具，最基本的原则是随时可查手册，&lt;code&gt;man mysql&lt;&#x2F;code&gt;。
+当用 &lt;code&gt;mysql&lt;&#x2F;code&gt; 命令从 shell 进入交互环境时，也可用 &lt;code&gt;help&lt;&#x2F;code&gt; 查询基本命令：&lt;&#x2F;p&gt;
+&lt;pre data-lang=&quot;bash&quot; style=&quot;background-color:#2b303b;color:#c0c5ce;&quot; class=&quot;language-bash &quot;&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span style=&quot;color:#bf616a;&quot;&gt;mysql&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; help
+&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;大多以 &lt;code&gt;\&lt;&#x2F;code&gt; 前缀的转义命令，即可以单独使用，也可以附加在普通查询命令末尾。
+有些大写转义命令打开某功能选项，而小写关闭对应的功能。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
