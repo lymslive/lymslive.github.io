@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | 用 perl 统计分析日志应用实战
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            用 perl 统计分析日志应用实战
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-12-13">2023-12-13</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>14 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2719 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/jiao-ben-yun-yong/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>脚本运用</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/perl/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>perl</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <!-- # 用 perl 统计分析日志应用实例 -->
+<p>文本处理还是 perl 强，这是它发家的基本盘。我自学会 perl 后，每当有文本处理需求，
+第一想到的还是 perl 。比如现在我在日常工作中就会用它来做如下的事情：</p>
+<ul>
+<li>代码生成</li>
+<li>配置格式转换</li>
+<li>日志分析</li>
+</ul>
+<p>本文讲一下用 perl 进行简单日志分析的实战。</p>
+<p>背景问题：大凡服务都会写日志，当我们发现在生产日志上发现某行错误日志频繁打印时，
+就要引起警惕。最初的观察可能只要用 <code>grep</code> 类工具抽取相应日志行，有个直观的印象。
+但如果要提取每行日志的关键信息，比如订单号、客户号或设备号之类，并根据该关键字
+统计频度呢？那简单的 <code>grep</code> 工具可能就不好使了。</p>
+<span id="continue-reading"></span><h2 id="perl-jiao-ben-jian-dan-shi-xian">perl 脚本简单实现</h2>
+<p>但凡掌握一种脚本语言，应该都可以满足此需求。而我选择用 perl ，它是专为处理文本
+诞生的脚本。先给出示例脚本 <code>log-analyse.pl</code>：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#65737e;">#! /usr/bin/env perl
+</span><span style="color:#65737e;"># Usage: ./log-analyse.pl *.log
+</span><span style="color:#b48ead;">use </span><span>strict;
+</span><span style="color:#b48ead;">use </span><span>warnings;
+</span><span>
+</span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">pattern </span><span>= &#39;</span><span style="color:#a3be8c;">context sentence with key: (</span><span style="color:#96b5b4;">\S</span><span style="color:#a3be8c;">+)</span><span>&#39;;
+</span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">log </span><span>= {};
+</span><span>
+</span><span style="color:#b48ead;">while </span><span>(&lt;&gt;) {
+</span><span>	</span><span style="color:#96b5b4;">chomp</span><span>;
+</span><span>	</span><span style="color:#b48ead;">if </span><span>(/</span><span style="color:#b48ead;">$</span><span style="color:#96b5b4;">pattern</span><span>/) {
+</span><span>		</span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">key </span><span>= $</span><span style="color:#bf616a;">1</span><span>;
+</span><span>		++$</span><span style="color:#bf616a;">log</span><span>-&gt;{$</span><span style="color:#bf616a;">key</span><span>};
+</span><span>	}
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">foreach my </span><span>$</span><span style="color:#bf616a;">key </span><span>(</span><span style="color:#96b5b4;">keys </span><span>%$</span><span style="color:#bf616a;">log</span><span>) {
+</span><span>	</span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">key</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">log</span><span style="color:#a3be8c;">-&gt;{</span><span>$</span><span style="color:#bf616a;">key</span><span style="color:#a3be8c;">}</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>}
+</span></code></pre>
+<p>前面两行是注释，可忽略，第一行 <code>#!</code> 是 Linux 惯用的启动器注释。后面两行 <code>use</code>
+是开启警告与严格语法的意思，在写简单 perl 脚本可能用不上，但强制加上，能助你写
+出更易读、更具可维护性的 perl 程序。</p>
+<p>然后定义了一个正则表达式变量，<code>$pattern</code> 。其实也可以直接写在后面 <code>while if //</code> 
+里面，但提出来先定义一个变量更好些，后面要改成搜查其他日志的正则表达式更容易。
+然后预定义了一个 hash 引用变量 <code>$log</code> ，作为保存解析日志的容器。</p>
+<p>第三段的 <code>while (&lt;&gt;)</code> 循环是整个脚本的核心。其中 <code>&lt;&gt;</code> 叫行读取器，是 perl 在分
+析文本文件的一个惯用法。在 <code>&lt;&gt;</code> 空括号里面其实可以接受一个文件句柄，比如
+<code>&lt;STDIN&gt;</code> 就是读取标准输入的意思。如果留空，perl 的默认解释是：</p>
+<ul>
+<li>如果 perl 脚本启动时没有文件名参数，由读取标准输入，即等效 <code>&lt;STDIN&gt;</code> </li>
+<li>如果脚本启动有文件参数，则打开该文件，读取该文件的内容行</li>
+<li>脚本也可能接受多个文件参数，则依次处理每一个文件</li>
+</ul>
+<p>这个逻辑与许多 linux 命令行工具的工作习惯是很契合的，既可以处理管道流，也可以
+读文件，或多个文件。而其他语言要实现这个功能，还是有点费劲的。</p>
+<p>因为 <code>&lt;&gt;</code> 行读取器是放在 <code>while</code> 循环中，所以它会读取标准输入或参数文件的每一
+行。每读入一行，保存在默认变量 <code>$_</code> 中。<code>chomp</code> 默认操作 <code>$_</code> 变量，作用是去除
+行尾的回车符 <code>\n</code> ，在这个示例中，它可用可不用。随后的 <code>if</code> 是匹配正则表达式，
+默认绑定匹配的也是 <code>$_</code> 变量。如果匹配成功，就将正则表达式的第一个分组保存在
+<code>$1</code> 自动变量中。</p>
+<p>因为我们在之前定义的正则表达中，将关键字存在第一个分组 <code>()</code> 中，所以也将 <code>$1</code> 
+再转存至局部变量 <code>$key</code> 中。再看之前定义的 hash 容器 <code>$log</code> ，就是为了保存一系
+列 key-value 值的，值部分存个整数表示关键字在日志中出现的次数。perl 的标量是弱
+类型，用 <code>++</code> 操作符就把操作数当成整数自增了，未初始化时就是 0 。</p>
+<p>最后一段用 <code>foreach</code> 将保存在 <code>$log</code> hash 容器中的数据打印到标准输出，每一行是
+关键字、制表符、频度次数。运行时可重定向保存，或拷至 excel 再分析。</p>
+<h2 id="shi-yong-fang-fa">使用方法</h2>
+<p>写完 perl 脚本，首先建议用 <code>-c</code> 命令行选项检查一下语法是否正确：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> perl</span><span style="color:#bf616a;"> -c</span><span> log-analyse.pl
+</span><span style="color:#bf616a;">log-analyse.pl</span><span> syntax OK
+</span></code></pre>
+<p>如果脚本语法正确，会打印 <code>syntax OK</code> ，否则会打印编译错误信息，指导你去修改。
+因为是解释型脚本语言，单独的编译检查不是必须的，每次运行时也还会先编译，能检查
+出语法错误，未通过编译这步，自然也不会有后续影响。</p>
+<p>在语法通过后，严谨使用前还要检查业务逻辑是否正确，我们可以使用小样本输入来检查
+脚本行为是否符合预期，所以给脚本提供一个日志文件作为命令行参数，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./log-analyse.pl 1.log
+</span><span style="color:#65737e;"># output here
+</span></code></pre>
+<p>我们在脚本中是用  <code>print</code> 直接打印到默认的标准输出的，故直接观察输出结果是否合
+理即可。如果感觉没业务逻辑没问题，那就可以在命令行参数写上实际要处理的文件了，
+还可以用通配符 <code>*</code> 喂给许多日志文件，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./log-analyse.pl *.log &gt; output.txt
+</span></code></pre>
+<p>如果担心输出太多，可以重定向文件保存输出。</p>
+<h2 id="jiao-ben-ke-you-hua-dian-tao-lun">脚本可优化点讨论</h2>
+<p>perl 有许多隐式规则，以简化脚本的第一次编写，其中默认变量 <code>$_</code> 是最常用的。如
+果担心 <code>$_</code> 变量不安全，尤其随着脚本逻辑复杂化后，不知道后续什么操作就把默认变
+量 <code>$_</code> 的值给覆盖了，那可以在 <code>while</code> 循环中读入每一行，立即将 <code>$_</code> 赋值给自
+定义的局部变量。如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">while </span><span>(&lt;&gt;) {
+</span><span>	</span><span style="color:#96b5b4;">chomp</span><span>;
+</span><span>    </span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">line </span><span>= $</span><span style="color:#bf616a;">_</span><span>;
+</span><span>	</span><span style="color:#b48ead;">if </span><span>($</span><span style="color:#bf616a;">line </span><span>=~ /</span><span style="color:#b48ead;">$</span><span style="color:#96b5b4;">pattern</span><span>/) {
+</span><span>        </span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">line</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>	}
+</span><span>}
+</span></code></pre>
+<p>这里为说明示意，把 <code>if</code> 里面的业务逻辑删减为原样打印，这就只相当于做了 <code>grep</code>
+的工作，打印匹配行。因为前面使用 <code>chomp</code> 去除了换行符，所以在打印每一行时要加上
+<code>\n</code> 。好像这是多此一举了，其实不然，因为你不知道读入文件本是 linux 换行符，还
+是 windows 换行符，甚至可能没有换行符，比如文件的最后一行。<code>chomp</code> 的作用就是
+归一化，去除行尾可能的换行符，然后在自己的业务中显式打印换行符，这是 perl 的惯
+用法。但是要注意不能偷懒试图将前两行合并成一行，如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">line </span><span>= </span><span style="color:#96b5b4;">chomp</span><span>($</span><span style="color:#bf616a;">_</span><span>);
+</span></code></pre>
+<p>因为这样的话，<code>$line</code> 接收的就是 <code>chomp</code> 的返回值，表示该操作移除了多少个字符，
+就不是你以为读入的（去除换行符之后的）文本行了。</p>
+<p>最后，在输出 hash 时是无序的，可能按内部存储的任意顺序打印，但可以通过 <code>sort</code>
+先排序以控制打印顺序。如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">foreach my </span><span>$</span><span style="color:#bf616a;">key </span><span>(</span><span style="color:#96b5b4;">sort keys </span><span>%$</span><span style="color:#bf616a;">log</span><span>) {
+</span><span>	</span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">key</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">log</span><span style="color:#a3be8c;">-&gt;{</span><span>$</span><span style="color:#bf616a;">key</span><span style="color:#a3be8c;">}</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>}
+</span></code></pre>
+<p>也可以逆序打印，只要加上 <code>reverse</code> 即可，如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">foreach my </span><span>$</span><span style="color:#bf616a;">key </span><span>(</span><span style="color:#96b5b4;">reverse sort keys </span><span>%$</span><span style="color:#bf616a;">log</span><span>) {
+</span><span>	</span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">key</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">log</span><span style="color:#a3be8c;">-&gt;{</span><span>$</span><span style="color:#bf616a;">key</span><span style="color:#a3be8c;">}</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>}
+</span></code></pre>
+<p>其实，以上的 <code>keys</code> 、<code>sort</code> 与 <code>reverse</code> 都是 perl 的内置函数而已，但是在只有
+一个参数时可以省略小括号，就像操作符作用于操作数，读起来也像英文句子。设计
+perl 的作者是自然语言学家。现在很多国人期望有“中文编程”，其实像 perl 这种具有
+“英文编程”风格的语言是值得参考的。</p>
+<p>上面都是根据关键字排序（字符串字典序），如果要根据日志频度，即 hash 的值排序呢？
+<code>sort</code> 当然也是能接收自定义排序方法的，就相当于其他语言常用 lambda 传给 sort
+作为可选参数。在 perl 中最简单的写法是这样：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">foreach my </span><span>$</span><span style="color:#bf616a;">key </span><span>(</span><span style="color:#96b5b4;">reverse sort </span><span>{$</span><span style="color:#bf616a;">log</span><span>-&gt;{$</span><span style="color:#bf616a;">a</span><span>} &lt;=&gt; $</span><span style="color:#bf616a;">log</span><span>-&gt;{$</span><span style="color:#bf616a;">b</span><span>}} </span><span style="color:#96b5b4;">keys </span><span>%$</span><span style="color:#bf616a;">log</span><span>) {
+</span><span>	</span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">key</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">log</span><span style="color:#a3be8c;">-&gt;{</span><span>$</span><span style="color:#bf616a;">key</span><span style="color:#a3be8c;">}</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>}
+</span></code></pre>
+<p>在 <code>sort</code> 与操作数即 <code>keys</code> 之间插入一个代码块 <code>{}</code> ，里面用 <code>&lt;=&gt;</code> 三路比较符
+返回一个值，表示比较结果（类似 <code>strcmp</code> 的结果可能是 0 1 -1)，用于排序依据。在
+该代码块中，<code>$a</code> 与 <code>$b</code> 就是自动变量，代表要比较的两个值，这里就是要比较的两
+个 key 。如果比较判据比较复杂，不适合内联写在 <code>{}</code> 中，可以先定义函数，然后用
+函数名替换这个代码块 <code>{}</code> 。可以为该函数（子过程）取个好听点的名字，使其代入后
+读起来仍比较顺畅，如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">foreach my </span><span>$</span><span style="color:#bf616a;">key </span><span>(</span><span style="color:#96b5b4;">reverse sort </span><span style="color:#bf616a;">by_value </span><span style="color:#96b5b4;">keys </span><span>%$</span><span style="color:#bf616a;">log</span><span>) {
+</span><span>    </span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">key</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">log</span><span style="color:#a3be8c;">-&gt;{</span><span>$</span><span style="color:#bf616a;">key</span><span style="color:#a3be8c;">}</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">sub </span><span style="color:#8fa1b3;">by_value
+</span><span>{
+</span><span>    $</span><span style="color:#bf616a;">log</span><span>-&gt;{$</span><span style="color:#bf616a;">a</span><span>} &lt;=&gt; $</span><span style="color:#bf616a;">log</span><span>-&gt;{$</span><span style="color:#bf616a;">b</span><span>};
+</span><span>}
+</span></code></pre>
+<p>perl 的子过程不严格要求先定义再调用，只要同一个文件中有定义即可。</p>
+<h2 id="ti-qu-duo-zi-duan-bao-biao">提取多字段报表</h2>
+<p>另一个常见需求，是多一行日志中提取多个字段信息，再打印出来。这个需求改起来也简
+单，只要修改正则表达式，把要提取的信息用小括号分组出来，如：</p>
+<pre data-lang="perl" style="background-color:#2b303b;color:#c0c5ce;" class="language-perl "><code class="language-perl" data-lang="perl"><span style="color:#b48ead;">while </span><span>(&lt;&gt;) {
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(/</span><span style="color:#96b5b4;">log conentxt f1:</span><span style="color:#b48ead;">(\S</span><span>+</span><span style="color:#b48ead;">)</span><span style="color:#96b5b4;">, f2:</span><span style="color:#b48ead;">(\S</span><span>+</span><span style="color:#b48ead;">)</span><span>/) {
+</span><span>        </span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">field1 </span><span>= $</span><span style="color:#bf616a;">1</span><span>;
+</span><span>        </span><span style="color:#b48ead;">my </span><span>$</span><span style="color:#bf616a;">field2 </span><span>= $</span><span style="color:#bf616a;">2</span><span>;
+</span><span>        </span><span style="color:#65737e;"># todo: 对 $field1 $field2 可以作进一步处理
+</span><span>        </span><span style="color:#96b5b4;">print </span><span>&quot;$</span><span style="color:#bf616a;">field1</span><span style="color:#96b5b4;">\t</span><span>$</span><span style="color:#bf616a;">field2</span><span style="color:#96b5b4;">\n</span><span>&quot;;
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>所以，问题的关键主要是正则表达式。perl 正则表达式是工业事实标准，其他许多语言
+都会提供正则表达式库，有的还特意命名 perl 兼容的正则表达式库。在 perl 中，正则
+表达式是内置的，正则表达式是第一类操作数，而不是通过库函数调用实现的，所以
+perl 天生最适合处理基于正则表达式的文本处理。</p>
+<p>这类需求可能就是 perl 诞生之初的本源需求，因为其全名就叫
+Practical Extraction And Report Language，实用文本提取与报表语言。
+如上简单的文本提取需求，还可以简洁地写成单行 perl 程序，形如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> perl</span><span style="color:#bf616a;"> -lpe </span><span>&#39;</span><span style="color:#a3be8c;">s/regexp/replace/</span><span>&#39; &lt; input-files-or-stdin
+</span></code></pre>
+<p>其实 <code>-l</code> 选项相当于隐含 <code>while(&lt;&gt;){}</code> 循环，<code>-e</code> 参数就是写在该循环大括号里的
+语句，<code>-p</code> 选项再隐含每个循环末尾执行 <code>print</code> 语句打印当前行也即 <code>$_</code> 。如果用
+<code>-n</code> 选项代替 <code>-p</code> 则不会自动 <code>print $_</code> ，而是由 <code>-e</code> 参数自己按需打印。</p>
+<p>网上可以搜到很多精妙的单行 perl 完成复杂任务，可完美替代 shell+sed+awk 的工作。
+但个人而言，还是更推荐写 10 行到 100 行规模的 perl 脚本程序，可加注释、扩充，
+更具可维护性。</p>
+<h2 id="jie-yu">结语</h2>
+<p>本文介绍了最擅长文本处理的脚本语言 perl 在分析日志的一个实战运用，可供有 perl
+基础的读者参考。对完全不熟悉 perl 者，这里的脚本应该可直接运行，但也要了解正则
+表达式，把 <code>$patter</code> 的定义改成自己想要的正则表达式。</p>
+<p>源代码：<a href="https://lymslive.github.io/blog/analyse-log-with-perl/./log-analyse.pl">log-analyse.pl</a></p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;vnote-introspection&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              vim 笔记插件 vnote 设计反思
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;cpp-namespace-pratical&#x2F;">
+              C++ 命名空间理解与践行<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>

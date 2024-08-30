@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - 相声</title>
+    <link href="https://lymslive.github.io/tags/xiang-sheng/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2018-11-06T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/xiang-sheng/atom.xml</id>
+    <entry xml:lang="en">
+        <title>第一季《相声有新人》观听报告</title>
+        <published>2018-11-06T00:00:00+00:00</published>
+        <updated>2018-11-06T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/think/xiangsheng-you-xinren-report/" type="text/html"/>
+        <id>https://lymslive.github.io/think/xiangsheng-you-xinren-report/</id>
+        
+        <summary type="html">&lt;!-- # 第一季《相声有新人》观听报告 --&gt;
+&lt;p&gt;一&lt;&#x2F;p&gt;
+&lt;p&gt;我竟然追了一季《相声有新人》，起因是那天逛知乎发现了“公式相声”的议题，好奇心起
+，便去围观。我并非德云社或郭德纲的粉丝，但对于中国传统文化的调调，总归是喜欢的
+。不想在优酷看了一期后，觉得过瘾，就一直追下去了，把往期的视频也先看完了。甚至
+还忍不住充了优酷会员，但充过之后才发觉很鸡肋，所谓 vip 通道的额外期目，不外是
+海选剪辑的边角料。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - C++</title>
+    <link href="https://lymslive.github.io/tags/c/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-30T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/c/atom.xml</id>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试扩展静态库演化思路</title>
+        <published>2024-03-30T00:00:00+00:00</published>
+        <updated>2024-03-30T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-upgrade-lib/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-upgrade-lib/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;couttast-qing-liang-ji-dan-yuan-ce-shi-kuo-zhan-jing-tai-ku-yan-hua-si-lu&quot;&gt;couttast: 轻量级单元测试扩展静态库演化思路&lt;&#x2F;h1&gt;
+&lt;p&gt;作为一名 Linux C++ 程序员，我自己手搓了个单元测试库轮子，来辅助与满足日常开发
+的单元测试需求。从只有一个 &lt;code&gt;tinytast.hpp&lt;&#x2F;code&gt; 头文件开始，后面逐渐添加了一些外围功
+能，觉得不一定适合坚持 header-only 库的原则，就将非核心的功能写在单独的
+&lt;code&gt;*.cpp&lt;&#x2F;code&gt; 源文件中，编译为静态库。代码开源在 github ，国内的 gitee 也有备份。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;我觉得编写单元测试的问题可以从以下几个层次来讲，从微观到宏观。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;断言语句；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例设计；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例运行与管理；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试库、框架与集成的设计；&lt;&#x2F;li&gt;
+&lt;li&gt;可测试程序的一般原则。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;下面，我将结合个人开发 &lt;code&gt;couttast&lt;&#x2F;code&gt; 这个单元测试库的思路，谈谈本人对这些单元测试
+问题的理解。重点是前三点。&lt;&#x2F;p&gt;
+&lt;p&gt;题外话，我在前公司是使用过 &lt;code&gt;gTest&lt;&#x2F;code&gt; 的。几年前来到现公司尴尬地发现没有单元测试
+的风气，且当初项目对集成第三方库的管理一言难尽，就想从省事角度不想多引入三方库
+增加构建的麻烦。加之之前在使用 &lt;code&gt;gTest&lt;&#x2F;code&gt; 时也遇到一些痛点与不便，就决定自己手搓
+一个单元测试库或框架吧，根据自己实际遇到的需求逐步加料。&lt;&#x2F;p&gt;
+&lt;p&gt;关于 &lt;code&gt;tast&lt;&#x2F;code&gt; 这个词的命名，原是从尝试 (taste) 删减一个字母以便与 &lt;code&gt;test&lt;&#x2F;code&gt; 等长而
+来。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 奇淫技巧之耦断丝连：临时 C 字符串</title>
+        <published>2024-01-04T00:00:00+00:00</published>
+        <updated>2024-01-04T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/cut-and-restore-cstr/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/cut-and-restore-cstr/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;c-qi-yin-ji-qiao-zhi-ou-duan-si-lian-lin-shi-c-zi-fu-chuan&quot;&gt;C++ 奇淫技巧之耦断丝连：临时 C 字符串&lt;&#x2F;h1&gt;
+&lt;p&gt;这里想分享一个许是微不足道 (trivial) 的问题及其解决思路。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>深入浅出理解 rapidjson 与实践</title>
+        <published>2023-12-21T00:00:00+00:00</published>
+        <updated>2023-12-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/</id>
+        
+        <summary type="html">&lt;p&gt;众所周知，JSON 是通用对象表示法。原全称是 JavaScript Object Notation ，是从
+javascript 语言流行开来的。json 在 javascript 源码中就是合法的对象字面量表示，
+可认为是后者的一个子集，语法更严格，但也更简单，基本可望文生义。后来也有人提出
+json5 的扩展语法，能支持注释等，更接近 javascript 的语法（但仍不完全一样），但
+也不如标准 json 那样流行，简单够用。&lt;&#x2F;p&gt;
+&lt;p&gt;如今，几乎所有流行与不流行的编程语言都支持 json ，能将 json 文本串解析为各自语
+言内部的对象模型表示。这是通过库来实现的，不能像 javascript 那样直接将 json 粘
+贴到源代码中就是合法对象（一般可用在 &lt;code&gt;=&lt;&#x2F;code&gt; 作右值常量），虽然有的语言可能有语法
+糖能在源代码中通过对 json 串作少量的修饰而转化为内部对象，但本质上也是经过了库
+解析。而事实上，对于大对象，长 json 串，即使 javascript 也不会直接嵌在源代码中，
+而是先从外部读入字符串，再通过 &lt;code&gt;JSON&lt;&#x2F;code&gt; 库将其解析为对象。&lt;&#x2F;p&gt;
+&lt;p&gt;Json 的字符串文本表示，也叫对象的序列化，而将 json 文本转为语言内部对象的工作
+叫反序列化。各大语言的 json 库的基本功能或主要功能就是这两个方面。本文将讨论的
+C++ ，更是有许多不同的 json 库。笔者使用最多的是 rapidjson 库，这是个老牌的经
+典 json 库，在 modern C++11 之前就存在的高性能 json 库，至今也在一众 C++ 常见
+json 库的前一梯队。所以笔者强烈推荐这个 C++ 开源库，它是 head-only 库，只要下载
+头文件，很容易集成进自己项目就发挥作用。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 命名空间理解与践行</title>
+        <published>2023-12-14T00:00:00+00:00</published>
+        <updated>2023-12-14T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/cpp-namespace-pratical/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/cpp-namespace-pratical/</id>
+        
+        <summary type="html">&lt;p&gt;众所周知，C++ 算是 C 的超集，提供了非常丰富的高级特性。对一般 C++ 开发者而言，
+并不要求精通 C++ 的每个特性，而应该按需学习与强化。在众多特性中，也许命名空间
+是很不起眼，平平无奇那个。但假如做个思想实验，摒弃 C++ 绝大部分特性，只保留一
+个特性加到 C 语言中，哪个最有助于改善 C 语言项目的开发体验与维护体验？&lt;&#x2F;p&gt;
+&lt;p&gt;我觉得不是类（虽然 C with class 也是 C++ 的一种实用范式），也不是模板，或其他
+奇淫巧技，而是命名空间。就因为 C 语言中几乎只有一个全局的命名空间，所有函数、
+结构体等类型，以及可能必要的全局变量，都塞在同一个空间，对维护大型项目而言
+太拥挤太可怕了，很容易出现命名冲突。C++ 的命名空间（namespace）就是为解决这个
+问题设计的，后现代大多数语言都有的模块（module）或包（package）的一个作用也能
+解决命名冲突，但更主要的作用是从项目整体宏观上抽象出模块的分组与组织。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>vim 笔记插件 vnote 设计反思</title>
+        <published>2023-12-03T00:00:00+00:00</published>
+        <updated>2023-12-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/vnote-introspection/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/vnote-introspection/</id>
+        
+        <summary type="html">&lt;p&gt;几年前，刚转行为专职程序员不久时，出于对 vim 的喜爱与信仰，自己开发了一个 vim
+插件，以支持在 vim 环境内记笔记及管理笔记。我知道市面上有不少笔记软件，但记笔
+记这事是很个性化的东西，而且很多吹成云笔记的产品，把个人笔记上传到人家服务器上，
+怎么都觉得有点敏感。所以我决定就用 vim 在本地写 markdown 文本笔记，要怎么上传
+至 github 托管仓库，也是自己能完全控制的。基于这个出发点，我自行设计并开发
+vnote 插件，虽然基本只是给自己用吧，当初也乐此不疲。&lt;&#x2F;p&gt;
+&lt;p&gt;但是再过几年回头再看，这个插件软件可能设计的不尽如人意。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试框架介绍</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-intro/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-intro/</id>
+        
+        <summary type="html">&lt;!-- # couttast: 轻量级单元测试框架介绍 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;笔者在之前一家公司的项目中曾经规范使用过 google test 作为单元测试。只是在实践
+使用过程中也偶有不便，于是开始着手再造个轮子，从自己的习惯用法写个轻量级单
+元测试框架（库）。&lt;&#x2F;p&gt;
+&lt;p&gt;项目地址 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast.git&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt; 。
+初版是仅有 500 余行的头文件（head-only lib），无依赖，也不要求 C++11 ，自以为麻雀虽小，
+五脏俱全。&lt;&#x2F;p&gt;
+&lt;p&gt;取名源于两个单词拼接：&lt;code&gt;cout&lt;&#x2F;code&gt; 就是 &lt;code&gt;C++&lt;&#x2F;code&gt; 众所周知的那个 &lt;code&gt;std::cout&lt;&#x2F;code&gt;，&lt;code&gt;taste&lt;&#x2F;code&gt;
+却不是 &lt;code&gt;test&lt;&#x2F;code&gt; 。在软件工程中，“测试”可能是个严肃的专业术语，但“尝试”不妨轻
+松点，不必望而生畏。又为了与 &lt;code&gt;test&lt;&#x2F;code&gt; 这母长度相同，误写成了 &lt;code&gt;tast&lt;&#x2F;code&gt; 。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 中 Json 操作符重载设计探讨</title>
+        <published>2021-10-29T00:00:00+00:00</published>
+        <updated>2021-10-29T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/json-operator-overload/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/json-operator-overload/</id>
+        
+        <summary type="html">&lt;!-- # C++ 中 Json 操作符重载设计探讨 --&gt;
+&lt;!-- lymslive &#x2F; 2021-10-29 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;Json 在业界实践中颇受欢迎。实现 Json 的 C&#x2F;C++ 库也相当多，其 API 虽大同小异，
+却也不尽相同。笔者目前推崇的是 rapidjson 库，因其效率一流，是 C++ 程序员应该追
+求的一个目标。但在使用过程中又不免觉得 rapidjson 的使用 API 不够友好，尤其是设
+值修改时要多传一个内存分配器参数（Allocator），当然这也是它为了效率实现的一种
+交换。&lt;&#x2F;p&gt;
+&lt;p&gt;于是我想到了操作符重载。我在想当年的 C++ 教材学习上也算一块重要且有趣的内容了
+，然而在实际工作中，使用 C++ 操作符重载的场合很少。主要是操作符重载容易误解，
+经常不如规范选用的函数名那么能望文生义。这就说明操作符重载需要经过审慎的设计，
+要让操作符重载尽可能合理，且能让使用团队达成共识。&lt;&#x2F;p&gt;
+&lt;p&gt;而 Json 作为通用的数据结构抽象，越发显得重要与流行广泛，它不同与对具体业务的抽
+象，因此我认为对 Json 设计一套操作符重载，定义一些操作符号对于 Json 的意义，以
+简化对 Json 数据的操作，那是值得探讨的。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
