@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - unittest</title>
+    <link href="https://lymslive.github.io/tags/unittest/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2024-03-30T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/unittest/atom.xml</id>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试扩展静态库演化思路</title>
+        <published>2024-03-30T00:00:00+00:00</published>
+        <updated>2024-03-30T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-upgrade-lib/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-upgrade-lib/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;couttast-qing-liang-ji-dan-yuan-ce-shi-kuo-zhan-jing-tai-ku-yan-hua-si-lu&quot;&gt;couttast: 轻量级单元测试扩展静态库演化思路&lt;&#x2F;h1&gt;
+&lt;p&gt;作为一名 Linux C++ 程序员，我自己手搓了个单元测试库轮子，来辅助与满足日常开发
+的单元测试需求。从只有一个 &lt;code&gt;tinytast.hpp&lt;&#x2F;code&gt; 头文件开始，后面逐渐添加了一些外围功
+能，觉得不一定适合坚持 header-only 库的原则，就将非核心的功能写在单独的
+&lt;code&gt;*.cpp&lt;&#x2F;code&gt; 源文件中，编译为静态库。代码开源在 github ，国内的 gitee 也有备份。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;我觉得编写单元测试的问题可以从以下几个层次来讲，从微观到宏观。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;断言语句；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例设计；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例运行与管理；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试库、框架与集成的设计；&lt;&#x2F;li&gt;
+&lt;li&gt;可测试程序的一般原则。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;下面，我将结合个人开发 &lt;code&gt;couttast&lt;&#x2F;code&gt; 这个单元测试库的思路，谈谈本人对这些单元测试
+问题的理解。重点是前三点。&lt;&#x2F;p&gt;
+&lt;p&gt;题外话，我在前公司是使用过 &lt;code&gt;gTest&lt;&#x2F;code&gt; 的。几年前来到现公司尴尬地发现没有单元测试
+的风气，且当初项目对集成第三方库的管理一言难尽，就想从省事角度不想多引入三方库
+增加构建的麻烦。加之之前在使用 &lt;code&gt;gTest&lt;&#x2F;code&gt; 时也遇到一些痛点与不便，就决定自己手搓
+一个单元测试库或框架吧，根据自己实际遇到的需求逐步加料。&lt;&#x2F;p&gt;
+&lt;p&gt;关于 &lt;code&gt;tast&lt;&#x2F;code&gt; 这个词的命名，原是从尝试 (taste) 删减一个字母以便与 &lt;code&gt;test&lt;&#x2F;code&gt; 等长而
+来。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试框架介绍</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-intro/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-intro/</id>
+        
+        <summary type="html">&lt;!-- # couttast: 轻量级单元测试框架介绍 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;笔者在之前一家公司的项目中曾经规范使用过 google test 作为单元测试。只是在实践
+使用过程中也偶有不便，于是开始着手再造个轮子，从自己的习惯用法写个轻量级单
+元测试框架（库）。&lt;&#x2F;p&gt;
+&lt;p&gt;项目地址 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast.git&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt; 。
+初版是仅有 500 余行的头文件（head-only lib），无依赖，也不要求 C++11 ，自以为麻雀虽小，
+五脏俱全。&lt;&#x2F;p&gt;
+&lt;p&gt;取名源于两个单词拼接：&lt;code&gt;cout&lt;&#x2F;code&gt; 就是 &lt;code&gt;C++&lt;&#x2F;code&gt; 众所周知的那个 &lt;code&gt;std::cout&lt;&#x2F;code&gt;，&lt;code&gt;taste&lt;&#x2F;code&gt;
+却不是 &lt;code&gt;test&lt;&#x2F;code&gt; 。在软件工程中，“测试”可能是个严肃的专业术语，但“尝试”不妨轻
+松点，不必望而生畏。又为了与 &lt;code&gt;test&lt;&#x2F;code&gt; 这母长度相同，误写成了 &lt;code&gt;tast&lt;&#x2F;code&gt; 。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

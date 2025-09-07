@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | C++ 中 Json 操作符重载设计探讨
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            C++ 中 Json 操作符重载设计探讨
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2021-10-29">2021-10-29</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>19 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>3681 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/cheng-xu-she-ji/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>程序设计</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C++</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/json/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>json</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <!-- # C++ 中 Json 操作符重载设计探讨 -->
+<!-- lymslive / 2021-10-29 -->
+<!-- ## 引言 -->
+<p>Json 在业界实践中颇受欢迎。实现 Json 的 C/C++ 库也相当多，其 API 虽大同小异，
+却也不尽相同。笔者目前推崇的是 rapidjson 库，因其效率一流，是 C++ 程序员应该追
+求的一个目标。但在使用过程中又不免觉得 rapidjson 的使用 API 不够友好，尤其是设
+值修改时要多传一个内存分配器参数（Allocator），当然这也是它为了效率实现的一种
+交换。</p>
+<p>于是我想到了操作符重载。我在想当年的 C++ 教材学习上也算一块重要且有趣的内容了
+，然而在实际工作中，使用 C++ 操作符重载的场合很少。主要是操作符重载容易误解，
+经常不如规范选用的函数名那么能望文生义。这就说明操作符重载需要经过审慎的设计，
+要让操作符重载尽可能合理，且能让使用团队达成共识。</p>
+<p>而 Json 作为通用的数据结构抽象，越发显得重要与流行广泛，它不同与对具体业务的抽
+象，因此我认为对 Json 设计一套操作符重载，定义一些操作符号对于 Json 的意义，以
+简化对 Json 数据的操作，那是值得探讨的。</p>
+<span id="continue-reading"></span><h2 id="json-path">Json Path</h2>
+<p>Json Path（也有的叫 Json Pointer）是另一个让我想到 Json 操作符重载的直接原因。
+这是一项有关 Json 的标准，有兴趣者可自行查找相关详细说明文档。简单地说，可以将
+Json 的 DMO 想象为一棵结点树，那么 Json Path 就是通向某一具体结点的路径指引。</p>
+<p>例如，随写一个 Json 数据文档：</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">aaa</span><span>&quot;: </span><span style="color:#d08770;">1</span><span>, &quot;</span><span style="color:#a3be8c;">bbb</span><span>&quot;:</span><span style="color:#d08770;">2</span><span>,
+</span><span>  &quot;</span><span style="color:#a3be8c;">ccc</span><span>&quot;: [</span><span style="color:#d08770;">3</span><span>, </span><span style="color:#d08770;">4</span><span>, </span><span style="color:#d08770;">5</span><span>, </span><span style="color:#d08770;">6</span><span>],
+</span><span>  &quot;</span><span style="color:#a3be8c;">ddd</span><span>&quot;: {&quot;</span><span style="color:#a3be8c;">eee</span><span>&quot;:</span><span style="color:#d08770;">7</span><span>, &quot;</span><span style="color:#a3be8c;">fff</span><span>&quot;:</span><span style="color:#d08770;">8.8</span><span>}
+</span><span>}
+</span></code></pre>
+<p>就有 <code>/ddd/eee</code> 表示值为 <code>7</code> 的那个 json 结点，或者不严格地记为</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>/ddd/eee = 7
+</span><span>/ddd/fff = 8.8
+</span><span>/aaa = 1
+</span><span>/bbb = 2
+</span><span>/ccc/0 = 3
+</span><span>/ccc/1 = 4
+</span></code></pre>
+<p>没错，按 Json Path 标准，引用数组内某个元素也是用 <code>/</code> 直接加索引，而非用 <code>[]</code>
+。这正是 Json 出于简单设计原则，比 xpath（xml文档选择元素的方法）简单的地方：
+只用斜杠 <code>/</code> 分隔路径，对象用键名索引，数组用数字下标索引，只限明确指定一个结
+点。</p>
+<h2 id="c-cao-zuo-fu-zhong-zai">C++ 操作符重载</h2>
+<h3 id="lu-jing-cao-zuo-fu">路径操作符 <code>/</code></h3>
+<p>考虑到 Json Path 表达式的路径分隔符 <code>/</code> 也正是 C++ （以及大多数编程语言）的除
+法操作符，完全可以为 Json 对象重载除号的操作意义。</p>
+<p>例如，用 rapidjson 库，表示 Json 的类型是 <code>rapidjson::Value</code> ：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>rapidjson::Value&amp; </span><span style="color:#8fa1b3;">operator/</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, </span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">path</span><span>);
+</span><span>rapidjson::Value&amp; </span><span style="color:#8fa1b3;">operator/</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, size_t </span><span style="color:#bf616a;">path</span><span>);
+</span><span style="color:#65737e;">// 另加 const rapidjson::Value&amp; 版本
+</span></code></pre>
+<p>如果实现了这样的重载，在 C++ 源码中就可以这样写了：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#65737e;">// ... Parser json 为 root 结点
+</span><span style="color:#b48ead;">auto</span><span>&amp; eeeJ = json / &quot;</span><span style="color:#a3be8c;">ddd</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">eee</span><span>&quot;;
+</span><span style="color:#b48ead;">auto</span><span>&amp; c0 = json / &quot;</span><span style="color:#a3be8c;">ccc</span><span>&quot; / </span><span style="color:#d08770;">0</span><span>;
+</span><span style="color:#b48ead;">auto</span><span>&amp; fffJ = json / &quot;</span><span style="color:#a3be8c;">ddd/fff</span><span>&quot;;
+</span><span style="color:#b48ead;">auto</span><span>&amp; c1 = json / &quot;</span><span style="color:#a3be8c;">/ccc/1</span><span>&quot;;
+</span></code></pre>
+<p>几点说明，<code>operator/</code> 应该返回 json <code>Value</code> 类型的引用，这样就能实现链式调用。
+同时为了灵活性，重载实现中不仅支持将路径的每部分开写，也支持合起来作一次 <code>/</code>
+操作，就如将 Json Path 标准表达式字符串放在双引号中。rapidjson 库专门有一个类
+<code>rapidjson::Pointer</code> 来解析 Json Path 表达式。事实上，分开写不仅更清晰点，也更
+有效率，因为程序员根据了已知信息对 Json Path 表达式进行了拆分。但是支持合写的
+Json Path 表达式的意义还在于允许程序外配置。</p>
+<p>标准 Json Path 要求以 <code>/</code> 开头，不过在 C++ 重载 <code>/</code> 后，既然已经有了这个 <code>/</code>
+，允许省略前导 <code>/</code> 会更友好。</p>
+<p>另一个重要问题是，如果非法路径，Json DMO 中不存在指定路径的结点，<code>operator/</code>
+该返回什么呢？它必须也是某个 <code>rapidjson::Value</code> 的引用。为此，我引入了一个特殊
+的表达 Json Null 的静态 <code>rapidjson::Value</code> 变量，当路径操作符失败时，返回这个
+静态变量的引用。用户代码若为健壮性考虑，应负责判空处理。</p>
+<p>如果对 Json 结点的常引用执行路径操作符作只读操作，那是安全的，只不过在实践中觉
+得为了用户方便，还是放开允许非常引用的版本。</p>
+<h3 id="qu-zhi-cao-zuo-fu">取值操作符 <code>|</code></h3>
+<p>对一个 Json 执行链式路径操作 <code>/</code> 时，在正确操作下最后都能引用到一个叶结点。它
+存着一个 Json 标量，主要是数字或字符串（还有三个特殊值 <code>true</code> <code>false</code> <code>null</code>）
+，一般可以对应 C++ 的基本类型变量（原理上字符串不是基本类型，只不过业务代码层
+面上一般会将字符串当作事实上的简单类型标量）。</p>
+<p>然后就抛出另一个问题，当取到 Json 叶结点的引用后，如何更简单直接地对该标量进行
+读值与写值操作，是否也可以重载某个合适的操作符来表达这层意义？</p>
+<p>先讨论相当简单的只读操作。首先不能直接用 <code>=</code> 赋值操作符，至少在 rapidjson 库是
+不支持如下用法的：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">int</span><span> i = json; </span><span style="color:#65737e;">// error
+</span></code></pre>
+<p>重载 <code>=</code> 必须在类内定义，不能武断地入侵修改底层库，rapidjson 库不支持 json 值
+类型向基本类型隐式转换肯定是有理由的。因为它支持反过来的写法，实际是重载了
+json 值类型的构造函数与赋值操作：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">int</span><span> i = </span><span style="color:#d08770;">2</span><span>;
+</span><span>rapidjson::Value json = i;
+</span><span>json = </span><span style="color:#d08770;">3</span><span>;
+</span></code></pre>
+<p>如果定义了 <code>rapidjson::Value</code> 与 <code>int</code> 类的双向互转，可能容易混乱，在某些情况
+下可能出现二义性。</p>
+<p>所以需要找另一个符号来表示将 json 值转为基本类型。于是我想到将路径操作符 <code>/</code>
+扶正后变成的 <code>|</code> 符号，这在 Linux shell 下是常用的管道操作符，在 C++ 语法中是
+不太常用的位或操作符。</p>
+<p>假设重载了如下定义：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">operator| </span><span>(</span><span style="color:#b48ead;">const</span><span> rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">defaultVal</span><span>);
+</span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">operator| </span><span>(</span><span style="color:#b48ead;">const</span><span> rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, </span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">defaultVal</span><span>);
+</span><span>...
+</span></code></pre>
+<p>就可以写成如下表达式：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">int</span><span> i = json | </span><span style="color:#d08770;">0</span><span>;
+</span><span style="color:#b48ead;">double</span><span> d = json | </span><span style="color:#d08770;">0.0</span><span>;
+</span></code></pre>
+<p>其义是假如 <code>json</code> 确实保存着一个整数，则返回这个整数，否则返回默认值
+<code>defaultVal</code> 。浮点数的情况类似。这里可将 <code>|</code> 读作“或”。考虑到 <code>|</code> 的原始意
+义应该支持交换律，同时也应该让 <code>|=</code> 保持相应的意义。</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">int</span><span> iVal = </span><span style="color:#d08770;">100</span><span>;
+</span><span>(json | iVal) == (iVal| json); </span><span style="color:#65737e;">// true
+</span><span>iVal = iVal | json;
+</span><span>iVal |= json; </span><span style="color:#65737e;">// 等效上一句
+</span><span>
+</span></code></pre>
+<h3 id="fu-zhi-cao-zuo-fu-yu-jsop-de-cao-zuo-zi-feng-zhuang">赋值操作符 <code>=</code> 与 JSOP 的操作子封装</h3>
+<p>前面提到 rapidjson 库的 json 值类型支持基本类型的赋值操作如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>rapidjson::Value json = </span><span style="color:#d08770;">3</span><span>;
+</span><span>json = </span><span style="color:#d08770;">3.14</span><span>;
+</span></code></pre>
+<p>好像是自然支持简单的写值语法了，但这是受限的写法，它只支持数字类型，不支持另一
+大类标量，字符串的直接赋值。因为各种数字类型都足以在 <code>rapidjson::Value</code> 对象的
+栈区直接保存，而字符串极有可能在额外申请空间（短字符串优化除外）。按 rapidjson
+库的设计哲学，凡是涉及内存分配的函数方法，都需要传入额外的分配器参数。尝试以下
+写法是错误的，因为操作符重载没法传入额外参数。</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>std::string </span><span style="color:#8fa1b3;">str</span><span>(&quot;</span><span style="color:#a3be8c;">some string</span><span>&quot;)
+</span><span>rapidjson::Value json = str; </span><span style="color:#65737e;">// Error
+</span><span>rapidjson::Value json = str.</span><span style="color:#bf616a;">c_str</span><span>(); </span><span style="color:#65737e;">// Error
+</span><span>rapidjson::Value json = &quot;</span><span style="color:#a3be8c;">static string</span><span>&quot;; </span><span style="color:#65737e;">// 合法
+</span></code></pre>
+<p>其中最后一句合法是由于它知道 <code>=</code> 后面是安全可靠的字面量，在 json 值内可以只存
+一个指针而不用拷贝字符串内容。这显然受限极大，没法简单地用 <code>=</code> 将字符串变量赋
+给 json 值。当然其他 json 实现库是有可能直接由字符串赋值的。</p>
+<p>为了在 <code>rapidjson::Value</code> 语境库下也能直接赋值，我只好另外设计一个简单值语义的
+类，它封装一个 json 结点（指针）及可能需要用到的分配器（指针），然后为该类重载
+操作符，转为操作其封装的 json 结点。</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">namespace </span><span>jsonx
+</span><span>{
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">COperand
+</span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">  rapidjson::Value</span><span>*</span><span style="color:#eff1f5;"> m_pJsonNode </span><span>= </span><span style="color:#d08770;">nullptr</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">  rapidjson::Document::AllocatorType</span><span>*</span><span style="color:#eff1f5;"> m_pAllocator </span><span>= </span><span style="color:#d08770;">nullptr</span><span style="color:#eff1f5;">;
+</span><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span><span style="color:#eff1f5;">  COperand </span><span style="color:#8fa1b3;">operator=</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">iVal</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">  COperand </span><span style="color:#8fa1b3;">operator=</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">const</span><span style="color:#eff1f5;"> std::string</span><span>&amp; </span><span style="color:#bf616a;">str</span><span style="color:#eff1f5;">);
+</span><span style="color:#eff1f5;">  </span><span>...
+</span><span style="color:#eff1f5;">  </span><span style="color:#65737e;">// 也要支持 operator/
+</span><span style="color:#eff1f5;">}</span><span>;
+</span><span>}
+</span><span style="color:#b48ead;">#define </span><span>JSOP jsonx::COperand
+</span></code></pre>
+<p>其实现目的是为了能写出类似如下的表达式：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>rapidjson::Document root;
+</span><span style="color:#65737e;">// ... Parse 构建 json DMO
+</span><span style="color:#bf616a;">JSOP</span><span>(root) / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">leaf</span><span>&quot; = </span><span style="color:#d08770;">100</span><span>;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">leaf</span><span>&quot; = </span><span style="color:#d08770;">1.0</span><span>;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">leaf</span><span>&quot; = &quot;</span><span style="color:#a3be8c;">some string</span><span>&quot;;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">leaf</span><span>&quot; = std::</span><span style="color:#bf616a;">string</span><span>(&quot;</span><span style="color:#a3be8c;">some string</span><span>&quot;);
+</span></code></pre>
+<p>可以直观地理解 <code>JSOP</code> 宏将一个正常的 json 值转为可写的 json 。一般它从根结点
+<code>rapidjson::Document</code> 类对象构造，因为只有 <code>Document</code> 中存了一个分配器，
+rapidjson 并不会在其下每个 <code>Value</code> 存一份分配器（指针）。<code>JSOP</code> 操作子封装了两
+个指针，但并不持有指针，因此它只适于构造临时对象（尤其是在一个表达式中），其生
+命周期必须短于它指向的底层 json 结点。就类似 STL 容器的迭代器一样，不宜长期持
+有以防失效。</p>
+<p>既然把 <code>JSOP</code> 视为 json DMO 的手动档迭代器，那也自然地要为其重载解引用操作符
+<code>*</code> 与 指针操作符 <code>-&gt;</code> ，实现为代理内部所指 json 结点的操作。</p>
+<p>然后有另一个问题，<code>JSOP</code> 的路径操作符 <code>/</code> 每次会生成一个新的 <code>JSOP</code> 值（对象）
+。这可以类比相像复数类 <code>std::complex</code> ，它的每次加减乘除操作应该生成另一个复数
+，而不是修改左侧操作符的值。这样在长路径索引时，JSOP 的路径操作就比原生的 json
+路径操作要稍微低效。不能简单地将中间结点转为 JSOP ，因其缺失分配器参数，无法支
+持完全的写操作，若只读的话还不如使用原生的 json 值类。</p>
+<p>为解决这个问题，我再重载了乘号 <code>*</code> 操作符，令 JSOP 快速从根结点跳到中间结点而
+保持分配器参数。如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>rapidjson::Document root;
+</span><span style="color:#b48ead;">auto</span><span>&amp; node = root / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">node</span><span>&quot;; </span><span style="color:#65737e;">// rapidjson::Value 类型
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * node; </span><span style="color:#65737e;">// 等效于下一句
+</span><span style="color:#bf616a;">JSON</span><span>(root) / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">node</span><span>&quot;;
+</span><span>
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * node / &quot;</span><span style="color:#a3be8c;">key</span><span>&quot; = &quot;</span><span style="color:#a3be8c;">value</span><span>&quot;; </span><span style="color:#65737e;">// 赋值有效
+</span><span style="color:#bf616a;">JSOP</span><span>(node) / &quot;</span><span style="color:#a3be8c;">key</span><span>&quot; = &quot;</span><span style="color:#a3be8c;">value</span><span>&quot;; </span><span style="color:#65737e;">// 赋值无效，JSOP 缺失分配器参数
+</span><span style="color:#bf616a;">JSOP</span><span>(node, root.</span><span style="color:#bf616a;">GetAllocator</span><span>()) / &quot;</span><span style="color:#a3be8c;">key</span><span>&quot; = &quot;</span><span style="color:#a3be8c;">value</span><span>&quot;; </span><span style="color:#65737e;">// 赋值有效，但麻烦
+</span><span>
+</span><span>&amp;(*</span><span style="color:#bf616a;">JSOP</span><span>(root)) == &amp;root; </span><span style="color:#65737e;">// 该 JSOP 指向 root
+</span><span>&amp;(*(</span><span style="color:#bf616a;">JSOP</span><span>(root)*node)) == &amp;node; </span><span style="color:#65737e;">// 该 JSOP 指向 node
+</span></code></pre>
+<p>注意到乘号与解引用是同一个符号 <code>*</code> ，乘号重载可定义在类外非成员函数，解引用只
+能在类内定义为成员函数。这两个操作作用于 JSOP 有某种一致的语义，解引用 <code>*</code> 取
+其底层结点，如果乘以另一个结点，改变了其底层结点，再用解引用也正是取到那个新结
+点。同时乘号与除号的操作符优先级是一样的。如果将除号称为 JSOP/json 路径操作符
+，那么或可称乘号为 JSOP 跳跃操作符。当然最好在同一棵 DMO 树内跳跃，这是
+rapidjson 底层库的实践要求。</p>
+<h3 id="ji-yu-jsop-de-qi-ta-xiu-gai-cao-zuo-fu">基于 JSOP 的其他修改操作符</h3>
+<p>以上提出 JSOP 操作子的封装，初衷是为了简化 json 赋值操作的写法。既然实现可写了
+，那也可以再考虑其他修改操作如何符号化。这部分主要是扩充内容，可能比较难做到类
+似路径操作 <code>/</code> 的形象化。</p>
+<p>除了叶结点标量赋值改值，json 另一大类操作是对中层的集合结点（数组、对象）进行
+增删操作。对于增加元素操作，我曾想过两种符号的选择，一是 <code>+=</code>，一是 <code>&lt;&lt;</code> ，然
+后对比之下，还是觉得 <code>&lt;&lt;</code> 更好些。例如可以如下写法：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">auto</span><span>&amp; array = root / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">array-node</span><span>&quot;;
+</span><span style="color:#b48ead;">auto</span><span>&amp; object = root / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">object-node</span><span>&quot;;
+</span><span>
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * array &lt;&lt; </span><span style="color:#d08770;">1 </span><span>&lt;&lt; </span><span style="color:#d08770;">2 </span><span>&lt;&lt; &quot;</span><span style="color:#a3be8c;">some string</span><span>&quot;;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * object &lt;&lt; std::</span><span style="color:#bf616a;">make_pair</span><span>(&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">val</span><span>&quot;);
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * object &lt;&lt; &quot;</span><span style="color:#a3be8c;">key</span><span>&quot; &lt;&lt; &quot;</span><span style="color:#a3be8c;">val</span><span>&quot;;
+</span></code></pre>
+<p>而 <code>+=</code> 与 <code>+</code> 操作符，还是让它们作用于标量叶结点的“加”操作，不仅数字可以相
+加，C++ 的字符串 <code>std::string</code> 也重载了“加”操作。如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">auto</span><span>&amp; scalar = root / &quot;</span><span style="color:#a3be8c;">path</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">to</span><span>&quot; / &quot;</span><span style="color:#a3be8c;">leaf-node</span><span>&quot;;
+</span><span style="color:#65737e;">// 假设 scalar 是 int 结点
+</span><span style="color:#b48ead;">int</span><span> i = scalar + </span><span style="color:#d08770;">1</span><span>;
+</span><span>scalar = i + </span><span style="color:#d08770;">1</span><span>;
+</span><span>scalr += </span><span style="color:#d08770;">1</span><span>;
+</span><span>
+</span><span style="color:#65737e;">// 假设 scalar 是字符串结点
+</span><span>std::string str = </span><span style="color:#bf616a;">JSOP</span><span>(root) * scalar + &quot;</span><span style="color:#a3be8c;">post-fix</span><span>&quot;;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * scalar = str + &quot;</span><span style="color:#a3be8c;">post-fix</span><span>&quot;;
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * scalar += &quot;</span><span style="color:#a3be8c;">post-fix</span><span>&quot;;
+</span></code></pre>
+<p>这样，就把 json 当作泛型的标量来使用了。</p>
+<p>对于删除元素操作，如果增加元素使用 <code>+=</code> 的话，正好有对应的 <code>-=</code> 表示删除。但是
+加号 <code>+</code> 与 <code>-</code> 很少见于用于集合的操作。于是另想到 <code>%</code> 符号，与 <code>/</code> 有点联系，
+也接一层路径参数（只限一层）的话，表示删除 Object 的一个元素（键值对）。如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>json % &quot;</span><span style="color:#a3be8c;">rm-key</span><span>&quot;; </span><span style="color:#65737e;">// 删除一个键，返回 json 结点本身
+</span><span>json % &quot;</span><span style="color:#a3be8c;">rm-key1</span><span>&quot; % &quot;</span><span style="color:#a3be8c;">rm-key2</span><span>&quot;; </span><span style="color:#65737e;">// 可链式调用
+</span></code></pre>
+<p>还有一个问题。json 既是泛型的，在运行过程中可以改变类型（但在 C++ 程序实践中不建
+议随便一个 json 类型的结点）。这可以用之前介绍的 JSOP 操作子的赋值 <code>=</code> 操作符
+实现。如果将一个 <code>std::vector</code> 赋给 json ，它就成了 array 类型，如果将一个
+<code>std::map</code> 赋给 json ，它就变成一个 object 类型。如果是赋空容器，那就表示只改
+变 json 类型，还未填充元素，变成 <code>[]</code> 或 <code>{}</code> 了。 如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#bf616a;">JSOP</span><span>(root) * node = std::vector&lt;</span><span style="color:#b48ead;">int</span><span>&gt;();
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * node &lt;&lt; </span><span style="color:#d08770;">1 </span><span>&lt;&lt; </span><span style="color:#d08770;">2 </span><span>&lt;&lt; </span><span style="color:#d08770;">3 </span><span>&lt;&lt; &quot;</span><span style="color:#a3be8c;">string also ok in json array</span><span>&quot;;
+</span><span>
+</span><span>std::map&lt;std::string, </span><span style="color:#b48ead;">int</span><span>&gt; mymap = {....};
+</span><span style="color:#bf616a;">JSOP</span><span>(root) * node = mymap;
+</span></code></pre>
+<h3 id="jian-shao-zhong-jian-lei-xing-jsop-de-zhi-jie-shi-yong">减少中间类型 JSOP 的直接使用</h3>
+<p>在写操作时引入 <code>JSOP(root)</code> 作为 <code>*</code> 的一个操作数的写法有点迷。可以进一步重载
+<code>Document</code> 与 <code>AllocatorType</code> 与 <code>Value</code> 的乘法操作，结果返回封装可写操作类型
+<code>JSOP</code> 。如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>JSOP </span><span style="color:#8fa1b3;">operator*</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, rapidjson::Document&amp; </span><span style="color:#bf616a;">root</span><span>);
+</span><span>JSOP </span><span style="color:#8fa1b3;">operator*</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, rapidjson::Document::AllocatorType&amp; </span><span style="color:#bf616a;">alloctor</span><span>);
+</span><span style="color:#65737e;">// 以及按乘法交换律，交换 lhs 与 rhs
+</span></code></pre>
+<p>这样，就可以在代码中不出现 <code>JSOP</code> 新类型了，都隐藏在中间变量了。
+大致可以支持如下写法：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span>rapidjson::Document doc;
+</span><span style="color:#b48ead;">auto</span><span>&amp; allocator = doc.</span><span style="color:#bf616a;">GetAllocator</span><span>();
+</span><span>doc.</span><span style="color:#bf616a;">SetObject</span><span>();
+</span><span>doc &lt;&lt; &quot;</span><span style="color:#a3be8c;">key1</span><span>&quot; &lt;&lt; &quot;</span><span style="color:#a3be8c;">val1</span><span>&quot; &lt;&lt; &quot;</span><span style="color:#a3be8c;">key2</span><span>&quot; &lt;&lt; &quot;</span><span style="color:#a3be8c;">val2</span><span>&quot;;
+</span><span style="color:#b48ead;">auto</span><span>&amp; node = doc / &quot;</span><span style="color:#a3be8c;">key1</span><span>&quot;;
+</span><span>(allocator * node) = &quot;</span><span style="color:#a3be8c;">val111</span><span>&quot;;
+</span><span>(doc * node) = &quot;</span><span style="color:#a3be8c;">val112</span><span>&quot;;
+</span></code></pre>
+<p>就是把分配器 <code>allocator</code> 与任一节点用 <code>*</code> 粘连起来，使之可写，而 <code>Document</code> 本
+身持有分配器，直接可写。</p>
+<h2 id="jie-yu">结语</h2>
+<p>以上，为简化在 C++ 程序中对 json 的操作，重载了一批操作符。虽然是基于
+rapidjson 库，但对于其他 json 库的使用，或重新开发 json 库，也应有一定的参考意义
+。操作符重载并不是什么高深技术，难的是让操作符重载本身有积极意义。</p>
+<p>具体开发代码位于
+<a href="https://github.com/lymslive/jsonkit">https://github.com/lymslive/jsonkit</a>
+仓库的 <code>src/json_operator.h</code> 文件中。</p>
+<!-- endnote:
+转载于：https://zhuanlan.zhihu.com/p/428705305
+-->
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;make-practice&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              浅谈 GNU Make 构建项目实践
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;couttast-intro&#x2F;">
+              couttast: 轻量级单元测试框架介绍<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>

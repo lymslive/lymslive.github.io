@@ -1,0 +1,1386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | 深入浅出理解 rapidjson 与实践
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            深入浅出理解 rapidjson 与实践
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-12-21">2023-12-21</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>60 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>11966 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/cheng-xu-she-ji/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>程序设计</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C++</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/json/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>json</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/library/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>library</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <p>众所周知，JSON 是通用对象表示法。原全称是 JavaScript Object Notation ，是从
+javascript 语言流行开来的。json 在 javascript 源码中就是合法的对象字面量表示，
+可认为是后者的一个子集，语法更严格，但也更简单，基本可望文生义。后来也有人提出
+json5 的扩展语法，能支持注释等，更接近 javascript 的语法（但仍不完全一样），但
+也不如标准 json 那样流行，简单够用。</p>
+<p>如今，几乎所有流行与不流行的编程语言都支持 json ，能将 json 文本串解析为各自语
+言内部的对象模型表示。这是通过库来实现的，不能像 javascript 那样直接将 json 粘
+贴到源代码中就是合法对象（一般可用在 <code>=</code> 作右值常量），虽然有的语言可能有语法
+糖能在源代码中通过对 json 串作少量的修饰而转化为内部对象，但本质上也是经过了库
+解析。而事实上，对于大对象，长 json 串，即使 javascript 也不会直接嵌在源代码中，
+而是先从外部读入字符串，再通过 <code>JSON</code> 库将其解析为对象。</p>
+<p>Json 的字符串文本表示，也叫对象的序列化，而将 json 文本转为语言内部对象的工作
+叫反序列化。各大语言的 json 库的基本功能或主要功能就是这两个方面。本文将讨论的
+C++ ，更是有许多不同的 json 库。笔者使用最多的是 rapidjson 库，这是个老牌的经
+典 json 库，在 modern C++11 之前就存在的高性能 json 库，至今也在一众 C++ 常见
+json 库的前一梯队。所以笔者强烈推荐这个 C++ 开源库，它是 head-only 库，只要下载
+头文件，很容易集成进自己项目就发挥作用。</p>
+<span id="continue-reading"></span><h2 id="xi-shuo-json-lei-xing">细说 json 类型</h2>
+<h3 id="liu-da-lei-xing-de-biao-liang-yu-ji-he">六大类型的标量与集合</h3>
+<p>标准 json 就六种类型：</p>
+<ol>
+<li>Number 数字类型，不分整数或浮点数，在原生 javasrcipt 中用 <code>double</code> 表示；</li>
+<li>String 字符串类型，也叫文本类型，严格地说要符合 <code>utf-8</code> 编码的字节串；</li>
+<li>Array 数组类型，有序包含多个其他类型；</li>
+<li>Object 对象类型，用键值对包含多个其他类型，其中键只能是字符串；</li>
+<li>Boolean 表示只有两种状态的布尔类型，也就只有两个值 <code>true</code> 或 <code>false</code>；</li>
+<li>Null 表示值空缺的状态，就一个值 <code>null</code> 。</li>
+</ol>
+<p>一个简单的 json 示例如下：</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">number</span><span>&quot;: </span><span style="color:#d08770;">123</span><span>,
+</span><span>  &quot;</span><span style="color:#a3be8c;">string</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">hello world</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">array</span><span>&quot;: [</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">2</span><span>, </span><span style="color:#d08770;">3.14</span><span>, &quot;</span><span style="color:#a3be8c;">string</span><span>&quot;],
+</span><span>  &quot;</span><span style="color:#a3be8c;">object</span><span>&quot;: {
+</span><span>    &quot;</span><span style="color:#a3be8c;">key</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">value</span><span>&quot;,
+</span><span>    &quot;</span><span style="color:#a3be8c;">no-value</span><span>&quot;: </span><span style="color:#d08770;">null</span><span>,
+</span><span>    &quot;</span><span style="color:#a3be8c;">bool-value</span><span>&quot;: </span><span style="color:#d08770;">true
+</span><span>  }
+</span><span>}
+</span></code></pre>
+<p>再仔细审视 json 这六种值类型，这是从底层表示或实现划分的，如果从应用逻辑的抽象
+角度再去考虑，又主要可以分为两大类，或三类：</p>
+<ol>
+<li>标量，表示一个值，用数字或字符串表达一个意义；</li>
+<li>集合，数组代表有序集合，对象代表无序集合，因其无序，所以要用键名取值；</li>
+<li>特殊标记值，就是 <code>true</code> <code>false</code> 与 <code>null</code> 这三个。</li>
+</ol>
+<p>最后一类，从某种意义上看也可算是标量，但事实上即使没有这类的三个特殊值，也能满
+足实际的应用需求。所以，从实用角度讲，标量就认为只是数字或字符串，这算是在计算
+机信息处理的基本分子，而分子的有机组合，就构成了功能实体，类似物理学科所讲的物
+质或生物学所讲的细胞组织。所以，json 就能用这个简单的模型来表示现实世界的逻辑
+抽象模型，而它是语言中立的，各个语言都能很容易将这个模型映射到自己语言特有的类
+型或对象系统中。</p>
+<h3 id="hu-shi-josn-lei-xing-de-wu-qu">忽视 josn 类型的误区</h3>
+<p>一个常见的误区是，把 json 等效为对象，或认为 json 的根只能是对象，就是一对大括
+号 <code>{}</code> 包裹一些键值对。虽然大多用 json 交换数据的数应用系统确实长这样，但并不
+代表这是唯一合法的 json 。以数组 <code>[]</code> 为根的数据也很常见且实用，主要是表达对象
+数组的含义。此外，即使简单的一个数字或（双引号包含的）字符串，它们也是合法的
+json ，虽然这不常见，但也应该考虑这种特殊情况是否会引起异常。当然了，那些不是
+以对象为根的 json ，也容易转为以对象为根的 json ，不外是多包一层 <code>{}</code> ，将原
+json 当成它的唯一值，再取个好听恰义的键名。</p>
+<p>另一个误区或不良实践，是标量只用字符串表示，数字也加上了引号，这在前端通过表单
+输入构成的 json 就容易变成这样子。json 是有类型的，数字与文本两大类型还是应该
+根据 json 标准来区分的，这不仅是逻辑上的意义不同，很多强类型语言在 json 实现中
+对数字与字符串也是需要不同处理的。如果说字符串理论上可以表达一切，确实如此，字
+符串也能表达数组与对象，试看下面的例子：</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">number</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">123</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">array</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">[1,2,3]</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">object</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">{</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">key</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">:</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">value</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span>}
+</span></code></pre>
+<p>显然，这段 json 数组想表达的真实意图是：</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">number</span><span>&quot;: </span><span style="color:#d08770;">123</span><span>,
+</span><span>  &quot;</span><span style="color:#a3be8c;">array</span><span>&quot;: [</span><span style="color:#d08770;">1</span><span>,</span><span style="color:#d08770;">2</span><span>,</span><span style="color:#d08770;">3</span><span>],
+</span><span>  &quot;</span><span style="color:#a3be8c;">object</span><span>&quot;: {&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;:&quot;</span><span style="color:#a3be8c;">value</span><span>&quot;}
+</span><span>}
+</span></code></pre>
+<p>对于数组与对象，很少有人会这么滥用字符串，毕竟知道难看，而用字符串表达数值类型
+与这本质上是同样的错误。如果系统设计只支持一层对象结构，那么将个别的子对象序列
+化的文本存为字符串还算有妥协意义。但用字符串表示数字，那基本就是偷懒意义了。</p>
+<p>不过也有个例外，json 能表示的数值精度有限，可能无法表达大整数，比如长 id 。尤
+其是原生 javascript 及其他很多弱类型语言，用 8 字节的 <code>double</code> 表示数字，那就
+不能安全地表达 64 位整数，而很多系统会用 64 位整数作 id 。然而从应用逻辑看，id
+算是文本意义，因为常规数字支持的四则运算对 id 没有意义，对 id 最主要的操作是
+比较用于查找（自增也有意义，但非必要，且字符串定义自增操作也是有意义）。所以
+id 在系统之间适合用字符串传递，而各系统在接收后也完全可以把它当作字符串处理，
+只有在意计算与存储性能时才需要把它转为整数来处理。</p>
+<p>除此之外，在应用逻辑上该是整数的数据，尤其是上限不超常用的 32 位整数时（用
+<code>double</code> 能安全表达的整数上限其实比 32 位整数大，但比 64 位整数小），就该坚持
+用 json 的数字类型，不要加双引号，这对传输与解析效率都是有利的。此外，在需要对
+json 瘦身的场合，可以考虑用更简短（但仍要有可读意义）的键名，以及善用数组代替
+对象，减少键名的使用。</p>
+<p>标准 json 的数字类型只支持十进制表示法，不区分整数或小数（浮点数）。但严肃项目
+中，尽量避免浮点数吧，因为浮点数计算精度有累积误差问题，不同语言不同库对浮点数
+的序列化与反序列化甚至也会有偏差。因此，规定浮点数精度或小数位数格式化改用字符
+串传递也可能是合理的。但如果能约定小数位数的精度，那为何不直接扩大这么多倍数改
+用整数交互呢？</p>
+<p>此外，如果系统不涉及无理数，但要求精确的有理小数，可以用考虑只包含两个元素的数
+组（分别表示分子与分母）来表示小数。什么，你的系统居然要处理复数？那么用一个对
+象的两个键分别表示实部与虚部即可解决。</p>
+<p>在具体的系统或项目中，json 的布尔类型可能是不必要的，用数字 <code>0</code> 与 <code>1</code> 就可以
+分别代替 <code>false</code> 与 <code>true</code> 的意义，并且增加传输效率。不过一些强类型语言的库可
+能会严格区分整数与布尔类型，为了好好协作，也作同样的严格区分也是符合标准。不过
+决定一个值使用布尔类型前要谨慎确定需求，别搞出后面改需求说不止两个状态的尴尬。</p>
+<p>至于 <code>null</code> ，我是反对在序列化传输中出现 <code>null</code> ，没有值的字段就不传嘛，没必要
+多此一举传 <code>null</code> 还增加传输流量。我相信在绝大部分系统开发中，都不会对“不传”与
+传 <code>null</code> 作不同的解释而进入不同的代码分支，所以传 <code>null</code> 只不过增加错误或异常
+处理的难度与麻烦。<code>null</code> 应该只限定于系统内部运算时出现的特殊状态标记，但序列
+化后应该剔除对象中值为 <code>null</code> 的键。在数组中，<code>null</code> 也许能起到占位的作用，不
+能武断删除，比如短数组约定不同位置有不同意义，但均质意义的长数组剔除 <code>null</code> 是
+安全的。数组中连续的逗号，不符合标准 json 语法，但或许有的 json 库能容许解析出
+<code>null</code> ，确有此需求时，应统一写上 <code>null</code> 。</p>
+<h2 id="shen-ru-rapidjson-nei-cun-mo-xing">深入 rapidjson 内存模型</h2>
+<p>根据 json 的数据表达模型，考虑在 C++ 中该如何表示呢？我们先做个直观与初步的联
+想，再参看 rapidjson 的实现。</p>
+<h3 id="c-de-json-gai-nian-lei-xing">C++ 的 json 概念类型</h3>
+<p>C++ 是强类型语言，每种类型都代表着一种内存模型，即根据类型来解释一段内存区域的
+字节表示什么意义。而 json ，如上所述，是多种类型的混合。在 C++ 中有什么类型可
+以一对多映射到 json 的各种类型呢？还真有，C 语言就有的 <code>union</code> ，叫联合，就是
+一段内存可以用不同的类型来解释，当然在任一时刻应该只当其中一种类型去用。</p>
+<p>先看 json 数字类型，这在 C++ 中要细分为整数与浮点数，整数又有几种不同字节大小
+的整数类型，而浮点数又分单精度与双精度。当然在实践中，四字节整数即 <code>int</code> 是最
+常用的，32 位的整数不够用就用 64 位整数，而双精度浮点数也是八字节，所以定义一
+个八字节的联合数字类型应该是比较恰当的，能满足大部分需求。示例定义如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">union </span><span>Number {
+</span><span>  </span><span style="color:#b48ead;">int</span><span> i;
+</span><span>  uint32_t u;
+</span><span>  int64_t l;
+</span><span>  uint64_t ul;
+</span><span>  </span><span style="color:#b48ead;">double</span><span> d;
+</span><span>  </span><span style="color:#b48ead;">float</span><span> f;
+</span><span>};
+</span></code></pre>
+<p>字符串比较复杂，我们先简单假设它就存一个 <code>std::string</code> 指针，也只有指针能放在
+<code>union</code> 中，类尤其是有构造函数的非平凡类，是不能当作联合成员的。当把数字与字符
+串联合在一起时，就构造了 json 的基础标量：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">union </span><span>Scalar {
+</span><span>  </span><span style="color:#b48ead;">union</span><span> Number num_;
+</span><span>  string* str;
+</span><span>};
+</span></code></pre>
+<p>再看 json 的集合类型，显然它应该用个容器来表示，容器元素就是 json 类型。既然有
+两种集合类型，那也就联合两种常用容器的指针来表示吧：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">union </span><span>Polymer {
+</span><span>  vector&lt;json_t&gt;* array;
+</span><span>  map&lt;string, json_t&gt;* object;
+</span><span>};
+</span></code></pre>
+<p>再把 json 的标量与集合类型联合起来，顺便捎上不关键的 <code>bool</code> 与 <code>null</code> ，那就构
+成了 json 的联合类型。但是等等，我们还需要一个字段来标记 json 的联合类型当前是
+哪个类型，显然这个标记字段适合用枚举表示。所以，最终的 json 类型应该是一个
+<code>union</code> 与 <code>enum</code> 的结合体（也就相当于 rust 语言的 <code>enum</code> 含义）。大致结构如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// json-concept.cpp
+</span><span style="color:#b48ead;">struct </span><span>json_t {
+</span><span>  </span><span style="color:#b48ead;">union </span><span>JsonValue {
+</span><span>    </span><span style="color:#b48ead;">union </span><span>Scalar {
+</span><span>      </span><span style="color:#b48ead;">union </span><span>Number {
+</span><span>        </span><span style="color:#b48ead;">int</span><span> i;
+</span><span>        uint32_t u;
+</span><span>        int64_t l;
+</span><span>        uint64_t ul;
+</span><span>        </span><span style="color:#b48ead;">double</span><span> d;
+</span><span>        </span><span style="color:#b48ead;">float</span><span> f;
+</span><span>      } num_;
+</span><span>      </span><span style="color:#b48ead;">bool</span><span> b;
+</span><span>      string* str;
+</span><span>    } scalar_;
+</span><span>    </span><span style="color:#b48ead;">union </span><span>Polymer {
+</span><span>      vector&lt;json_t&gt;* array;
+</span><span>      map&lt;string, json_t&gt;* object;
+</span><span>    } polymer_;
+</span><span>    </span><span style="color:#b48ead;">void</span><span>* null_;
+</span><span>  } value_;
+</span><span>
+</span><span>  </span><span style="color:#b48ead;">enum </span><span>JsonType {
+</span><span>    JSON_NUMBER, JSON_STRING,
+</span><span>    JSON_ARRAY, JSON_OBJECT,
+</span><span>    JSON_BOOL, JSON_NULL,
+</span><span>  } type_;
+</span><span>};
+</span></code></pre>
+<p>这只是一个粗略的 json 概念模型。事实上，联合并没有必要嵌套，json 类型 <code>json_t</code>
+就是由 <code>JsonValue</code> 联合与 <code>JsonType</code> 枚举的组成结构体。上面写成嵌套的联合，只
+是想表达 json 的标量与集合，数字与字符串的不同与层次。此外注意，<code>JsonType</code> 是
+按 json 的六大类型来枚举的，而这在 C++ 中是不够的，因为数字类型还得细分好几类
+呢，但在这个简化的概念模型中就不枚举太细了。</p>
+<p>再分析一下，上面的 json 概念类型有多大，即 <code>sizeof(json_t)</code> 的大小。在
+<code>JsonValue</code> 的联合体中，最大的成员是 64 位整数，各种指针也是 64 位（按现在最常
+用的 64 位机器而论），所以是 8 字节。<code>JsonType</code> 最多一字节可表示，但由于位对齐
+的原因，它也要补齐 8 字节。因此这个 <code>json_t</code> 的大小是 16 字节。</p>
+<h3 id="rapidjson-de-zhi-nei-cun-mo-xing">rapidjson 的值内存模型</h3>
+<p>在 rapidjson 库，核心是 <code>rapidjson::Value</code> 类型，其实它是一个模板类的特化，不
+过本文以及日常使用都几乎不必在意它底层的模板细节。<code>rapidjson::Value</code> 也只有 16
+字节大小，但具体实现上显然要比上面介绍的 json 概念类型精妙许多。</p>
+<p>对于 json 的数字类型，与上节概念模型的 <code>union Number</code> 差不多，不过删去了
+<code>float</code> 。因为在能使用双精度浮点数的情况下，实没必要支持单精度，在联合体内也省
+不了内存。但按习惯，四字节的整数 <code>int</code> 还是要单独支持的，不好只用八字节的长整
+数。比 <code>int</code> 小的整数如 <code>char</code> 与 <code>short</code>  ，在运算时其实也会自动提升到 <code>int</code>
+类型。所以只要支持四字节与八字节两类整数，及其无符号的变体。</p>
+<p>而对 json 字符串的实现，就大有讲究了，在 <code>rapidjson::Value</code> 的内存模型上是最复
+杂的一类了。具体讲，它又细分为三类字符串：</p>
+<ol>
+<li>短字符串，长度 13 字节以下直接存在分配给变量本身的栈区空间；</li>
+<li>借用字符串，只存字符串的指针，但不拥有字符串的所有权；</li>
+<li>复制字符串，也存个指针，拥有所有权，复制到堆空间。</li>
+</ol>
+<p>既然 <code>rapidjson::Value</code> 的联合内存段有 16 字节大小，为什么只能存最长 13 字节的
+短字符串呢？除去末尾需要 <code>\0</code> 对字符串封端，应该还有 15 字节呀。答案是它还要预
+留末尾两个字节用于表示当前类型，就如上节的 <code>JsonType</code> 字段，不过在它源码中叫
+<code>flag</code> 。</p>
+<p>在短字符串模式下，除去 <code>flag</code> 尾字节，第 14 字节存的是短字符串剩余空间。如果只
+存了一个字符，那它存在第 1 字节 <code>[0]</code> ，第 14 字节存 12 ，中间字节都是 <code>0</code> ；
+如果填满了 13 字节，那第 14 字节填 <code>0</code> ，既表示剩余空间为 <code>0</code> ，也表示空字符
+<code>\0</code> 结束字符串。如此字符串的长度也可以通过第 14 字节的值计算得出，不必额外存
+个字段表示长度。</p>
+<p>但在表示后面两种字符串时，除了指针，还要一个长度字段。它们在内存布局上是几乎相
+同的，只有最后两字节的 <code>flag</code> 含不同的值，标记着自身是否对指针所指的字符串拥有
+所有权。你可能会想，一个指针 8 字节可以放前面，后 8 字节除去末尾标记字节，还有
+6 字节，可以存一个 <code>int</code> 表示长度，只浪费 2 字节。</p>
+<p>然而真实图景不是这样，<code>rapidjson::Value</code> 将指针放在了后 8 字节，与末 2 字节的
+标记字段有重叠！这就涉及 rapidjson 库的一个重要优化了，叫 48 位指针优化。因为
+在当前的 64 位机器架构中，虽然指针理论上要占 8 字节，但实际上用不到 8 字节，6
+字节 48 位就足够表示现实机器支持的内存空间了。想当初在 32 位机器的时代，最多支
+持 4G 的内存，早就不够用了。但 64 位，2 的 64 次方是个很大的数，能表示的最大
+内存已经超过现实机器能装的内存条了。所以 48 位指针也够了。</p>
+<p>在 <code>rapidjson::Value</code> 中，可以认为后 8 字节指针与末 2 字节标记使用如下联合共享
+内存：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">union </span><span>pointer_64t
+</span><span>{
+</span><span>  </span><span style="color:#b48ead;">char</span><span>* pointer;
+</span><span>  </span><span style="color:#b48ead;">struct </span><span>{
+</span><span>    </span><span style="color:#b48ead;">char</span><span> padding[</span><span style="color:#d08770;">6</span><span>];
+</span><span>    </span><span style="color:#b48ead;">char</span><span> flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>  } byte_8t;
+</span><span>};
+</span></code></pre>
+<p>但是由于内存的部分重叠，读写指针时不能直接操作 <code>pointer</code> 成员，否则它会影响至
+关重要的 <code>flag</code> 。所以在 rapidjson  库中专门封装了相应的函数及宏，通过位移的手
+段来操作指针，达到只影响 <code>padding</code> 那 6 字节而不影响 <code>flag</code> 的目的。</p>
+<p>于是，<code>rapidjson::Value</code> 对三类字符串的联合定义大概如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">typedef char</span><span> pointer_48t[</span><span style="color:#d08770;">6</span><span>];
+</span><span style="color:#b48ead;">union </span><span>JsonString
+</span><span>{
+</span><span>  </span><span style="color:#b48ead;">struct </span><span>ShortString {
+</span><span>    </span><span style="color:#b48ead;">char</span><span> buffer[</span><span style="color:#d08770;">14</span><span>];
+</span><span>    </span><span style="color:#b48ead;">char</span><span> flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>  } str1;
+</span><span>
+</span><span>  </span><span style="color:#b48ead;">struct </span><span>BorrowString {
+</span><span>    </span><span style="color:#b48ead;">int</span><span> length;
+</span><span>    </span><span style="color:#b48ead;">int</span><span> hashCode; </span><span style="color:#65737e;">// 保留字节
+</span><span>    pointer_48t ptr;
+</span><span>    </span><span style="color:#b48ead;">char</span><span> flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>  } str2;
+</span><span>
+</span><span>  </span><span style="color:#b48ead;">struct </span><span>OwnerString {
+</span><span>    </span><span style="color:#b48ead;">int</span><span> length;
+</span><span>    </span><span style="color:#b48ead;">int</span><span> hashCode; </span><span style="color:#65737e;">// 保留字节
+</span><span>    pointer_48t ptr;
+</span><span>    </span><span style="color:#b48ead;">char</span><span> flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>  } str3;
+</span><span>};
+</span></code></pre>
+<p>当然在 rapidjson 源码中，并没有显式定义 <code>pointer_48t</code> ，本文只为阐释其设计思想
+作这样的表述。事实中，它在做 48 位指针优化是有条件编译宏控制的，如果所在机器必
+须用到 64 位来表示指针，那它就不能做此优化假设，必须将 <code>flag</code> 定义成独立字段，
+然后 <code>rapidjson::Value</code> 的大小就不是 16 字节了，而是 24 字节。但是在笔者工作过
+的机器环境中测试过，都是 16 字节。</p>
+<p>再看第 2 类与第 3 类的指针字符串，如前所述，其内存布局一样。保存 <code>length</code> 信息
+字段是为了避免每次用 <code>strlen</code> 求长度。借用字符串，最常见的是自己写在源代码的字
+符串字面量，因其存在进程的文本区，拥有静态生命周期，借用是安全的，所以能隐式转
+为借用（引用）直接赋值给 <code>rapidjson::Value</code> 变量，没有其他开销。但其他字符串变
+量，需要显式转为借用，且要自己保证指针安全，一般不建议找这麻烦。</p>
+<p>第 2 类借用字符串显然是只读的，第 3 类复制了副本的字符串也是设计为只读的，所以
+它只存了长度信息，而没有存容量信息。即当一个字符串复制进 <code>rapidjson::Value</code> 后，
+它就不可再变了，不能像 <code>std::string</code> 那样可在后面追加字符。不可变的字符串，才
+更切合标量的逻辑意义，虽然它是由多个字符组成，但是整体当作一个意义。</p>
+<p>当理解 <code>rapidjson::Value</code> 如何用指针表达字符串类型后，对于数组与对象类型的表示
+也就直观了。把数组与对象当作容器，除了指针、长度信息外，还有个容量字段，以便支
+持往容器增删元素，容器内元素是另外一些 <code>rapijson::Value</code> 。大致结构形如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>JsonArray {
+</span><span>  </span><span style="color:#b48ead;">int</span><span> size;
+</span><span>  </span><span style="color:#b48ead;">int</span><span> capacity;
+</span><span>  pointer_48t array; </span><span style="color:#65737e;">// rapidjson::Value*
+</span><span>  flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>};
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>JsonObject {
+</span><span>  </span><span style="color:#b48ead;">int</span><span> size;
+</span><span>  </span><span style="color:#b48ead;">int</span><span> capacity;
+</span><span>  pointer_48t object; </span><span style="color:#65737e;">// rapidjson::Value[2]*
+</span><span>  flag[</span><span style="color:#d08770;">2</span><span>];
+</span><span>};
+</span></code></pre>
+<p>在这里，<code>rapidjson::Value</code> 实现数组与对象又呈现高度一致性，指针指向的堆区是另
+一段连续的 <code>rapidjson::Value</code> 元素。只不过对象所指连续区域，保证是两两一组，第
+一个是键名，第二个是值，键与值也都是 <code>rapidjson::Value</code> 类型，只是对键再作了一
+层限制，只能是字符串类型。它们的初始容量都是 16 ，对数组而言，就是申请 <code>16*16</code>
+字节，对对象而言，则申请 <code>32*16</code> 字节大小的内存。</p>
+<p>所以在 rapidjson 中，对象也是有序的，能保持读入 json 串原来的键顺序，甚至允许
+重名键。这是由它的实现方式决定的，也是与其他 json 库的一个显著不同点。用数组方
+式来存储对象键值对，也是有原因的，它在反序列化或构建对象时很快，不过在查找时是
+线性查找比较慢。在最新版的 rapidjson 中，它会在对象指针左偏移处额外申请空间建
+立键索引用以加速查找，同时兼容指针（往右看）仍指向紧密有序数组。</p>
+<p>把以上数字、字符串、数组与对象类型的结构表示联合起来，就是 <code>rapidjson::Value</code>
+完整的内存表示。<code>null</code> 与布尔类型都在末位 <code>flag</code> 表示，布尔类型被拆成 <code>true</code>
+与 <code>false</code> 两种，与 <code>null</code> 相似的特殊类型标记，所以六大类型变成七大类型，枚举
+如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">enum </span><span>rapidjson::Type {
+</span><span>    </span><span style="color:#d08770;">kNullType </span><span>= </span><span style="color:#d08770;">0</span><span>,      </span><span style="color:#65737e;">//!&lt; null
+</span><span>    </span><span style="color:#d08770;">kFalseType </span><span>= </span><span style="color:#d08770;">1</span><span>,     </span><span style="color:#65737e;">//!&lt; false
+</span><span>    </span><span style="color:#d08770;">kTrueType </span><span>= </span><span style="color:#d08770;">2</span><span>,      </span><span style="color:#65737e;">//!&lt; true
+</span><span>    </span><span style="color:#d08770;">kObjectType </span><span>= </span><span style="color:#d08770;">3</span><span>,    </span><span style="color:#65737e;">//!&lt; object
+</span><span>    </span><span style="color:#d08770;">kArrayType </span><span>= </span><span style="color:#d08770;">4</span><span>,     </span><span style="color:#65737e;">//!&lt; array 
+</span><span>    </span><span style="color:#d08770;">kStringType </span><span>= </span><span style="color:#d08770;">5</span><span>,    </span><span style="color:#65737e;">//!&lt; string
+</span><span>    </span><span style="color:#d08770;">kNumberType </span><span>= </span><span style="color:#d08770;">6     </span><span style="color:#65737e;">//!&lt; number
+</span><span>};
+</span></code></pre>
+<p>但是只有这几个大类还不够，因为数字与字符串类型还有几种小类，所以在
+<code>rapidjson::Value</code> 类内又定义了如下枚举：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">enum </span><span>{
+</span><span>    </span><span style="color:#d08770;">kBoolFlag       </span><span>= </span><span style="color:#d08770;">0x0008</span><span>, </span><span style="color:#65737e;">// 布尔类型
+</span><span>    </span><span style="color:#d08770;">kNumberFlag     </span><span>= </span><span style="color:#d08770;">0x0010</span><span>, </span><span style="color:#65737e;">// 数字类型
+</span><span>    </span><span style="color:#d08770;">kIntFlag        </span><span>= </span><span style="color:#d08770;">0x0020</span><span>, </span><span style="color:#65737e;">// 整数
+</span><span>    </span><span style="color:#d08770;">kUintFlag       </span><span>= </span><span style="color:#d08770;">0x0040</span><span>, </span><span style="color:#65737e;">// 无符号整数
+</span><span>    </span><span style="color:#d08770;">kInt64Flag      </span><span>= </span><span style="color:#d08770;">0x0080</span><span>, </span><span style="color:#65737e;">// 长整数
+</span><span>    </span><span style="color:#d08770;">kUint64Flag     </span><span>= </span><span style="color:#d08770;">0x0100</span><span>, </span><span style="color:#65737e;">// 无符号长整数
+</span><span>    </span><span style="color:#d08770;">kDoubleFlag     </span><span>= </span><span style="color:#d08770;">0x0200</span><span>, </span><span style="color:#65737e;">// 浮点数
+</span><span>    </span><span style="color:#d08770;">kStringFlag     </span><span>= </span><span style="color:#d08770;">0x0400</span><span>, </span><span style="color:#65737e;">// 字符串类型
+</span><span>    </span><span style="color:#d08770;">kCopyFlag       </span><span>= </span><span style="color:#d08770;">0x0800</span><span>, </span><span style="color:#65737e;">// 复制字符串
+</span><span>    </span><span style="color:#d08770;">kInlineStrFlag  </span><span>= </span><span style="color:#d08770;">0x1000</span><span>, </span><span style="color:#65737e;">// 内联短字符串
+</span><span>};
+</span></code></pre>
+<p>平心而论，这两个枚举有一定的重叠与冗余。<code>Type</code> 枚举反映了对标准 json 数据类型
+的建模，<code>Flag</code> 枚举则是按 <code>rapidjson::Value</code> 实现定义的。不管如何，这些枚举常
+量，都可以压缩放在末尾两字节的 <code>flag</code> 字段中。<code>Type</code> 七大类的递增值，用 3 位
+可以表示，剩下的每个 <code>Flag</code> 占 1 位，还没用完两字节的 16 位。</p>
+<p>末尾 <code>flag</code> 的 16 位标记图示如下：</p>
+<p><img src="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/./rapidjson-flag.png" alt="flag 图示" /></p>
+<p>Json 主要类型在 <code>rapidjson::Value</code> 的内存模型图示如下：</p>
+<p><img src="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/./rapidjson-type.png" alt="type 图示" /></p>
+<h3 id="rapidjson-de-nei-cun-chi-mo-xing">rapidjson 的内存池模型</h3>
+<p>上节介绍了 <code>rapidjson::Value</code> 类型变量在栈区的内存布局，现在继续介绍其中指针所
+指向的堆区的内存布局。rapidjson 使用内存池管理要用到的堆内存，内存分配器作为一
+个模板参数可以由用户定制提供，但一般使用它自己实现的默认分配器就够了，故这儿也
+基于其默认的内存分配器作讲解。</p>
+<p>据 rapidjson 的设计者的思路，在实际项目中 json 从来不会单独使用一两个值，而是
+存在由一个根结点（主要是对象，也有数组的情况）衍生的一整棵结点树，也就是基于
+json 的 DOM （文档对象模型）。一个 DOM 背后需要有一块内存池支持，用以存放其下
+的所有结点。这个内存池（指针）只需存在根结点中，而不必存在每个结点中，每个节点
+只是一个 16 字节的 <code>rapidjson::Vaue</code> 类型，它们不知道自身所处在哪个内存池对象
+中，正所谓当局者迷。</p>
+<p>这个根结点的类型就是 <code>rapidjon::Document</code> ，它继承自 <code>rapidjson::Value</code> ，因为
+根结点也是一个 json 结点。也就是它表达了“Document is Value”的语义，不是“
+Document contains Value”，这可能有点反直觉，居然是继承而不是组合。其定义可简
+化地表示如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">class </span><span style="color:#eff1f5;">rapidjson::</span><span style="color:#ebcb8b;">Document </span><span style="color:#eff1f5;">: </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">rapidjson::Value
+</span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">  AllocatorType</span><span>*</span><span style="color:#eff1f5;"> allocator_;
+</span><span style="color:#eff1f5;">  ParseResult parseResult_;
+</span><span style="color:#eff1f5;">}</span><span>;
+</span></code></pre>
+<p>从它新增的成员可知 <code>Document</code> 主要负责两方面的职能：</p>
+<ul>
+<li>维护内存池分配器；</li>
+<li>记录解析结果，指示解析（反序化）json 串是否有错，当前 DOM 是否有效。</li>
+</ul>
+<p>此外，<code>Document</code> 就完全可当 <code>Value</code> 类型来使用了，这个继承也不存在虚析构函数或
+虚指针，不引入不必要的开销。尤其要注意的是，<code>Document</code> 的默认构造函数构造的
+<code>Value</code> 是 <code>null</code> 类型，不是对象类型，这行为跟 <code>Value</code> 的默认构造函数保持一致，
+但一般情况下 <code>null</code> 类型是不足以承担根结点职能的，需要重新设置类型。</p>
+<p>每当对 <code>Value</code> 类型涉及可能需要申请堆内存的操作时，相应的方法都需要额外传个分
+配器参数，正因为 <code>Value</code> 内部没有维护分配器。这些操作包括：</p>
+<ul>
+<li>将一个字符串（非借用引用）存入 json 结点时，</li>
+<li>将另一个 json 结点加入数组类型的结点时，</li>
+<li>将其他一对 json 结点加入对象数组的结点时。</li>
+</ul>
+<p><code>Value</code> 类型互相操作时，是移动语义，体现下以下方面：</p>
+<ul>
+<li>将一个结点赋值给另一个结点时，自身的数据被转移而成为 <code>null</code> 类型；</li>
+<li>将一个结点添加至数组时，数据转入数组，该结点变成 <code>null</code>；</li>
+<li>将一对结点添加至对象时，数据转入对象，这两个结点都变成 <code>null</code>。</li>
+</ul>
+<p>内存池与移动语义是保障 rapidjson 高性能的重要基石。当一个 DOM 从根结点开始增长
+时（典型情景是解析输入的 json 串），从内存池分配的内存也随之增加。在操作具体结
+点时，由于移动语义，大部分情况下会由其他结点接管数据（指向内存池具体某块地址）
+，所以即使（栈区）结点离开作用域也不用在析构时涉及释放内存。即使某个结点在析构
+时还有指针数据未转移，而变成不可再访问的数据（垃圾），它也仍在原属 DOM 的内存
+池中，在最后根结点离开作用域析构时再统一回收整块内存池。</p>
+<p>下面举一段示例程序，在每条语句前添加注释，说明其内存使用情况：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// sample.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">rapidjson/document.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">rapidjson/writer.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">rapidjson/ostreamwrapper.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">iostream</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>  </span><span style="color:#65737e;">// 栈区定义根结点 doc ，大小 16+
+</span><span>  rapidjson::Document doc;
+</span><span>  </span><span style="color:#65737e;">// 取出分配器以备后用
+</span><span>  </span><span style="color:#b48ead;">auto</span><span>&amp; allocator = doc.</span><span style="color:#bf616a;">GetAllocator</span><span>();
+</span><span>  </span><span style="color:#65737e;">// 将根结点由 null 类型重设为对象类型，
+</span><span>  </span><span style="color:#65737e;">// 但对象大小仍为 0 ，未向内存池申请内存
+</span><span>  doc.</span><span style="color:#bf616a;">SetObject</span><span>();
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 栈区申请局部变量结点，默认 null 类型，大小 16 字节
+</span><span>  rapidjson::Value node;
+</span><span>  </span><span style="color:#65737e;">// 可直接将整数、浮点数、字符串字面量赋值给结点，随之改变结点类型
+</span><span>  node = </span><span style="color:#d08770;">123</span><span>;
+</span><span>  node = </span><span style="color:#d08770;">3.14</span><span>;
+</span><span>  node = &quot;</span><span style="color:#a3be8c;">hello rapidjson</span><span>&quot;;
+</span><span>  </span><span style="color:#b48ead;">const char</span><span>* psz = &quot;</span><span style="color:#a3be8c;">hello rapidjson</span><span>&quot;;
+</span><span>  </span><span style="color:#65737e;">// json 结点所存字符串指针与字面量字符串相同，是借用证明
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(node.</span><span style="color:#bf616a;">GetString</span><span>() == psz);
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 将字符串变量的内容存入 json 结点，需带分配器参数
+</span><span>  </span><span style="color:#65737e;">// 虽然这是个短字符串，运行时不涉及内存分配，但编译期方法要求分配器参数
+</span><span>  std::string str = &quot;</span><span style="color:#a3be8c;">rapijson</span><span>&quot;;
+</span><span>  node.</span><span style="color:#bf616a;">SetString</span><span>(str.</span><span style="color:#bf616a;">c_str</span><span>(), str.</span><span style="color:#bf616a;">size</span><span>(), allocator);
+</span><span>  </span><span style="color:#65737e;">// 证明在栈区从结点首地址开始存短字符串
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(node.</span><span style="color:#bf616a;">GetString</span><span>() == reinterpret_cast&lt;</span><span style="color:#b48ead;">const char</span><span>*&gt;(&amp;node));
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 往结点存入长字符串，复制内容，所存指针与原字符串不同
+</span><span>  </span><span style="color:#65737e;">// 涉及内存池申请I ，保存着字符串副本
+</span><span>  str = &quot;</span><span style="color:#a3be8c;">hello rapijson</span><span>&quot;;
+</span><span>  node.</span><span style="color:#bf616a;">SetString</span><span>(str.</span><span style="color:#bf616a;">c_str</span><span>(), str.</span><span style="color:#bf616a;">size</span><span>(), allocator);
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(node.</span><span style="color:#bf616a;">GetString</span><span>() != str.</span><span style="color:#bf616a;">c_str</span><span>());
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 将结点重设为对象类型
+</span><span>  </span><span style="color:#65737e;">// 断开原字符串指针，内存池副本字符串无法再访问
+</span><span>  node.</span><span style="color:#bf616a;">SetObject</span><span>();
+</span><span>  </span><span style="color:#65737e;">// 向结点对象添加一对键值对，方法要求分配器参数
+</span><span>  </span><span style="color:#65737e;">// 先由&quot;key&quot; 与 &quot;value&quot; 字面量构造两个临时结点，再添加至对象
+</span><span>  </span><span style="color:#65737e;">// 内存池申请II ，32 个结点大小容量，已用两个结点空间
+</span><span>  node.</span><span style="color:#bf616a;">AddMember</span><span>(&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;, &quot;</span><span style="color:#a3be8c;">value</span><span>&quot;, allocator);
+</span><span>  </span><span style="color:#65737e;">// 再添加一对键值对，可重名，不会覆盖刚才的同名键
+</span><span>  node.</span><span style="color:#bf616a;">AddMember</span><span>(&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;, </span><span style="color:#d08770;">3.14159</span><span>, allocator);
+</span><span>  {
+</span><span>    </span><span style="color:#65737e;">// 显式先构建两个临时结点传参，是 AddMember 最基本的重载方法
+</span><span>    rapidjson::Value key;
+</span><span>    key = &quot;</span><span style="color:#a3be8c;">moreKey</span><span>&quot;;
+</span><span>    rapidjson::Value val;
+</span><span>    val = </span><span style="color:#d08770;">314159</span><span>;
+</span><span>    node.</span><span style="color:#bf616a;">AddMember</span><span>(key, val, allocator);
+</span><span>    </span><span style="color:#65737e;">// 键值对结点添加至对象后，由于数据移动变成 null
+</span><span>    </span><span style="color:#65737e;">// 内存池申请II 已使用 6 个结点，三个键值对
+</span><span>    </span><span style="color:#96b5b4;">assert</span><span>(key.</span><span style="color:#bf616a;">IsNull</span><span>());
+</span><span>    </span><span style="color:#96b5b4;">assert</span><span>(val.</span><span style="color:#bf616a;">IsNull</span><span>());
+</span><span>    </span><span style="color:#65737e;">// key val 两个结点离开作用域，平凡析构，不影响内存池
+</span><span>  }
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 再申请一个局部变量结点 object ，接收原结点赋值，发生数据移动
+</span><span>  rapidjson::Value object;
+</span><span>  object = node;
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(node.</span><span style="color:#bf616a;">IsNull</span><span>());
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(object.</span><span style="color:#bf616a;">IsObject</span><span>());
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 将 object 结点移动添加至根结点，也归于 null
+</span><span>  </span><span style="color:#65737e;">// 内存池申请III，32 个结点，使用 2 个结点
+</span><span>  doc.</span><span style="color:#bf616a;">AddMember</span><span>(&quot;</span><span style="color:#a3be8c;">object</span><span>&quot;, object, allocator);
+</span><span>  </span><span style="color:#96b5b4;">assert</span><span>(object.</span><span style="color:#bf616a;">IsNull</span><span>());
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 重新取出子结点引用，rapidjson::Value&amp;，指向在内存池的结点
+</span><span>  </span><span style="color:#b48ead;">auto</span><span>&amp; refObj = doc[&quot;</span><span style="color:#a3be8c;">object</span><span>&quot;];
+</span><span>  </span><span style="color:#65737e;">// 可继续往 refObj 添加键值对，超过原申请 II 的容量后，扩容重新申请，
+</span><span>  </span><span style="color:#65737e;">// 扩容搬迁时直接复制原 32 * 16 字节的内存，原内存块丢失访问的指针。
+</span><span>  </span><span style="color:#65737e;">// 若原申请的容量就在内存池末尾，扩容时不涉及搬迁与复制内存。
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 三板斧序列化，输出结果为：
+</span><span>  </span><span style="color:#65737e;">// {&quot;object&quot;:{&quot;key&quot;:&quot;value&quot;,&quot;key&quot;:3.14159,&quot;moreKey&quot;:314159}}
+</span><span>  rapidjson::OStreamWrapper </span><span style="color:#bf616a;">os</span><span>(std::cout);
+</span><span>  rapidjson::Writer&lt;rapidjson::OStreamWrapper&gt; </span><span style="color:#bf616a;">writer</span><span>(os);
+</span><span>  doc.</span><span style="color:#bf616a;">Accept</span><span>(writer);
+</span><span>
+</span><span>  </span><span style="color:#65737e;">// 根结点离开作用域，释放内存池 allocator
+</span><span>}
+</span></code></pre>
+<p>如上例也反映了一般使用场景，<code>Document</code> 根结点一般定义在栈区，如函数局部变量，
+或类实例成员。根结点在堆区有个内存池。然后使用过程涉及一些在栈区定义的临时
+<code>Value</code> 结点变量，凡涉及内存申请的字符串、对象、数组操作，都要传入根结点的内存
+池分配器参数，从内存池中分配使用更多内存。这些临时结点一般最终都会挂到根结点下
+面，并伴随着数据转移（内存池数据的指针）。临时结点只会涉及申请内存，不会涉及释
+放内存，内存池最后随着根结点的析构而释放。</p>
+<h2 id="qian-chu-rapidjson-shi-yong-fang-fa">浅出 rapidjson 使用方法</h2>
+<p>这里只根据笔者使用 rapidjson 库的经验介绍常用用法，
+其 <a href="https://rapidjson.org/">官网</a> 有详细文档教程可参考。</p>
+<h3 id="shu-ru-fan-xu-lie-hua-yu-shu-chu-xu-lie-hua">输入反序列化与输出序列化</h3>
+<p>根结点即 <code>Document</code> 类型有 <code>Parse</code> 方法可解析输入的 json 串，构建 DOM ，它返回
+自身引用，可再调用 <code>HasParseError</code> 方法判断是否有解析错误。例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span>rapidjson::Document doc;
+</span><span>doc.</span><span style="color:#bf616a;">Parse</span><span>(</span><span style="color:#65737e;">/* const char* */</span><span> input_str).</span><span style="color:#bf616a;">HasParseError</span><span>();
+</span></code></pre>
+<p>一般情况下，在判断解析有误时，要报告错误。我们可将这两步典型操作浅封装个简单函
+数，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">parse_error</span><span>(rapidjson::Document&amp; </span><span style="color:#bf616a;">doc</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(doc.</span><span style="color:#bf616a;">HasParseError</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Parse Json Error(offset </span><span style="color:#d08770;">%lu</span><span style="color:#a3be8c;">): </span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\n</span><span>&quot;, doc.</span><span style="color:#bf616a;">GetErrorOffset</span><span>(), </span><span style="color:#bf616a;">GetParseError_En</span><span>(doc.</span><span style="color:#bf616a;">GetParseError</span><span>()));
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span>;
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">read_string</span><span>(rapidjson::Document&amp; </span><span style="color:#bf616a;">doc</span><span>, </span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">psz</span><span>, size_t </span><span style="color:#bf616a;">len</span><span>)
+</span><span>{
+</span><span>    doc.</span><span style="color:#bf616a;">Parse</span><span>(psz, len); </span><span style="color:#65737e;">// 也有省略长度参数的 Parse 版本
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">parse_error</span><span>(doc);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">read_stream</span><span>(rapidjson::Document&amp; </span><span style="color:#bf616a;">doc</span><span>, std::istream&amp; </span><span style="color:#bf616a;">stream</span><span>)
+</span><span>{
+</span><span>    rapidjson::IStreamWrapper </span><span style="color:#bf616a;">is</span><span>(stream);
+</span><span>    doc.</span><span style="color:#bf616a;">ParseStream</span><span>(is);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">parse_error</span><span>(doc);
+</span><span>}
+</span></code></pre>
+<p>当解析从标准流读入的 json 串时，只要多写一行代码，先用库提供的输入流包装一下。
+在实际项目，报告错误的 <code>printf</code> 可能应该替换为日志输出。</p>
+<p>还有一种原位解析 <code>ParseInsitu</code> 值得注意。在这种解析方式下，不会发生拷贝字符串
+值，而是在 json 结点中保存个借用指针，指向原串左引号后一个字符位置，然后把右引
+号修改为 <code>\0</code> 。这更加高效，在相关的内存池中就只有规整的 16 字节 json 结点堆叠，
+没有长短不一的字符串内容申请。</p>
+<p>但是原位解析要求原 json 文本串的生命周期长于 json DOM ，否则就有野指针错误。简
+化生命周期管理的一个办法是将 json 文本与 DOM 放在一个结构体或类中，让他们同生
+共死。例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>InsuiteDOM {
+</span><span>    rapidjson::Document doc;
+</span><span>    std::string buffer;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">Parse</span><span>(</span><span style="color:#b48ead;">const</span><span> std::string&amp; </span><span style="color:#bf616a;">input</span><span>)
+</span><span>    {
+</span><span>        buffer = input;
+</span><span>        doc.</span><span style="color:#bf616a;">ParseInsitu</span><span>(buffer.</span><span style="color:#bf616a;">c_str</span><span>())
+</span><span>        </span><span style="color:#b48ead;">return</span><span> doc.</span><span style="color:#bf616a;">HasParseError</span><span>();
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">Parse</span><span>(std::string&amp;&amp; </span><span style="color:#bf616a;">input</span><span>)
+</span><span>    {
+</span><span>        buffer = std::</span><span style="color:#bf616a;">move</span><span>(input);
+</span><span>        doc.</span><span style="color:#bf616a;">ParseInsitu</span><span>(buffer.</span><span style="color:#bf616a;">c_str</span><span>())
+</span><span>        </span><span style="color:#b48ead;">return</span><span> doc.</span><span style="color:#bf616a;">HasParseError</span><span>();
+</span><span>    }
+</span><span>};
+</span></code></pre>
+<p>这里先将输入字符串保存为内部成员副本，仍发生一次复制，但整体复制字符串比后面解析
+json 时反复分段复制也能提高效率。随后进行的原位解析就只会修改自己的成员副本，不
+会修改原输入串。如果还想避免那次 <code>buffer</code> 的整体复制，那可找到输入串最初的产生
+源，看能否将 <code>doc</code> 与它放在一起。或者，只要原输入串是可修改的，也就能用右值移动
+到内部的 <code>buffer</code> 成员。</p>
+<p>至于序列化输出，相对简单，在上一节详解内存使用的示例未尾也有涉及，也可将那典型
+三步法浅封装为函数：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">write_stream</span><span>(</span><span style="color:#b48ead;">const</span><span> rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, std::ostream&amp; </span><span style="color:#bf616a;">stream</span><span>)
+</span><span>{
+</span><span>    rapidjson::OStreamWrapper </span><span style="color:#bf616a;">os</span><span>(stream);
+</span><span>    rapidjson::Writer&lt;rapidjson::OStreamWrapper&gt; </span><span style="color:#bf616a;">writer</span><span>(os);
+</span><span>    json.</span><span style="color:#bf616a;">Accept</span><span>(writer);
+</span><span>}
+</span></code></pre>
+<p>注意，序列化时只要求 <code>Value</code> 参数，不需要 <code>Document</code> ，因为用不到内存池分配器，
+而反序列化输入时要求 <code>Document</code>。输出有两种格式，上例的 <code>Writter</code> 类输出单行压
+缩格式适于传输，另有 <code>PrettyWriter</code> 输出有缩进良好格式化的文本，适合人读。</p>
+<h3 id="ge-json-lei-xing-de-pan-duan-yu-cao-zuo">各 json 类型的判断与操作</h3>
+<p>对各类 json 结点有一系列相应的操作方法，命名挺有规律，归纳如下表：</p>
+<table><thead><tr><th>类型</th><th>判断方法</th><th>取值方法</th><th>设值方法</th><th>赋值方法</th></tr></thead><tbody>
+<tr><td>Null</td><td>IsNull</td><td></td><td>SetNull</td><td></td></tr>
+<tr><td>Number</td><td>IsNumber</td><td></td><td></td><td></td></tr>
+<tr><td>Int</td><td>IsInt</td><td>GetInt</td><td>SetInt</td><td>=</td></tr>
+<tr><td>Uint</td><td>IsUint</td><td>GetUint</td><td>SetUint</td><td>=</td></tr>
+<tr><td>Int64</td><td>IsInt64</td><td>GetInt64</td><td>SetInt64</td><td>=</td></tr>
+<tr><td>Uint64</td><td>IsUint64</td><td>GetUint64</td><td>SetUint64</td><td>=</td></tr>
+<tr><td>Double</td><td>IsDouble</td><td>GetDouble</td><td>SetDouble</td><td>=</td></tr>
+<tr><td>Float</td><td>IsFloat</td><td>GetFloat</td><td>SetFloat</td><td>=</td></tr>
+<tr><td>String</td><td>IsString</td><td>GetString</td><td>SetString</td><td>= &quot;字面&quot;</td></tr>
+<tr><td>Bool</td><td>IsBool</td><td>GetBool</td><td>SetBool</td><td></td></tr>
+<tr><td>False</td><td>IsFalse</td><td></td><td></td><td></td></tr>
+<tr><td>True</td><td>IsTrue</td><td></td><td></td><td></td></tr>
+<tr><td>Array</td><td>IsArray</td><td>GetArray</td><td>SetArray</td><td></td></tr>
+<tr><td>Object</td><td>IsObject</td><td>GetObject</td><td>SetObject</td><td></td></tr>
+</tbody></table>
+<p>另有方法 <code>GetType</code> 返回表示 rapidjson 七大类型的枚举常量。</p>
+<p>数字类型对上文讨论的五种细分类型各有相应的 <code>Get</code> 与 <code>Set</code> 方法，但没有对抽象的
+联合 <code>GetNumber</code> 与 <code>SetNumber</code> 。虽然内部存储只有 <code>double</code> ，但用户真想用
+<code>float</code> 的话，也有相应的 <code>Is Get Set</code> 方法。从 Bool 拆出的真假类型没有独立的
+<code>Get Set</code> 方法，虽可用 <code>Is</code> 判断。Null 也显然只有 <code>Set</code> 方法而没有 <code>Get</code> 方法。</p>
+<p>字符串类型，虽然在内部细分为三类，但 <code>GetString</code> 方法只一个，返回 <code>const char*</code> 。
+<code>SetString</code> 方法有很多重载，大多是要带分配器参数的。除了以下两个会存为借用字符
+串：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// namespace rapidjson::
+</span><span>Value&amp; </span><span style="color:#8fa1b3;">SetString</span><span>(</span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">str</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">length</span><span>);
+</span><span>Value&amp; </span><span style="color:#8fa1b3;">SetString</span><span>(StringRefType </span><span style="color:#bf616a;">s</span><span>);
+</span></code></pre>
+<p>其中，<code>StringRefType</code> 就是在 rapidjson 库显式定义的字符串借用类型，它内部包含
+一个指针与长度信息，类似于后来的 <code>std::string_view</code>。源码字符串字面量可通过构
+造函数隐式转为 <code>StringRefType</code> 。实际项目只推荐对字面量借用，不推荐第一个重载
+，因为它也容易与下面这个复制字符串的重载混淆：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span>Value&amp; </span><span style="color:#8fa1b3;">SetString</span><span>(</span><span style="color:#b48ead;">const char</span><span>* </span><span style="color:#bf616a;">str</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">length</span><span>, Allocator&amp; </span><span style="color:#bf616a;">allocator</span><span>);
+</span></code></pre>
+<p>也不存在只有一个 <code>const char*</code> 参数的 <code>SetString</code> 方法，必须提供分配器参数存为
+复制字符串。对于字符字面量，虽可用 <code>SetString</code> 方法，但直接用 <code>=</code> 赋值更简单。
+字面量的类型其实不是 <code>const char*</code> 而是 <code>const char[N]</code> 定长字符数组。</p>
+<p>数组与对象，有 <code>Set</code> 方法将结点转换类型，准备当作容器接纳其他结点。虽也有 <code>Get</code> 
+方法，但一般少用，因为它们返回另外的中间类型，没必要多记其他类型。这两种容器类
+型也有一系列相关的方法，列表如下：</p>
+<table><thead><tr><th>操作方法</th><th>Array</th><th>Object</th></tr></thead><tbody>
+<tr><td>判空</td><td>Empty</td><td>MemberEmpty</td></tr>
+<tr><td>取大小</td><td>Size</td><td>MemberCount</td></tr>
+<tr><td>取容量</td><td>Capacity</td><td>MemberCapacity</td></tr>
+<tr><td>预留容量</td><td>Reserve</td><td>MemberReserve</td></tr>
+<tr><td>取元素</td><td>[i]</td><td>[name]</td></tr>
+<tr><td>元素存在性</td><td></td><td>HasMember</td></tr>
+<tr><td>查找元素</td><td></td><td>FindMember</td></tr>
+<tr><td>添加元素</td><td>PushBack</td><td>AddMember</td></tr>
+<tr><td>删除尾元素</td><td>PopBack</td><td></td></tr>
+<tr><td>清空元素</td><td>Clear</td><td>RemoveAllMembers</td></tr>
+<tr><td>删除元素</td><td>Erase</td><td>EraseMember</td></tr>
+<tr><td></td><td></td><td>RemoveMember</td></tr>
+<tr><td>迭代器开始</td><td>Begin</td><td>MemberBegin</td></tr>
+<tr><td>迭代器结束</td><td>End</td><td>MemberEnd</td></tr>
+<tr><td>迭代器使用</td><td>*it</td><td>it-&gt;name, it-&gt;value</td></tr>
+</tbody></table>
+<p>可见，大部分数组相关操作的方法名与 <code>std::vector</code> 很像，只是首字母大写，而对象
+的相关方法再加 <code>Member</code> 前缀。对象的迭代器解引用是个中间类型，它的 <code>name</code> 与
+<code>value</code> 成员都是 <code>rapidjson::Value</code> 类型，而数组的迭代器解引用直接就是了。删除
+对象某个元素有两套方法，<code>EraseMember</code> 与数组的 <code>Erase</code> 行为更接近，能保持删除
+后剩余元素的原来序性，涉及后置元素的前移，故是线性复杂性；而 <code>RemoveMember</code> 则
+交换末尾元素，快速删除，不保持原来顺序。按标准 json 规范，对象的键本来就无序的
+，所以用 <code>RemoveMember</code> 没毛病，但 rapidjson 既能保证有序性，也是有用的特性。</p>
+<p>上表中除了迭代器类型不同，其他大多容器相关方法的返回值都是相同的，但它仍为数组
+与对象取了不同的方法名，而不是用同一个方法在内部自适应类型作不同操作，想来也是
+为了强调 json 数组与对象的类型差异，要求用户代码掌控类型。</p>
+<p>中括号索引可以直接取元素，数组用整数索引，对象用字符串索引，但若超过范围或键名
+不存在，会触发异常。所以应该先用 <code>HasMember</code> 判断再取元素，但这涉及两次查找对
+象键名，更有效的办法是先用 <code>FindMember</code> 方法，它返回迭代器，若迭代器有效再直接
+解引用迭代器，只涉及一次查找。</p>
+<p>在默认情况下，<code>FindMember</code> 以及上面的 <code>SetString</code> 等方法的参数都不支持标准库
+字符串 <code>std::string</code>，应该取其 <code>c_str()</code> 方法传参。但能通过条件编译宏
+<code>RAPIDJSON_HAS_STDSTRING</code> 打开支持 <code>std::string</code> 。但个人并不建议，按默认行为
+更统一，避免可能的麻烦。</p>
+<p>同理，也有条件编译宏 <code>RAPIDJSON_HAS_CXX11_RANGE_FOR</code> 开启支持 C++11 的范围
+<code>for (auto&amp; item : json)</code> 语法，我也觉得不是很有必要，C++11 有 <code>auto</code> 简化迭代
+器类型的书写就够了，注意迭代器不要用 <code>auto&amp;</code> ，就用迭代器值类型，不要引用。</p>
+<p>因为 json 数组与对象可以包含其他任意 json 类型，包括更深层次的数组或对象，所以
+对于这种同型结构的数据，在某些业务场景使用递归可能有奇效。这里展示一个简单的递
+归示例框架：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// recursive.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">rapidjson/document.h</span><span>&quot;
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">deal_json</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, rapidjson::Document::AllocatorType&amp; </span><span style="color:#bf616a;">allocator</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsInt</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">int: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, json.</span><span style="color:#bf616a;">GetInt</span><span>());
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(json.</span><span style="color:#bf616a;">IsString</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">string: </span><span style="color:#d08770;">%s</span><span style="color:#96b5b4;">\n</span><span>&quot;, json.</span><span style="color:#bf616a;">GetString</span><span>());
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(json.</span><span style="color:#bf616a;">IsArray</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">array: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, json.</span><span style="color:#bf616a;">Size</span><span>());
+</span><span>        </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">auto</span><span> it = json.</span><span style="color:#bf616a;">Begin</span><span>(); it != json.</span><span style="color:#bf616a;">End</span><span>(); ++it)
+</span><span>        {
+</span><span>            </span><span style="color:#bf616a;">deal_json</span><span>(*it, allocator);
+</span><span>        }
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(json.</span><span style="color:#bf616a;">IsObject</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">object: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, json.</span><span style="color:#bf616a;">MemberCount</span><span>());
+</span><span>        </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">auto</span><span> it = json.</span><span style="color:#bf616a;">MemberBegin</span><span>(); it != json.</span><span style="color:#bf616a;">MemberEnd</span><span>(); ++it)
+</span><span>        {
+</span><span>            </span><span style="color:#bf616a;">deal_json</span><span>(it-&gt;</span><span style="color:#bf616a;">value</span><span>, allocator);
+</span><span>        }
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    rapidjson::Document doc;
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; allocator = doc.</span><span style="color:#bf616a;">GetAllocator</span><span>();
+</span><span>    </span><span style="color:#65737e;">// 构建 DOM ...
+</span><span>    </span><span style="color:#bf616a;">deal_json</span><span>(doc, allocator);
+</span><span>}
+</span></code></pre>
+<p>函数参数是 <code>Value</code> 类型与分配器引用，在只读的处理函数中或许可以不用分配器参数，
+但若不确定是否只读，建议从一开始就加上，这个分配器参数应该是从某个 <code>Document</code>
+对象取出来的，不能用 <code>Document</code> 类型递归，只有根结点是这个类型。如果要对五种数
+字类型都添加 <code>if</code> 分支，或可考虑先套一层 <code>if IsNumber</code> 分支，在里面再按细分数
+字类型分支。</p>
+<h3 id="chang-jian-wu-yong-rapidjson-de-wen-ti">常见误用 rapidjson 的问题</h3>
+<p>笔者曾在工作中遇到以下误用 rapidjon 的情境，会导致异常与崩溃，值得给大家提醒：</p>
+<ol>
+<li>没有判断 json 结点类型，而直接当成某类型来用；</li>
+<li>下标索引元素时超出范围；</li>
+<li>使用被移动后的结点；</li>
+<li>根结点与内存池被释放后，仍使用相关的 json 结点。</li>
+</ol>
+<p>首先，C++ 是强类型语言，即使 <code>rapidjson::Value</code> 能表示多种类型，它也是强类型，
+运行时某一时刻只能是确定的某种类型。在使用 <code>Get</code> 系方法前应该使用 <code>Is</code> 系方法
+判断类型，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsInt</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">int</span><span> i = json.</span><span style="color:#bf616a;">GetInt</span><span>();
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsString</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">const char</span><span>* s = json.</span><span style="color:#bf616a;">GetString</span><span>();
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>如果你不想这么麻烦，希望在类型不匹配时返回默认值，那可以浅封装个函数，例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">def </span><span>= </span><span style="color:#d08770;">0</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsInt</span><span>())
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">return</span><span> json.</span><span style="color:#bf616a;">GetInt</span><span>();
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">return</span><span> def;
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// 或者
+</span><span style="color:#b48ead;">bool </span><span style="color:#8fa1b3;">GetValue</span><span>(rapidjson::Value&amp; </span><span style="color:#bf616a;">json</span><span>, </span><span style="color:#b48ead;">int</span><span>&amp; </span><span style="color:#bf616a;">out</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsInt</span><span>())
+</span><span>    {
+</span><span>        out = json. </span><span style="color:#bf616a;">GetInt</span><span>();
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">true</span><span>;
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">false</span><span>;
+</span><span>}
+</span></code></pre>
+<p>第 2 类错误，也是通过先判断数组长度或对象键存在性来避免：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// int index = 4;
+</span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsArray</span><span>() &amp;&amp; json.</span><span style="color:#bf616a;">Size</span><span>() &gt; index)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; node = json[index];
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">if </span><span>(json.</span><span style="color:#bf616a;">IsObject</span><span>() &amp;&amp; json.</span><span style="color:#bf616a;">HasMember</span><span>(&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;))
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; node = json[&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;];
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// 已判定 json 是 object 类型时，用下面这方法取键更高效
+</span><span style="color:#b48ead;">auto</span><span> it = json.</span><span style="color:#bf616a;">FindMember</span><span>(&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;);
+</span><span style="color:#b48ead;">if </span><span>(it != json.</span><span style="color:#bf616a;">MemberEnd</span><span>())
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; node = it-&gt;</span><span style="color:#bf616a;">value</span><span>;
+</span><span>}
+</span></code></pre>
+<p>在特定的业务函数中，可以在一开始就判断 json 结点类型，非预期类型（如 object）
+就直接报错返回。如果你喜欢用异常，也可以用 <code>try ... catch</code> 将 json 操作封装，
+这就不是本文的话题了。</p>
+<p>第 3 类错误，在 Modern C++ 时代，移动语义该熟悉掌握了。只不过在标准库中，移动
+语义有明显的移动语法如 <code>std::move</code> 或 <code>&amp;&amp;</code> 来提示。而 rapidjson 库是在 C++11
+之前开发的，直接在 <code>rapidjson::Value</code> 类型的 <code>operator =</code> 操作上实现了移动语义
+（类似 rust 的赋值移动），可能会令人迷惑。另外在调用 <code>PushBack</code> 或 <code>AddMember</code>
+后，提供的参数结点也被移动，这两种情况比 <code>=</code> 赋值操作更隐蔽，更易被忽略。</p>
+<p>但这种情况也容易避免，只要像对待第 1 类错误那样在使用前坚持先用 <code>Is</code> 系方法判
+断类型，至少要判断 <code>!IsNull</code> ，就像指针使用前判空那样的习惯。只不过当你深刻理
+解了 rapidjson 的结点操作后，就可适当减少不必要的重复类型判断。</p>
+<p>第 4 类错误，更有迷惑性，主要也是大部分用户对内存池与分配器望而生畏，对
+rapidjson 操作方法普遍存在的 <code>allocator</code> 参数选择视而不见。先硬造一个明显的错
+误示例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>()
+</span><span>{
+</span><span>    rapidjson::Value json;
+</span><span>    {
+</span><span>        rapidjson::Document doc;
+</span><span>        </span><span style="color:#b48ead;">auto</span><span>&amp; allocator = doc.</span><span style="color:#bf616a;">GetAllocator</span><span>();
+</span><span>
+</span><span>        rapidjson::Value node;
+</span><span>        node.</span><span style="color:#bf616a;">SetObject</span><span>();
+</span><span>        node.</span><span style="color:#bf616a;">AddMember</span><span>(&quot;</span><span style="color:#a3be8c;">key1</span><span>&quot;, </span><span style="color:#d08770;">1</span><span>, allocator);
+</span><span>        node.</span><span style="color:#bf616a;">AddMember</span><span>(&quot;</span><span style="color:#a3be8c;">key2</span><span>&quot;, </span><span style="color:#d08770;">2</span><span>, allocator);
+</span><span>
+</span><span>        json = node;
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; node = json[&quot;</span><span style="color:#a3be8c;">key1</span><span>&quot;];
+</span><span>}
+</span></code></pre>
+<p>在上例中，<code>json</code> 结点比 <code>doc</code> 的 DOM 对象生命周期长。内部作用域的 <code>node</code> 对象
+是基于 <code>doc</code> 的内存池构建的，它的两个键值对 <code>key1:1, key2:2</code> 保存在了 <code>doc</code>
+的内存池。随后又通过移动赋值语句，<code>node</code> 的 16 字节栈区数据拷到了 <code>json</code> 的 16
+字节栈区，包括指向 <code>doc</code> 内存池某块区域的那个指针。所以当 <code>doc</code> 离开作用域，释
+放其内存池后，<code>json</code> 所存的指针就野了。再从业务逻辑看，<code>node</code> 用到了 <code>doc</code> 的
+分配器 <code>allocator</code> ，可认为 <code>node</code> 是 <code>doc</code> 的从属结点，或更准确地说计划添加到
+<code>doc</code> 成为其从属结点，但又没调用 <code>doc.AddMember</code> 之类方法真正将 <code>node</code> 挂载到
+<code>doc</code> 根结点之下。所以 <code>node</code> 与 <code>doc</code> 是貌合神离的关系，而 <code>json</code> 结点更是与
+<code>doc</code> 毫无关系，这样子互操就操出问题了。</p>
+<p>当然了，这么操蛋的代码一般人是不会故意写出来的。真实情况会更隐蔽，比如说一棵
+<code>doc</code> 树的的某个键的值来源于另一个 <code>doc</code> ，或者将一个 json 文件的内容，插入到
+另一个 json 文件中（成为其某个键的值，嵌套结点）。又比如，回顾之前有个示例，如
+何将字符串值不规范地保存着序列化 json 文本转化为规范的嵌套结点：</p>
+<pre data-lang="json" style="background-color:#2b303b;color:#c0c5ce;" class="language-json "><code class="language-json" data-lang="json"><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">number</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">123</span><span>&quot;,
+</span><span>  &quot;</span><span style="color:#a3be8c;">object</span><span>&quot;: &quot;</span><span style="color:#a3be8c;">{</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">key</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">:</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">value</span><span style="color:#96b5b4;">\&quot;</span><span style="color:#a3be8c;">}</span><span>&quot;
+</span><span>}
+</span><span style="color:#65737e;">// 需求：转为下面的格式
+</span><span>{
+</span><span>  &quot;</span><span style="color:#a3be8c;">number</span><span>&quot;: </span><span style="color:#d08770;">123</span><span>,
+</span><span>  &quot;</span><span style="color:#a3be8c;">object</span><span>&quot;: {&quot;</span><span style="color:#a3be8c;">key</span><span>&quot;:&quot;</span><span style="color:#a3be8c;">value</span><span>&quot;}
+</span><span>}
+</span></code></pre>
+<p>一个直观的解决方法是：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// allocator-error.cpp
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">const char</span><span>* jsonText = </span><span style="color:#b48ead;">R</span><span>&quot;(</span><span style="color:#a3be8c;">{
+</span><span style="color:#a3be8c;">  &quot;number&quot;: &quot;123&quot;,
+</span><span style="color:#a3be8c;">  &quot;object&quot;: &quot;{\&quot;key\&quot;:\&quot;value\&quot;}&quot;
+</span><span style="color:#a3be8c;">}</span><span>)&quot;;
+</span><span>
+</span><span>    rapidjson::Document doc;
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; allocator = doc.</span><span style="color:#bf616a;">GetAllocator</span><span>();
+</span><span>    doc.</span><span style="color:#bf616a;">Parse</span><span>(jsonText);
+</span><span>    </span><span style="color:#96b5b4;">assert</span><span>(!doc.</span><span style="color:#bf616a;">HasParseError</span><span>());
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">auto</span><span>&amp; object = doc[&quot;</span><span style="color:#a3be8c;">object</span><span>&quot;];
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(object.</span><span style="color:#bf616a;">IsString</span><span>())
+</span><span>    {
+</span><span>        rapidjson::Document sub;
+</span><span>        sub.</span><span style="color:#bf616a;">Parse</span><span>(object.</span><span style="color:#bf616a;">GetString</span><span>());
+</span><span>        </span><span style="color:#b48ead;">if </span><span>(!sub.</span><span style="color:#bf616a;">HasParseError</span><span>())
+</span><span>        {
+</span><span>            object = sub.</span><span style="color:#bf616a;">Move</span><span>();
+</span><span>        }
+</span><span>    }
+</span><span>
+</span><span>    rapidjson::OStreamWrapper </span><span style="color:#bf616a;">os</span><span>(std::cout);
+</span><span>    rapidjson::Writer&lt;rapidjson::OStreamWrapper&gt; </span><span style="color:#bf616a;">writer</span><span>(os);
+</span><span>    doc.</span><span style="color:#bf616a;">Accept</span><span>(writer);
+</span><span>}
+</span></code></pre>
+<p>思路也很直接，将 <code>object</code> 结点的字符串用 <code>Document::Parse</code> 方法重新解析。你当
+然不能再用原来的 <code>doc.Parse</code> ，那会覆盖原 <code>doc</code> 的内容，所以另外定义了一个名为
+<code>sub</code> 的 <code>Document</code> ，解析之后移动赋值回 <code>object</code> 。<code>sub.Move()</code> 方法调用只不
+过是返回或转为 <code>rapidjson::Value&amp;</code> 类型好赋值。虽然 <code>Documnet</code> 是 <code>Value</code> 的子
+类，但直接写 <code>object = sub</code> 的右侧会匹配 <code>Document&amp;</code> 类型参数，无法通过
+rapidjson 库的参数类型安全检查，无法编译，加上 <code>Move</code> 调用才行。所以这方法与
+<code>std::move</code> 方法一样，其实什么也没做，只是转换并返回特定的引用类型，以满足其他
+函数的参数匹配。<code>Move</code> 方法并不是 rapidjson 实现移动语义的本质原因，赋值操作
+<code>=</code> 的重载方法才是。</p>
+<p>好了，这段程序能正常编译与运行。但运气好的话会崩溃，让你第一时间知道错了，运气
+不好的话，只是给出不正确的结果，甚至有时给出正确的结果就更糟糕。问题的关键在于
+<code>doc</code> 与 <code>sub</code> 是两个不同的 <code>Document</code> 对象，默认情况下它们各自有不同的内存池
+背书。<code>sub.Parse</code> 解析出的子结点，放在了 <code>sub</code> 的内存池，却转移给了原来在
+<code>doc</code> 内存池内的 <code>object</code> 结点。这种跨内存池的结点转移，就要出错了，因为 <code>sub</code>
+先离开作用的，它的内存池释放了，而后用的 <code>doc</code> 中还有结点引用它的内存池。</p>
+<p>解决的办法有两个，一个是将 <code>sub</code> 的定义与 <code>doc</code> 放在同一个作用域。另一个更佳的
+办法是在定义 <code>sub</code> 时不要用默认构造函数，而是提供 <code>doc</code> 的内存池分配器给它，告
+诉 <code>sub</code> 在构建时不用再创建自己的内存池，借用 <code>doc</code> 的就好了。这样在 <code>sub</code> 离
+开作用域时不会释放借用的内存池，只有 <code>doc</code> 离开作用域时才会释放它创建它拥有的
+内存池。这样，将 <code>sub</code> 解析出的子结点转移赋值回 <code>object</code> 就安全了，它们都在同
+一个内存池了，属于同内存池的转移。代码改动如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// rapidjson::Document sub;
+</span><span>rapidjson::Document </span><span style="color:#8fa1b3;">sub</span><span>(&amp;</span><span style="color:#bf616a;">allocator</span><span>);
+</span></code></pre>
+<p>正常输出如下：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>{&quot;number&quot;:&quot;123&quot;,&quot;object&quot;:{&quot;key&quot;:&quot;value&quot;}}
+</span></code></pre>
+<h2 id="jie-yu">结语</h2>
+<p>本文从 json 的基本概念入手，阐释了其作为通用对象的表达模型，并结合实践讨论了规
+范使用 json 类型的相关问题。然后介绍了 C++ 作为强类型语言如何表达 json 泛类型
+的概念模型，随之引入了 rapidjson 库的具体实现剖析，重点介绍了其核心结点类
+<code>rapidjson::Vaue</code> 的栈区 16 字节内存布局，及其堆区内存池管理。最后归纳介绍了
+rapidjson 库常用 API 方法的使用，以及分析几类常见误用 rapidjson 的场景。</p>
+<p>本文也指出了 rapidjson 高性能原因，主要来源于移动语义与内存池管理，此外对象内
+能保持键值对有序也是它的一个显著特点。也许它的 API 方法易用性不是最好的，尤其
+是关于字符串、数组与对象的重要操作不可避免要涉及额外的分配器参数，但也容易根据
+个人或项目习惯进行浅封装，以简化常用任务的代码书写。所以这不应该成为选用 json
+库的重要障碍，在可能的情况下，笔者都倾向于推荐 rapidjson 库作为 C++ 项目的
+json 解决方案。况且，rapidjson 库还有诸多高级特性，远非本文所能详尽备述的。</p>
+<h2 id="fu-lu-can-kao-zi-yuan">附录： 参考资源</h2>
+<ul>
+<li><a href="https://github.com/Tencent/rapidjson">源代码库</a> https://github.com/Tencent/rapidjson</li>
+<li><a href="https://rapidjson.org/">官方文档</a> https://rapidjson.org/</li>
+</ul>
+<h2 id="fu-lu-ben-wen-shi-li-yuan-dai-ma">附录： 本文示例源代码</h2>
+<ul>
+<li><a href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/sample.cpp">sample.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/json-concept.cpp">json-concept.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/recursive.cpp">recursive.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/thin-encap.cpp">thin-encap.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/alloctor-error.cpp">alloctor-error.cpp</a> </li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+      <div class="column is-2 is-hidden-mobile">
+        <aside class="menu" style="position: sticky; top: 48px">
+          <p class="heading has-text-weight-bold">目录</p>
+          <ul class="menu-list">
+            
+            <li>
+              <a id="link-xi-shuo-json-lei-xing" class="toc is-size-7 is-active"
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#xi-shuo-json-lei-xing">
+                细说 json 类型
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-liu-da-lei-xing-de-biao-liang-yu-ji-he" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#liu-da-lei-xing-de-biao-liang-yu-ji-he">
+                    六大类型的标量与集合
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-hu-shi-josn-lei-xing-de-wu-qu" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#hu-shi-josn-lei-xing-de-wu-qu">
+                    忽视 josn 类型的误区
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-shen-ru-rapidjson-nei-cun-mo-xing" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#shen-ru-rapidjson-nei-cun-mo-xing">
+                深入 rapidjson 内存模型
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-c-de-json-gai-nian-lei-xing" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#c-de-json-gai-nian-lei-xing">
+                    C++ 的 json 概念类型
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-rapidjson-de-zhi-nei-cun-mo-xing" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#rapidjson-de-zhi-nei-cun-mo-xing">
+                    rapidjson 的值内存模型
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-rapidjson-de-nei-cun-chi-mo-xing" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#rapidjson-de-nei-cun-chi-mo-xing">
+                    rapidjson 的内存池模型
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-qian-chu-rapidjson-shi-yong-fang-fa" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#qian-chu-rapidjson-shi-yong-fang-fa">
+                浅出 rapidjson 使用方法
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-shu-ru-fan-xu-lie-hua-yu-shu-chu-xu-lie-hua" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#shu-ru-fan-xu-lie-hua-yu-shu-chu-xu-lie-hua">
+                    输入反序列化与输出序列化
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-ge-json-lei-xing-de-pan-duan-yu-cao-zuo" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#ge-json-lei-xing-de-pan-duan-yu-cao-zuo">
+                    各 json 类型的判断与操作
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-chang-jian-wu-yong-rapidjson-de-wen-ti" class="toc is-size-7" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#chang-jian-wu-yong-rapidjson-de-wen-ti">
+                    常见误用 rapidjson 的问题
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-jie-yu" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#jie-yu">
+                结语
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-fu-lu-can-kao-zi-yuan" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#fu-lu-can-kao-zi-yuan">
+                附录： 参考资源
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-fu-lu-ben-wen-shi-li-yuan-dai-ma" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/#fu-lu-ben-wen-shi-li-yuan-dai-ma">
+                附录： 本文示例源代码
+              </a>
+              
+            </li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;cpp-namespace-pratical&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              C++ 命名空间理解与践行
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;make-as-sub-command&#x2F;">
+              make 不干编译事的清奇妙用：子命令模式脚本<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+<script type="text/javascript">
+  const menuBarHeight = document.querySelector("nav.navbar").clientHeight;
+  const tocItems = document.querySelectorAll(".toc");
+  const navSections = new Array(tocItems.length);
+
+  tocItems.forEach((el, i) => {
+    let id = el.getAttribute("id").substring(5);
+    navSections[i] = document.getElementById(id);
+  })
+
+  function isVisible(tocIndex) {
+    const current = navSections[tocIndex];
+    const next = tocIndex < tocItems.length - 1 ? navSections[tocIndex + 1]
+      : document.querySelectorAll("section.section").item(1);
+
+    const c = current.getBoundingClientRect();
+    const n = next.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+
+    return (c.top <= h) && (n.top - menuBarHeight >= 0);
+  }
+
+  function activateIfVisible() {
+    for (b = true, i = 0; i < tocItems.length; i++) {
+      if (b && isVisible(i)) {
+        tocItems[i].classList.add('is-active');
+        b = false;
+      } else
+        tocItems[i].classList.remove('is-active');
+    }
+  }
+
+  var isTicking = null;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        activateIfVisible();
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, false);
+</script>
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - vim</title>
+    <link href="https://lymslive.github.io/tags/vim/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-03T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/vim/atom.xml</id>
+    <entry xml:lang="en">
+        <title>vim 笔记插件 vnote 设计反思</title>
+        <published>2023-12-03T00:00:00+00:00</published>
+        <updated>2023-12-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/vnote-introspection/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/vnote-introspection/</id>
+        
+        <summary type="html">&lt;p&gt;几年前，刚转行为专职程序员不久时，出于对 vim 的喜爱与信仰，自己开发了一个 vim
+插件，以支持在 vim 环境内记笔记及管理笔记。我知道市面上有不少笔记软件，但记笔
+记这事是很个性化的东西，而且很多吹成云笔记的产品，把个人笔记上传到人家服务器上，
+怎么都觉得有点敏感。所以我决定就用 vim 在本地写 markdown 文本笔记，要怎么上传
+至 github 托管仓库，也是自己能完全控制的。基于这个出发点，我自行设计并开发
+vnote 插件，虽然基本只是给自己用吧，当初也乐此不疲。&lt;&#x2F;p&gt;
+&lt;p&gt;但是再过几年回头再看，这个插件软件可能设计的不尽如人意。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

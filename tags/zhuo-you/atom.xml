@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - 桌游</title>
+    <link href="https://lymslive.github.io/tags/zhuo-you/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2015-02-27T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/tags/zhuo-you/atom.xml</id>
+    <entry xml:lang="en">
+        <title>uno游戏漫谈</title>
+        <published>2015-02-27T00:00:00+00:00</published>
+        <updated>2015-02-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/think/talk-about-uno/" type="text/html"/>
+        <id>https://lymslive.github.io/think/talk-about-uno/</id>
+        
+        <summary type="html">&lt;!-- # uno游戏漫谈 --&gt;
+&lt;!--原址：新浪博客 (2015-02-27 15:26:57) http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_490c36be0102vd00.html --&gt;
+&lt;!-- uno 游戏漫谈 --&gt;
+&lt;!-- 七阶子&#x2F;2015-2 --&gt;
+&lt;h2 id=&quot;yi&quot;&gt;（一）&lt;&#x2F;h2&gt;
+&lt;p&gt;春节期间，我回老家，向家人引荐一种他们从未见过的“扑克”牌，即纸牌 uno ，泊来
+品，洋玩意。虽然扑克大抵也是泊来品，但它早己是妇孺皆知的了。而 uno 则还是新贵
+，1971才被欧洲人发明。&lt;&#x2F;p&gt;
+&lt;p&gt;我老家是赣南客家农村，父辈们多是外出打工的农民工，孩子们呢，虽然如今大学生批量
+生产，但我们那的孩子能上大学的还是不算多。总之，老家的亲朋好友们文化层次都不太
+高，但是对于陌生新奇的 uno 牌，还是能很快上手，乐在其中。尤其是我的一些堂弟妹
+，说是被之吸引而沉迷也不夸张——因为他们不能像大人们那样打扑克赌钱的。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>也谈三国杀3v3平衡性之个人见解</title>
+        <published>2011-01-27T00:00:00+00:00</published>
+        <updated>2011-01-27T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/think/sanguosha-3v3-balance-discuss/" type="text/html"/>
+        <id>https://lymslive.github.io/think/sanguosha-3v3-balance-discuss/</id>
+        
+        <summary type="html">&lt;!-- # 也谈三国杀3v3平衡性之个人见解 --&gt;
+&lt;!--原址：新浪博客 (2012-11-14 16:38:18) http:&#x2F;&#x2F;blog.sina.com.cn&#x2F;s&#x2F;blog_490c36be0101fjsf.html --&gt;
+&lt;!-- 也谈三国杀3v3平衡性之个人见解 --&gt;
+&lt;!-- 七阶子（2011-01-27） --&gt;
+&lt;!-- 首帖地址：http:&#x2F;&#x2F;tieba.baidu.com&#x2F;p&#x2F;986234628 --&gt;
+&lt;p&gt;（按：首发于百度贴吧）&lt;&#x2F;p&gt;
+&lt;p&gt;　　先随便说些什么吧。基本只有OL机会，鲜有面杀机会的小彩笔，潜水良久，读过诸多
+大大的文章，对我的实践与理论都深有启发，因而也想写写自己的心得吧。&lt;&#x2F;p&gt;
+&lt;p&gt;　　本文基于三国杀3v3竞技的平衡性。若说平衡性与娱乐性有什么矛盾，使本文的一些
+设想会些许降低娱乐性，那也无奈，请无视吧。其实，我非常希望三国杀能不断完善，最
+终像中国象棋一样成为富有中国特色的大众棋牌游戏。所以，我也更关注其中的文化性，
+而不懂考虑其商业性。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | 探索 systemd 管理服务之旅
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            探索 systemd 管理服务之旅
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-11-21">2023-11-21</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>46 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>9088 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/gong-ju-shi-yong/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>工具使用</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/linux/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>linux</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/systemd/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>systemd</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <!-- # 探索 systemd 管理服务之旅 -->
+<p>最近学习了用 systemd 管理服务，感觉挺有趣。故有意写下自己的心路历程与人分享。
+systemd 是 linux 下的系统管理工具，功能强大，其实远不限于管理服务，不过本文暂
+且先只讨论服务。</p>
+<span id="continue-reading"></span><h2 id="fu-wu-yu-cheng-xu-you-xian-yu-wu-xian-de-hello-world">服务与程序：有限与无限的 Hello World</h2>
+<p>首先明确与界定概念。什么叫服务？我认为服务也不过是一种或一类程序，其特征是一般
+会长期在后台运行。若用更专业的术语，正在跑的程序叫进程，那才称得上服务。不过在
+不会太混淆的情况下，我们仍可用更通俗的程序一词。</p>
+<p>从这个角度看，程序可分为两种。第一种是短命的，可预期能快速终止的程序；第二种是
+意在长期运行的，甚至可能理论上是无限期运行的。服务就是这第二种程序。</p>
+<p>短命的程序，最著名的就是每个语言学习的第一个 <code>Hello World</code> 程序，例如：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// hello-world.c
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Hello, World!</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Hello, World!!</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>当然，有很多命令行工具是实用的短命程序，如 <code>ls</code> ，它执行完一次特定任务就自然退
+出，成功地退出。</p>
+<p>长寿的程序，最简单的实现方式就是使用一个无限循环，让它永远不会从 <code>main</code> 返回，
+例如：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// hello-forever.c
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">while </span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Hello, World!</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>        </span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>);
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>不过，有意义的长寿程序是会在无限循环中做具体工作的，比如网络服务，可能就会监听
+一个端口，在无限循环中用 <code>accept()</code> 函数等待一个客户端连接。当然，业界实际的网
+络服务可能是用 <code>epoll</code> 循环。因此这不仅是长寿，本质上更是恒寿。</p>
+<h2 id="cheng-xu-de-qi-dong-yao-shou-chang-shou-yu-heng-shou">程序的启动：夭寿、长寿与恒寿</h2>
+<p>现在，假设我们已经将程序源代码编译为可执行程序文件，下一步就该考虑如何启动、运
+行它了。</p>
+<h3 id="bu-tong-shou-ming-de-cheng-xu-qi-dong-fang-shi">不同寿命的程序启动方式</h3>
+<p>对于短命或夭寿的程序，很简单，直接敲在命令行上就是，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./hello-world.exe
+</span><span style="color:#bf616a;">Hello,</span><span> World!
+</span><span style="color:#65737e;"># output go here
+</span></code></pre>
+<p>注：linux 可执行文件一般不用 <code>.exe</code> 后缀，但在文章表述中，我觉得加上后缀更达意。
+<code>$</code> 表示 shell 的提示符，其后的文本是用户输入的，需要按回车。以 <code>#</code> 开头的行表
+示注释，解释之用。行首没有特殊字符的表示程序的输出。</p>
+<p>计算机的运行速度相对人的感官是很快的，所以对于很大一部分命令行工具程序，它很快
+就能执行完毕而退出，即时反馈结果给终端用户，而这往往是用户需要的。</p>
+<p>当然有时也会遭遇意外，本该夭寿的程序没如期快速结束。原因可能是涉及复杂计算，或
+者要扫描大量文件，或者要访问网络的程序遇到卡网速了，等等。比较实际的例子是，编
+译大型 C++ 或 rust 项目，以及执行其中大量的单元测试用例，那很可能就不是秒级的
+时间尺度能完成，而需要按分钟或小时计。</p>
+<p>这种情况不妨称之为夭寿程序的异化。有时夭寿程序的异化只因输入了错误的参数或配置
+，如果是这样，当你在命令行发出启动命令后，对它没有及时结束感到焦虑或困惑时，可
+以按 <code>ctrl-c</code> 中断程序运行，检查参数配置之类的再次执行试试看。</p>
+<p>当确认启动姿势没问题，完成该任务确实需要花费不短时间后，你只能耐心等它结束。好
+在现代操作系统早已脱离原始蛮荒时代，都支持多任务并行了，你只需重要打开一个（虚
+拟）终端就可以同时做其他事情，并不一定要干等着。不过，若限于当前连接的终端讨论
+，你仍然可以按 <code>ctrl-z</code> 将正在运行的（夭寿异化为长寿）程序挂起在后台，回到终端
+允你执行其他命令。不过注意被这样挂起的程序是暂停的，可以用 <code>fg</code> 命令将它重新拉
+到前台才能继续执行，才有可能跑到终点。该过程大约如下所示：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./hello-world.exe 
+</span><span style="color:#65737e;"># wait for short or long time
+</span><span style="color:#bf616a;">^Z
+</span><span style="color:#bf616a;">[1]+</span><span>  Stopped                 ./hello-world.exe
+</span><span style="color:#65737e;"># suspend to do other quick task
+</span><span style="color:#bf616a;">$</span><span> fg
+</span><span style="color:#65737e;"># continue run the suspend process
+</span></code></pre>
+<p>此外，也可以用 <code>bg</code> 命令将它置于后台运行且不会暂停，示意如下：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./hello-world.exe 
+</span><span style="color:#bf616a;">^Z
+</span><span style="color:#bf616a;">[1]+</span><span>  Stopped                 ./hello-world.exe
+</span><span style="color:#bf616a;">$</span><span> bg
+</span><span style="color:#bf616a;">[1]+</span><span> ./hello-world.exe &amp;
+</span><span style="color:#65737e;"># return to shell to do other task
+</span></code></pre>
+<p>注：这里请不要在意仍用 <code>hello-world.exe</code> 程序示意，如按本文开头的代码编译，它
+将是毫无意外的夭寿程序，故这里指代其他任意有潜质异化为长寿的程序。</p>
+<p>然后，如果你已经摸清了该程序的脾性，能预测在某种情况下将长寿地运行，就可以直接
+在启动时加上 <code>&amp;</code> 表示后台运行。如此它会在打印启动的进程 pid 后快速返回 shell ：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ./hello-world.exe &amp;
+</span><span style="color:#bf616a;">[1]</span><span> 167
+</span><span style="color:#65737e;"># return to shell quickly
+</span></code></pre>
+<p>置于后台运行的程序，断开了对终端控制，将不能从标准输入读取数据了，但仍能向标准
+输出与标准错误（默认都是终端），有时这会干扰终端打印。因此，后台运行的程序，也
+常常伴随着输入输出重定向，形如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat input-file | </span><span style="color:#bf616a;">./hello-world.exe </span><span>&gt;output-file </span><span style="color:#d08770;">2</span><span>&gt;/dev/null
+</span></code></pre>
+<p>可以想象，已经异化为长寿的程序，在某方面的表现形式上已经接近恒寿程序了。但它们
+仍然有本质的区别，异化的程序再怎么长寿，也是有限寿命的，与从根本上设计为无限循
+环的恒寿程序仍有天壤之别。在现实项目中，异化的长寿程序，跑个几小时，已经很恐怖
+了，但作为恒寿程序的服务，至少要按天跑吧，而严肃的高可用服务，那是要求长年累月
+不间断运行的。</p>
+<p>所以，对于恒寿程序，也许在开发、测试中，可以参考长寿程序的启动，简单地在未尾加
+个 <code>&amp;</code> 置于后台运行（甚至不加），但在服务正常运行时，这还是不够的。问题在于，
+当 shell 断开当前连接会话时，从该 shell 会话启动的后台程序也会被终止。解决之道
+是在前面再加个 <code>nohup</code> ：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> nohup ./hello-forever.exe &amp;
+</span><span style="color:#bf616a;">[1]</span><span> 170
+</span><span style="color:#bf616a;">nohup:</span><span> ignoring input and appending output to &#39;</span><span style="color:#a3be8c;">nohup.out</span><span>&#39;
+</span></code></pre>
+<p>理解 <code>nohup</code> 的关键，在于理解 <code>HUP</code> 信号。当 shell 断开时，会向其下派生的所有
+进程发送 <code>HUP</code> 信号，该信号的默认动作就是终止进程。所以当 shell 断开时，由该会
+话创建的进程也会随之终止。<code>nohup</code> 的意图，就是指定其后启动的进程，忽略 <code>HUP</code>
+信号，于是不会因为 shell 的断开而终止。这正是恒寿程序的需求。</p>
+<p>另外注意到，在用 <code>nohup</code> 结合 <code>&amp;</code> 启动程序时，如果没有显式将标准输出重定向，它
+会默认重定向到 <code>nohup.out</code> 文件。毕竟当前终端是可能被关闭的，它无法再写到当前
+终端，必须重定向。</p>
+<h3 id="guan-li-heng-shou-fu-wu-de-wen-ti">管理恒寿服务的问题</h3>
+<p>终于，我们能将某个服务（恒寿程序）以较为靠谱的姿势拉起了，但这只是万里长征的第
+一步而已。因为作为需要长期运行的程序而言，后续的管理与监控也是至关重要的。</p>
+<p>首先容易想起的问题是，我如何知道它一直在运行？或者转化为一个更实际的问题，将来
+的任一时刻，我得有办法观察到它还在运行。这个其实容易的，用 <code>ps</code> 命令加 <code>grep</code>
+就能看到它是否还在运行，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> ps aux | </span><span style="color:#bf616a;">grep</span><span> hello
+</span><span style="color:#bf616a;">lymslive</span><span>   170  0.0  0.0  10540   528 pts/1    S    23:30   0:00 ./hello-forever.exe
+</span><span style="color:#bf616a;">lymslive</span><span>   193  0.0  0.0  14804  1196 pts/1    S    23:43   0:00 grep</span><span style="color:#bf616a;"> --color</span><span>=auto hello
+</span></code></pre>
+<p>每个人尝试时具体的输出应该不一样，其中 <code>170</code> 是进程的 PID ，与它刚启动时打印在
+终端的 PID 是一致的。</p>
+<p>另一个不算难但比较烦的问题是，每次启动时，容易忘记 <code>nohup</code> 或 <code>&amp;</code> ，尤其是还要
+加命令行参数时，写起来更麻烦。如此，可考虑封装一个启动脚本，顺便还可以加环境变
+量设置或其他必要扩展。例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat run-hello-forever.sh
+</span><span style="color:#65737e;">#!/bin/bash
+</span><span style="color:#65737e;"># 设若还需依赖不在系统默认路径中的动态链接库
+</span><span style="color:#b48ead;">export </span><span style="color:#bf616a;">LD_LIBRARY_PATH</span><span>=$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">LD_LIBRARY_PATH</span><span style="color:#a3be8c;">}:./libs
+</span><span style="color:#65737e;"># 设若程序启动接受命令行参数配置
+</span><span style="color:#bf616a;">nohup</span><span> ./hello-forever.exe hello-forever.ini &amp;
+</span></code></pre>
+<p>然后一个更重要的监控问题是，如果服务进程意外崩溃了，该如何及时重启？一个直观的
+想法是，可以尝试利用上面的 <code>ps | grep</code> 命令，额外写个监控脚本，在无限循环中检
+测相应的服务进程是否还在，如果不在了，就重启它。大致流程例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat monitor-hello-forever.sh
+</span><span style="color:#65737e;">#!/bin/bash
+</span><span style="color:#65737e;"># 示意脚本，请勿食用
+</span><span>
+</span><span style="color:#bf616a;">psCount</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">ps</span><span style="color:#a3be8c;"> aux </span><span>| </span><span style="color:#bf616a;">grep</span><span style="color:#a3be8c;"> hello-forever.exe </span><span>| </span><span style="color:#bf616a;">grep -v</span><span style="color:#a3be8c;"> grep </span><span>| </span><span style="color:#bf616a;">wc -l</span><span style="color:#a3be8c;">)
+</span><span style="color:#b48ead;">while </span><span style="color:#96b5b4;">[[ </span><span>&quot;$</span><span style="color:#bf616a;">psCount</span><span>&quot; == &quot;</span><span style="color:#a3be8c;">0</span><span>&quot; </span><span style="color:#96b5b4;">]]</span><span>; </span><span style="color:#b48ead;">do
+</span><span>    </span><span style="color:#bf616a;">./run-hello-forever.sh
+</span><span>    </span><span style="color:#bf616a;">sleep</span><span> 10
+</span><span>    </span><span style="color:#bf616a;">psCount</span><span>=$</span><span style="color:#a3be8c;">(</span><span style="color:#bf616a;">ps</span><span style="color:#a3be8c;"> aux </span><span>| </span><span style="color:#bf616a;">grep</span><span style="color:#a3be8c;"> hello-forever.exe </span><span>| </span><span style="color:#bf616a;">grep -v</span><span style="color:#a3be8c;"> grep </span><span>| </span><span style="color:#bf616a;">wc -l</span><span style="color:#a3be8c;">)
+</span><span style="color:#b48ead;">done
+</span></code></pre>
+<p>另注：在实际的项目中，也许只检测进程仍在还不够，有时虽然进程还在，但意外卡死了
+，不能处理业务……这也叫健康度或活性检测。这可能已超出本文的范围，这里只讨论最
+简单的进程存在性问题，毕竟这是作为恒寿程序的基本素养。但即便如此，这个手撸的监
+控脚本也存在诸多问题：</p>
+<ul>
+<li>这个 <code>monitor-hello-forever.sh</code> 脚本使用了循环，所以它也是个恒寿程序，也得用
+<code>nohup ... &amp;</code> 来启动它，如果嫌弃这写法麻烦且丑陋，还得另外再封装个脚本，这就
+套娃了啊，为脚本再想个名字都是个事。</li>
+<li>只在监控脚本 <code>monitor-hello-forever.sh</code> 判断了服务进程不在时启动它，但在启动
+脚本 <code>run-hello-forever.sh</code> 中却没有判断若服务进程存在时避免重复启动，有没可
+能在监控脚本的 <code>while</code> 循环中出现 bug 为服务反复启动很多进程呢？</li>
+<li>用 <code>ps | grep | wc</code> 判断进程数是很粗糙的做法，手动查看时问题可能不大，但在脚
+本中判断就太脆弱了。例如，也幸好这里违反 linux 习惯加了 <code>.exe</code> 后缀，歪打正
+着了，否则在编辑配置文件 <code>vim hello-forever.ini</code> 时就有可能使 <code>grep hello-forever</code> 误判。</li>
+</ul>
+<p>这里指出问题，并不是想怎么把上面的启动脚本与监控脚本优化，而是想要说明，当你试
+图手搓脚本去管理服务（恒寿程序）时，那是吃力不讨好的事情，有很多坑等着你跳。正
+确的姿势是跳到更高的维度，用专门的服务管理工具来做这事。在 linux 系统中，
+<code>systemd</code> 就是这样的利器，你值得拥有。</p>
+<h2 id="xi-tong-de-fu-wu-guan-li-li-qi-systemd-yu-systemctl">系统的服务管理利器：systemd 与 systemctl</h2>
+<p>如果用 <code>ps</code> 查看，会发现 <code>systemd</code> 的进程 pid 为 1 ，表示它是 linux 启动后的第
+一个进程，其他进程都是从它 fork 出来的。正可谓开天避地，万物之主。</p>
+<p>按本文开始对程序的划分标准，显然 <code>systemd</code> 也是个恒寿程序，它必须在后台始终运
+行着，才能管理其他服务，就像我们上节手撸的监控脚本一样，当然其位格是不可同日而
+喻的。而 <code>systemctl</code> 命令可以与 <code>systemd</code> 通讯，每次完成执行一个具体的任务，
+所以它是辅助的夭寿程序。打个比方，<code>systemd</code> 就是上神本尊，一般人看不见摸不着，
+而 <code>systemctl</code> 恰像可以上达天听的巫师，普通人就能通过祭祀巫师来向上神祈求。</p>
+<p>所以对于普通用户而言，<code>systemctl</code> 就是拥有很多魔法的工具命令，只要掌握这个命令
+的常用用法，以及了解一些 <code>systemd</code> 约定的配置方法，就可以很好地管理所需的其他
+服务了。如果用过 <code>docker</code> ，那么 <code>systemctl</code> 与 <code>systemd</code> 的关系，就如
+<code>docker</code> 与 <code>dockerd</code> 的关系。</p>
+<p>另外，从命名可猜测到，<code>systemctl</code> 可能需要 root 登陆或使用 <code>sudo</code> 才能执行那些
+能影响 <code>systemd</code> 的命令。不过为行文简便起见，下面的示例会省略前导 <code>sudo</code> ，自
+行实践时如果遇到权限问题可酌情加上 <code>sudo</code> 。</p>
+<h3 id="wei-systemd-pei-zhi-jian-dan-de-heng-shou-cheng-xu-fu-wu">为 systemd 配置简单的恒寿程序服务</h3>
+<p>为了能让 <code>systemd</code> 管理我们上面写的 <code>hello-forever.exe</code> 恒寿程序，可以在
+<code>/etc/systemd/system/</code> 目录下添加一个 <code>hello-forever.service</code> 配置文件。按
+<code>systemd</code> 的术语，这也叫单元文件（unit file），除 <code>service</code> 外，它还支持其他多
+种单元文件，各用相应不同的后缀区分，暂且不论。</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-forever.service
+</span><span>
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">The </span><span style="color:#bf616a;">famous</span><span> hello-world service for ever.
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">WorkingDirectory</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/cwd
+</span><span style="color:#bf616a;">Environment</span><span>=</span><span style="color:#a3be8c;">LD_LIBRARY_PATH=</span><span>$</span><span style="color:#a3be8c;">{</span><span style="color:#bf616a;">LD_LIBRARY_PATH</span><span style="color:#a3be8c;">}:./libs
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-forever.exe </span><span style="color:#bf616a;">hello-forever.ini
+</span><span style="color:#bf616a;">Restart</span><span>=</span><span style="color:#a3be8c;">always
+</span></code></pre>
+<p>这里，<code>[Unit]</code> 段只有一行卖萌的描叙字段，其实是可以省略的。但一般都要求有基本
+的 <code>[Unit]</code> 段，比如实际的服务可能依赖其他服务，就可配置这段下。</p>
+<p>服务类单元配置要求有 <code>[Service]</code> 段，其中最重要的是 <code>ExecStart</code> 字段，表示如何启
+动服务的命令行语句。注意几点：</p>
+<ul>
+<li>可执行程序文件名必须用绝对路径</li>
+<li>像在命令行执行夭寿程序一样将恒寿程序运行在前台，不用加 <code>nohup</code> 与 <code>&amp;</code></li>
+<li>实际上不允许重定向符、管道符及 <code>&amp;</code> ，如有也只是当作普通命令行参数传给程序</li>
+</ul>
+<p>环境变量按需添加在 <code>Environment</code> 字段（也可用 <code>EnvironmentFile</code> 字段）。如果程
+序涉及按相对路径读写文件，则要在 <code>WorkingDirectory</code> 字段中配上当前工作路径。</p>
+<p>重启策略配在 <code>Restart</code> 字段，大部分情况下可无脑 <code>always</code> 总是重启，比较省心。</p>
+<p>如果在添加该配置单元文件之前执行 <code>systemctl status</code> ，它应该会提示找不到相关
+service 文件：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl status hello-forever
+</span><span style="color:#bf616a;">Unit</span><span> hello-forever.service could not be found.
+</span></code></pre>
+<p>在添加配置后，再次查看状态，则如下：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl status hello-forever
+</span><span style="color:#bf616a;">●</span><span> hello-forever.service
+</span><span>   </span><span style="color:#bf616a;">Loaded:</span><span> loaded (/etc/systemd/system/hello-forever.service; </span><span style="color:#bf616a;">static</span><span>; </span><span style="color:#bf616a;">vendor</span><span> preset: disabled)
+</span><span>   </span><span style="color:#bf616a;">Active:</span><span> inactive (dead)
+</span></code></pre>
+<p>可见它指明了服务未启动。执行 <code>start</code> 子命令后再次 <code>status</code> 查看状态，输出形如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl start hello-forever
+</span><span style="color:#bf616a;">$</span><span> systemctl status hello-forever
+</span><span style="color:#bf616a;">●</span><span> hello-forever.service
+</span><span>   </span><span style="color:#bf616a;">Loaded:</span><span> loaded (/etc/systemd/system/hello-forever.service; </span><span style="color:#bf616a;">static</span><span>; </span><span style="color:#bf616a;">vendor</span><span> preset: disabled)
+</span><span>   </span><span style="color:#bf616a;">Active:</span><span> active (running) </span><span style="color:#bf616a;">since</span><span> Mon 2023-11-27 09:39:31 CST; </span><span style="color:#bf616a;">2s</span><span> ago
+</span><span> </span><span style="color:#bf616a;">Main</span><span> PID: 593521 (hello-forever.e)
+</span><span>    </span><span style="color:#bf616a;">Tasks:</span><span> 1
+</span><span>   </span><span style="color:#bf616a;">Memory:</span><span> 88.0K
+</span><span>   </span><span style="color:#bf616a;">CGroup:</span><span> /system.slice/hello-forever.service
+</span><span>           </span><span style="color:#bf616a;">└─593521</span><span> /absolute/path/to/hello-forever.exe
+</span><span>
+</span><span style="color:#bf616a;">Nov</span><span> 27 09:39:31 hostname systemd</span><span style="color:#b48ead;">[</span><span>1</span><span style="color:#b48ead;">]</span><span>: Started hello-forever.service.
+</span></code></pre>
+<p>注意，<code>start</code> 启动失败会有错误提示输出，但启动成功不会有任何输出，可以用
+<code>status</code> 子命令确认启动成功并且查看其他有关状态信息及最近几条日志信息。如果是
+有颜色的终端，运行状态还会用绿色状态标记出来。</p>
+<p>可以通过状态输出的 PID ，用 <code>kill -9</code> 杀死服务进程，但不建议这么做。另外由于配
+置了重启策略为 <code>always</code> ，用 <code>kill</code> 杀死服务进程后，或因其他意外崩溃后，会自动
+重启服务。如果要停止服务，请用 <code>stop</code> 子命令，例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl stop hello-forever
+</span></code></pre>
+<p>除了 <code>start</code> 与 <code>stop</code> 命令外，常用的还有 <code>restart</code> 与 <code>reload</code> 。其中
+<code>reload</code> 需要相应的服务本身支持重新加载（配置），并且要配置正确的命令，比如
+nginx 就支持 <code>reload</code> 。</p>
+<h3 id="pei-zhi-fork-yu-daemonize-fu-wu">配置 fork 与 daemonize 服务</h3>
+<p>如前所述，一般的长寿程序想在命令行优雅地启动，需要用 <code>nohup</code> 与 <code>&amp;</code> 修饰。但通
+过一些技巧，可以避免这两个累赘的饰品，直接像夭寿程序那样简单启动。其核心思想就
+是先 <code>fork</code> 系统调用，父进程夭寿退出（返回 shell），子进程恒寿永存提供服务。大
+致代码框架如下：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// hello-daemon.c
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">unistd.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    pid_t pid = </span><span style="color:#bf616a;">fork</span><span>();
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(pid == </span><span style="color:#d08770;">0</span><span>) { </span><span style="color:#65737e;">// child process
+</span><span>        </span><span style="color:#b48ead;">while </span><span>(</span><span style="color:#d08770;">1</span><span>)
+</span><span>        {
+</span><span>            </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Hello World!</span><span style="color:#96b5b4;">\n</span><span>&quot;);
+</span><span>            </span><span style="color:#bf616a;">sleep</span><span>(</span><span style="color:#d08770;">1</span><span>);
+</span><span>        }
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else if </span><span>(pid &gt; </span><span style="color:#d08770;">0</span><span>) { </span><span style="color:#65737e;">// parent process
+</span><span>        </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else </span><span>{ </span><span style="color:#65737e;">// fork failed
+</span><span>        </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>为了有所区分，不妨将这类恒寿程序称为隐世恒寿，父为子隐，父进程虽然亡了，但子进
+程延续了所有精神，实现了其价值。相对的，之前介绍的简单在前台运行的可称为入世恒
+寿程序。</p>
+<p>一些著名的服务软件，如 <code>nginx</code> 就可以直接启动服务，盖因在其启动流程中也有类似
+的设计。</p>
+<p>显然，这个设计也能解决恒寿程序启动命令输入不友好的问题，但如果我们自己每次想写
+一个恒寿程序或服务时，都要按步就班写这套 <code>fork</code> 的三路 <code>if else</code> ，又嫌烦或重
+复了。于是，可以专门写个程序，将其他长寿程序转化为后台服务——只需将上述代码中，
+在子进程分支的关键业务代码中用 <code>exce</code> 系列函数调用目标恒寿程序即可。</p>
+<p><code>systemd</code> 能启动其他长寿程序，大致也是使用 <code>fork</code> 子进程再用 <code>exce</code> 替换进程，
+当然还涉及其他许多必要的设置，使得子进程能纳入自身的管理范畴。</p>
+<p>然后，<code>systemd</code> 也能管理这类带 <code>fork</code> 的隐世长寿程序，只要加上配置字段 <code>Type</code>
+是 <code>forking</code> ：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-daemon.service
+</span><span>
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">The </span><span style="color:#bf616a;">famous</span><span> hello-world service with daemon forked self.
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">Type</span><span>=</span><span style="color:#a3be8c;">forking
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-daemon.exe
+</span><span style="color:#bf616a;">Restart</span><span>=</span><span style="color:#a3be8c;">always
+</span></code></pre>
+<p>其中，<code>Type</code> 的默认值是 <code>simple</code> ，所以上一节的 <code>hello-forever.service</code> 可以省
+略不配。启动该服务再查看状态：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl start hello-deamon
+</span><span style="color:#bf616a;">$</span><span> systemctl status hello-deamon
+</span><span style="color:#bf616a;">●</span><span> hello-deamon.service - The famous hello-world service with deamon forked self.
+</span><span>   </span><span style="color:#bf616a;">Loaded:</span><span> loaded (/etc/systemd/system/hello-deamon.service; </span><span style="color:#bf616a;">static</span><span>; </span><span style="color:#bf616a;">vendor</span><span> preset: disabled)
+</span><span>   </span><span style="color:#bf616a;">Active:</span><span> active (running) </span><span style="color:#bf616a;">since</span><span> Mon 2023-11-27 14:52:00 CST; </span><span style="color:#bf616a;">6s</span><span> ago
+</span><span>  </span><span style="color:#bf616a;">Process:</span><span> 56600 ExecStart=/absolute/path/to/hello-deamon.exe (code=exited, status=0/SUCCESS)
+</span><span> </span><span style="color:#bf616a;">Main</span><span> PID: 56601 (hello-deamon.ex)
+</span><span>    </span><span style="color:#bf616a;">Tasks:</span><span> 1
+</span><span>   </span><span style="color:#bf616a;">Memory:</span><span> 196.0K
+</span><span>   </span><span style="color:#bf616a;">CGroup:</span><span> /system.slice/hello-deamon.service
+</span><span>           </span><span style="color:#bf616a;">└─56601</span><span> /absolute/path/to/hello-deamon.exe
+</span><span>
+</span><span style="color:#bf616a;">Nov</span><span> 27 14:52:00 hostname systemd</span><span style="color:#b48ead;">[</span><span>1</span><span style="color:#b48ead;">]</span><span>: Starting The famous hello-world service with deamon forked self....
+</span><span style="color:#bf616a;">Nov</span><span> 27 14:52:00 hostname systemd</span><span style="color:#b48ead;">[</span><span>1</span><span style="color:#b48ead;">]</span><span>: Started The famous hello-world service with deamon forked self..
+</span></code></pre>
+<p>若仔细对比上节 <code>hello-forever.service</code> 的启动后的状态输出，能发现有两点主要的
+不同：</p>
+<ol>
+<li>在 <code>Active</code> 与 <code>Main PID</code> 两行之间，多了一行指出 <code>hello-deamon.exe</code> 进程成
+功退出了，这就是退出的父进程。</li>
+<li>末尾的日志，多了一行 <code>Starting ...</code> 。这是说 <code>forking</code> 类型的 <code>service</code>, 
+父进程被 <code>systemd</code> 当作了服务启动流程的一部分，当父进程成功退出时，
+<code>systemd</code> 才认为该服务状态是 <code>Started ...</code> 。而对于 <code>simple</code> 服务，
+当它的主进程启动后就认为是 <code>Started ...</code> 了。</li>
+</ol>
+<p>然后，<code>hello-daemon.exe</code> 的父进程终止后，子进程的 PID 被 <code>systemd</code> 当成了该服
+务的 <code>Main PID</code> 记录在案。因为在我们的示例中，只余下一个子进程在跑了，这个假设
+是合理。</p>
+<p>但如果 <code>forking</code> 型服务本身还有复杂的多进程架构，例如 <code>nginx</code> 的一个主进程与多
+个工作进程。那么 <code>systemd</code> 可能就很难正确选择哪个进程 PID 记录为服务的 <code>Main PID</code> 了，于是要求在配置中明确在 <code>[service]</code> 段添加 <code>PIDFile</code> 表示目标程序会自
+己记录 pid 到一个外部文件，例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat &gt;&gt; /etc/systemd/system/hello-deamon.service
+</span><span style="color:#bf616a;">PIDFile</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-deamon.pid
+</span><span style="color:#bf616a;">^D
+</span></code></pre>
+<p>注意，<code>PIDFile</code> 配置也要求是绝对路径，但并不要求一定与程序文件名在同一个路径下，
+这完全取决于目标程序自己写在哪里。<code>systemd</code> 会读取该文件，将其内容当成目标服务
+的 <code>Main PID</code> 记录起来。</p>
+<p>问：既然 <code>forking</code> 型 service （隐世恒寿程序）自己就能独立地优雅启动，为何还要
+用 <code>systemd</code> 配置？</p>
+<p>答：利用 <code>fork</code> 后台化程序，是在 <code>systemd</code> 流行之前就广泛使用的技巧或设计方法，
+因而 <code>systemd</code> 想包罗万象，就得兼容这种服务程序。且由于 <code>systemd</code> 提供了额外的
+管理便利，故这类服务程序乐于纳入 <code>systemd</code> 的管理。</p>
+<h3 id="pei-zhi-socket-hong-fa-de-fu-wu">配置 socket 触发的服务</h3>
+<p>涉及网络的服务，还可以通过 socket 来触发启动。也就是说服务本身在没连接业务时不
+用一直空跑着，可以让 <code>systemd</code> 帮忙监听一个 socket ，以减少资源消耗。当真正有
+业务连接进来时，才唤醒目标服务。要达成这样的配置，目标服务程序在实现上也有一定
+讲究。</p>
+<p>开发一个常规的网络服务，一般有以下几个关键步骤：</p>
+<ol>
+<li>创建一个 socket</li>
+<li>调用 <code>bind</code> 将该 socket 绑定一个端口</li>
+<li>调用 <code>listen</code> 监听端口，将该 socket 变成监听文件描叙符 fd</li>
+<li>调用 <code>accept</code> 接收一个客户端连接，得到一个新的连接文件描叙符 fd</li>
+<li>读写连接 socket 的 fd，完成业务逻辑</li>
+</ol>
+<p>借助 <code>systemd</code> 强大且通用的服务功能，它可以帮忙完成前两步，并且将 socket 的 fd
+传给被激活的程序，后者就只要从第 3 步开始实现工作。</p>
+<p>一个简单的示例如下：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#65737e;">// hello-socket.c
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">string.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">systemd/sd-daemon.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">sys/socket.h</span><span>&gt;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">unistd.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">sd_listen_fds</span><span>(</span><span style="color:#d08770;">1</span><span>) &gt; </span><span style="color:#d08770;">0</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">int</span><span> fd_listen = SD_LISTEN_FDS_START;
+</span><span>        </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">listen</span><span>(fd_listen, </span><span style="color:#d08770;">511</span><span>) &lt; </span><span style="color:#d08770;">0</span><span>) {
+</span><span>            </span><span style="color:#96b5b4;">perror</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to listen</span><span>&quot;);
+</span><span>            </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>        }
+</span><span>        </span><span style="color:#96b5b4;">fprintf</span><span>(stderr, &quot;</span><span style="color:#a3be8c;">succeed to listen with fd: </span><span style="color:#d08770;">%i</span><span style="color:#96b5b4;">\n</span><span>&quot;, fd_listen);
+</span><span>        </span><span style="color:#b48ead;">for </span><span>(</span><span style="color:#b48ead;">int</span><span> i = </span><span style="color:#d08770;">0</span><span>; i &lt; </span><span style="color:#d08770;">8</span><span>; ++i)
+</span><span>        {
+</span><span>            </span><span style="color:#b48ead;">int</span><span> fd_accept = </span><span style="color:#bf616a;">accept</span><span>(fd_listen, </span><span style="color:#d08770;">NULL</span><span>, </span><span style="color:#d08770;">NULL</span><span>);
+</span><span>            </span><span style="color:#b48ead;">if </span><span>(fd_accept &lt; </span><span style="color:#d08770;">0</span><span>)
+</span><span>            {
+</span><span>                </span><span style="color:#96b5b4;">perror</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to accept</span><span>&quot;);
+</span><span>                </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>            }
+</span><span>            </span><span style="color:#96b5b4;">fprintf</span><span>(stderr, &quot;</span><span style="color:#a3be8c;">succeed to connect with fd:  </span><span style="color:#d08770;">%i</span><span style="color:#96b5b4;">\n</span><span>&quot;, fd_accept);
+</span><span>            </span><span style="color:#b48ead;">char</span><span> buffer[</span><span style="color:#d08770;">32</span><span>] = {</span><span style="color:#d08770;">0</span><span>};
+</span><span>            </span><span style="color:#96b5b4;">snprintf</span><span>(buffer, sizeof(buffer), &quot;</span><span style="color:#a3be8c;">Hello, World: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, i);
+</span><span>            </span><span style="color:#bf616a;">write</span><span>(fd_accept, buffer, </span><span style="color:#96b5b4;">strlen</span><span>(buffer));
+</span><span>            </span><span style="color:#bf616a;">close</span><span>(fd_accept);
+</span><span>        }
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">perror</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to sd_listen_fds</span><span>&quot;);
+</span><span>        </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>其中， <code>sd_listen_fds</code> 函数就能返回 <code>systemd</code> 传给被激活程序的 fd 的个数，
+并且从 <code>SD_LISTEN_FDS_START</code> 开始表示有效的 fd 。这个宏定义的值是 <code>3</code> ，因为每
+个程序前面 <code>0-2</code> 这 3 个文件分别表示标准输入、标准输出与标准错误，所以若新建了
+<code>fd</code> ，就从 <code>3</code> 开始。又因为在这个示例中，<code>systemd</code> 将只会传一个 <code>fd</code> 过来，所
+以 <code>SD_LISTEN_FDS_START</code> 就是要 <code>listen</code> 的端口了。</p>
+<p>在后面的 <code>accept</code> 循环中，对每个连接的业务仍然是简单的 &quot;Hello World&quot; 。另外故
+意设计成有限循环（8次），正常的实际应用多为无限循环。</p>
+<p>编译这个程序依赖 <code>systemd</code> 的开发库，可能是默认未装的，可用相应 linux 发行版的
+包管理工具先安装，再链接 <code>systemd</code> 。例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> yum install systemd-devel
+</span><span style="color:#bf616a;">$</span><span> gcc</span><span style="color:#bf616a;"> -std</span><span>=c99</span><span style="color:#bf616a;"> -lsystemd -o</span><span> hello-socket.exe hello-socket.c
+</span></code></pre>
+<p>然后 <code>systemd</code> 的配置文件要有两个，后缀分别是 <code>.socket</code> 与 <code>.service</code> ，除后缀
+外的文件名要相同，这样就能自动关联，这里也取名 <code>hello-socket</code> ，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-socket.socket
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">Hello </span><span style="color:#bf616a;">Socket
+</span><span>
+</span><span style="color:#bf616a;">[Socket]
+</span><span style="color:#bf616a;">ListenStream</span><span>=</span><span style="color:#a3be8c;">0.0.0.0:1234
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-socket.service
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">Hello </span><span style="color:#bf616a;">Socket
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-socket.exe
+</span></code></pre>
+<p>如上，<code>.socket</code> 的配置，需要有 <code>[Socket]</code> 段，<code>ListenStream</code> 字段表示了要监听
+的地址与端口。相应的 <code>.service</code> 配置，与之前例子一样，描叙了如何启动服务。因为
+这是想由 socket 激活的 service ，故没有配置重启字段。</p>
+<p>在 <code>systemctl</code> 的大多数子命令中，如 <code>start</code> ，其参数默认是假定 <code>.service</code> 单元
+配置的。如之前的例子 <code>systemctl start hello-forever</code> 等效于
+<code>systemctl start hello-forever.service</code> 。但在这个例子中，有两种同名单元配置，
+且按要求先只启动 <code>hello-socket.socket</code> ，所以要写完整的单元名：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl start hello-socket.socket
+</span></code></pre>
+<p>事实上，如果（在另一个 shell 尝试）先启动 <code>hello-socket.service</code> 或
+<code>hello-socket</code> ，那会失败的。</p>
+<p>然后再分别查看两种单元的状态，可发发现 <code>.socket</code> 是启动的，<code>.service</code> 是未启动
+的：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl status hello-socket.socket
+</span><span style="color:#bf616a;">$</span><span> systemctl status hello-socket.service
+</span></code></pre>
+<p>这里就不再贴示例的状态输出了。用 <code>ps | grep</code> 应该也查不到 <code>hello-socket.exe</code>
+程序在运行。但是可以找一个网络客户端来连接这个 socket ，比如就用 <code>nc</code> 从相同主
+机连接:</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> echo &quot;&quot; | </span><span style="color:#bf616a;">nc</span><span> 127.0.0.1 1234
+</span><span style="color:#bf616a;">Hello,</span><span> World: 0
+</span></code></pre>
+<p>因为我们的示例程序不介意从连接 socket 读什么，所以前面加了 <code>echo |</code> ，如果不加
+前面的管道，也会有输出，但可能不会立即退出 <code>nc</code> ，要手动 <code>ctrl-c</code> 或 <code>ctrl-d</code>
+结束。</p>
+<p>此时再去查看 <code>hello-socket.service</code> 的状态，它就在运行中了。</p>
+<p>随后可以重复用 <code>nc</code> 命令测试，输出的编号应该会递增。也可以从其他主机连接，只要
+指定正确的 ip 。当输出编号到达 <code>7</code> 时，再回去查看 <code>hello-socket.service</code> 的状
+态，会发现它是正常退出的。然后若再用 <code>nc</code> 连接去测它，它又会重新激活，从编号
+<code>0</code> 开始输出。</p>
+<p>另外，可注意到程序中向 <code>stderr</code> 打印的日志，会出现在 <code>status</code> 的输出中，可供调
+试分析问题之用。</p>
+<p>最后，<code>.socket</code> 配置还支持一个 <code>Accept</code> 字段，默认 <code>false</code> ，就是如上行为。可
+以尝试将其改为 <code>true</code> （也可复制为另一份再修改），如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-socket.socket
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">Hello </span><span style="color:#bf616a;">Socket
+</span><span>
+</span><span style="color:#bf616a;">[Socket]
+</span><span style="color:#bf616a;">ListenStream</span><span>=</span><span style="color:#a3be8c;">0.0.0.0:1234
+</span><span style="color:#bf616a;">Accept</span><span>=</span><span style="color:#a3be8c;">true
+</span></code></pre>
+<p>如此则表示 <code>sytemd</code> 还将接管 socket 的 <code>accpet()</code> 步骤，将已接受的连接传给激活
+的服务。也即本节开始的前 4 个步骤都被 <code>systemd</code> 做了，自已开发的程序只要写第 5
+步业务。当然，程序也要做相应的改动：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">if </span><span>(</span><span style="color:#bf616a;">sd_listen_fds</span><span>(</span><span style="color:#d08770;">1</span><span>) &gt; </span><span style="color:#d08770;">0</span><span>)
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">int</span><span> fd_accept = SD_LISTEN_FDS_START;
+</span><span>        </span><span style="color:#96b5b4;">fprintf</span><span>(stderr, &quot;</span><span style="color:#a3be8c;">succeed to connect with fd:  </span><span style="color:#d08770;">%i</span><span style="color:#96b5b4;">\n</span><span>&quot;, fd_accept);
+</span><span>        </span><span style="color:#b48ead;">char</span><span> buffer[</span><span style="color:#d08770;">32</span><span>] = {</span><span style="color:#d08770;">0</span><span>};
+</span><span>        </span><span style="color:#96b5b4;">snprintf</span><span>(buffer, sizeof(buffer), &quot;</span><span style="color:#a3be8c;">Hello, World: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, fd_accept);
+</span><span>        </span><span style="color:#bf616a;">write</span><span>(fd_accept, buffer, </span><span style="color:#96b5b4;">strlen</span><span>(buffer));
+</span><span>        </span><span style="color:#bf616a;">close</span><span>(fd_accept);
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">else
+</span><span>    {
+</span><span>        </span><span style="color:#96b5b4;">perror</span><span>(&quot;</span><span style="color:#a3be8c;">Failed to sd_listen_fds</span><span>&quot;);
+</span><span>        </span><span style="color:#b48ead;">return </span><span>-</span><span style="color:#d08770;">1</span><span>;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>关闭原来的 <code>.socket</code> 与 <code>.service</code> ，再重启 <code>.socket</code> ：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl stop hello-socket.socket
+</span><span style="color:#bf616a;">$</span><span> systemctl stop hello-socket.service
+</span><span style="color:#bf616a;">$</span><span> cd /etc/systemd/system
+</span><span style="color:#bf616a;">$</span><span> mv hello-socket.service hello-socket@.service
+</span><span style="color:#bf616a;">$</span><span> systemctl daemon-reload
+</span><span style="color:#bf616a;">$</span><span> systemctl start hello-socket.socket
+</span><span style="color:#bf616a;">$</span><span> systemctl status hello-socket.socket
+</span></code></pre>
+<p>注意配置修改后，<code>systemctl</code> 可能会要求你执行 <code>deaon-reload</code> 重新加载配置使修改
+生效。同时，由于每个连接会激活一个服务程序，还要将普通的 <code>.service</code> 配置文件名
+改为模板配置，点号前加一个 <code>@</code> 即 <code>{basename}@.service</code>。在模板配置中可以使用
+一些变量替换，在这个简单示例中没用到，只改文件即可。</p>
+<p>然后就可以用 <code>nc</code> 客户端测试了：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> echo &quot;&quot; | </span><span style="color:#bf616a;">nc</span><span> 127.0.0.1 1234
+</span><span style="color:#bf616a;">Hello,</span><span> World: 3
+</span><span style="color:#bf616a;">Ncat:</span><span> Connection reset by peer.
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> echo &quot;&quot; | </span><span style="color:#bf616a;">nc</span><span> 127.0.0.1 1234
+</span><span style="color:#bf616a;">Hello,</span><span> World: 3
+</span><span style="color:#bf616a;">Ncat:</span><span> Connection reset by peer.
+</span></code></pre>
+<p><code>systemd</code> 的 socket 支持 <code>Accpet</code> ，是为了兼容 <code>inetd</code> 的用法习惯。但每个连接
+激活进程，效率偏低，所以默认是 <code>false</code> 的，由目标服务负责 <code>listen</code> 与 <code>accpet</code>
+。</p>
+<p>但是只配置 <code>Accept=true</code> 还不是完全兼容 <code>inetd</code> 启动的服务，因为后者使用的标准
+输入与标准输出，这比读写 <code>fd</code> 对用户编写程序更友好。但可以在 <code>[Service]</code> 中添
+加两个字段重定向标准输入输出至 <code>socket</code> 就能达到完美兼容，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-socket@.service
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">Hello </span><span style="color:#bf616a;">Socket
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#65737e;">#ExecStart=/absolute/path/to/hello-socket.exe
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-world.exe
+</span><span style="color:#bf616a;">StandardInput</span><span>=</span><span style="color:#a3be8c;">socket
+</span><span style="color:#bf616a;">StandardOutput</span><span>=</span><span style="color:#a3be8c;">socket
+</span></code></pre>
+<p>而使用标准输出的程序，<code>hello-world.exe</code> 就可以，所以启动程序可用它替换
+<code>hello-socket.exe</code> 。同时，<code>hello-world.exe</code> 的编译显然也不需要依赖与链接
+<code>systemd</code> 开发库。</p>
+<p>当引入了 <code>systemd</code> 开发库，除了可用 <code>sd_listen_fds</code> 获取传递的 <code>fd</code> （数量）外，
+还有其他 API 可用。如 <code>sd_notify</code> 可向 <code>systemd</code> 汇报自身状态，然后可在
+<code>[service]</code> 段配置 <code>Type=notify</code> 让 <code>systemd</code> 知道该被管理的目标服务有此特殊能
+力，以便更精准地跟踪状态。当然，这就与 <code>systemd</code> 深度耦合了，为了兼容性，最好
+加入条件编译等手段，让程序在没有或不用 <code>systemd</code> 的情况下也能运行。</p>
+<h3 id="pei-zhi-ding-shi-qi-ji-yao-shou-cheng-xu">配置定时器及夭寿程序</h3>
+<p>从上一节配置 socket 激活的示例程序中可见，<code>systemd</code> 能配置管理的服务，并非一定
+要恒寿程序。诚然，简单的夭寿程序，是没必要纳入什么管理系统的。但再加上期望按条
+件自动触发的需求，那就有纳入管理系统的价值了。</p>
+<p>让夭寿程序定时运行，也是另一种常见的条件触发需求。<code>systemd</code> 为这种情况配置的服
+务，指定了专门的类型 <code>Type=oneshot</code> 。它就要求启动的程序是夭寿的，能很快或短时
+间完成，也只有等它正常退出后，<code>systemd</code> 才认为这个 <code>service</code> 单元是成功启动的，
+而这会影响被依赖的其他单元的启动。</p>
+<p>首先配置一个 <code>.timer</code> 单元文件，例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-world.timer
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">The </span><span style="color:#bf616a;">Hello-World</span><span> Timer
+</span><span>
+</span><span style="color:#bf616a;">[Timer]
+</span><span style="color:#bf616a;">OnCalendar</span><span>=*</span><span style="color:#a3be8c;">-</span><span>*</span><span style="color:#a3be8c;">-</span><span>* </span><span style="color:#bf616a;">*:*:00
+</span></code></pre>
+<p>其中，<code>OnCalendar</code> 的配置格式同 <code>crontab</code> ，上例表示每分钟触发。</p>
+<p>然后需要一个同名的 <code>.service</code> 单元文件。本文开头编译的 <code>hello-world.exe</code> 正好
+可作为该定时器启动的程序，例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat /etc/systemd/system/hello-world.service
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">The </span><span style="color:#bf616a;">Hello-World</span><span> Timer
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">Type</span><span>=</span><span style="color:#a3be8c;">oneshot
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/absolute/path/to/hello-world.exe
+</span><span style="color:#bf616a;">StandardOutput</span><span>=</span><span style="color:#a3be8c;">file:/absolute/path/to/stdout-file
+</span></code></pre>
+<p>然后启动定时器，并查看状态：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl start hello-world.timer
+</span><span style="color:#bf616a;">$</span><span> systemctl status hello-world.timer
+</span></code></pre>
+<p>再次提醒，<code>start</code> 子命令接的参数要显式加 <code>.timer</code> ，省略后缀时默认是 <code>.service</code>。</p>
+<p>此外，我们的 <code>hello-world.exe</code> 是打印向标准输出的，配置在 <code>systemd</code> 启动运行时，
+可以重定向一个文件，不是写在 <code>ExecStart</code> 字段后面的加 <code>&gt;</code> ，而必须额外配在字段
+<code>StandardOutput</code> 中。标准输出重定向有多个可选值，甚至 <code>tty</code> 表示仍打印到终端，
+但这并不建议，因为突然触发的输出可能会打乱你当前正在工作的终端。</p>
+<h3 id="shi-ji-xiang-mu-de-systemd-pei-zhi-fen-xi">实际项目的 systemd 配置分析</h3>
+<p>以上用各种花式的 <code>Hello World</code> 程序为例介绍了 <code>systemd</code> 的服务配置。最后我们选
+取两个开源项目的 <code>systemd</code> 配置来分析理解下。</p>
+<p>一个是流行的 web 服务器 <a href="https://nginx.org">nginx</a> ，一般会安装在
+<code>/usr/local/nginx</code> 目录下。因为 <code>nginx</code> 程序自己作了后台化，故可以直接启动：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> /usr/local/nginx/sbin/nginx
+</span></code></pre>
+<p>如果程序安装到了系统路径（<code>which nginx</code> 有输出），甚至可以不用全路径：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> nginx
+</span></code></pre>
+<p>但是 nginx 安装包也提供了 <code>systemd</code> 配置，一般在 <code>/usr/lib/systemd/system</code> 目录下，
+可以找到它的配置文件打开参考。也可以直接用 <code>systemctl cat</code> 命令查看：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl cat nginx
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">The </span><span style="color:#bf616a;">nginx</span><span> HTTP and reverse proxy server
+</span><span style="color:#bf616a;">After</span><span>=</span><span style="color:#a3be8c;">network-online.target </span><span style="color:#bf616a;">remote-fs.target</span><span> nss-lookup.target
+</span><span style="color:#bf616a;">Wants</span><span>=</span><span style="color:#a3be8c;">network-online.target
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">Type</span><span>=</span><span style="color:#a3be8c;">forking
+</span><span style="color:#bf616a;">PIDFile</span><span>=</span><span style="color:#a3be8c;">/run/nginx.pid
+</span><span style="color:#bf616a;">ExecStartPre</span><span>=</span><span style="color:#a3be8c;">/usr/bin/rm </span><span style="color:#bf616a;">-f</span><span> /run/nginx.pid
+</span><span style="color:#bf616a;">ExecStartPre</span><span>=</span><span style="color:#a3be8c;">/usr/sbin/nginx </span><span style="color:#bf616a;">-t
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/usr/sbin/nginx
+</span><span style="color:#bf616a;">ExecReload</span><span>=</span><span style="color:#a3be8c;">/usr/sbin/nginx </span><span style="color:#bf616a;">-s</span><span> reload
+</span><span style="color:#bf616a;">KillSignal</span><span>=</span><span style="color:#a3be8c;">SIGQUIT
+</span><span style="color:#bf616a;">TimeoutStopSec</span><span>=</span><span style="color:#a3be8c;">5
+</span><span style="color:#bf616a;">KillMode</span><span>=</span><span style="color:#a3be8c;">process
+</span><span style="color:#bf616a;">PrivateTmp</span><span>=</span><span style="color:#a3be8c;">true
+</span><span>
+</span><span style="color:#bf616a;">[Install]
+</span><span style="color:#bf616a;">WantedBy</span><span>=</span><span style="color:#a3be8c;">multi-user.target
+</span></code></pre>
+<p>所以也可以用 <code>systemctl</code> 系列命令来管理 <code>nginx</code> 了，例如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl enable nginx
+</span><span style="color:#bf616a;">Created</span><span> symlink from /etc/systemd/system/multi-user.target.wants/nginx.service to /usr/lib/systemd/system/nginx.service
+</span><span>
+</span><span style="color:#bf616a;">$</span><span> systemctl start nginx
+</span><span style="color:#bf616a;">$</span><span> systemctl status nginx
+</span><span style="color:#bf616a;">$</span><span> systemctl reload nginx
+</span></code></pre>
+<p>其中，<code>enable</code> 是可选的，它的意义就是安装个软链接在 <code>/etc/systemd/system</code> 的
+某个子目录，也即 <code>[Install]</code> 配置段的指示。安装后一般可随系统自动启动。但是没
+有 <code>enable</code> 也是可以 <code>start</code> 的，最多每次机器重启后自己再手动 <code>start</code> 一下。</p>
+<p>由于 <code>ExecStartPre</code> 配置，在用 <code>start</code> 子命令启动 nginx 时，还会自动校验其配置
+<code>nginx.conf</code> 。在修改了 <code>nginx.conf</code> 配置后，要重新加载配置，也只要执行
+<code>reload</code> 子命令即可。这避免了记忆 <code>nginx</code> 的命令行参数。</p>
+<p>另一个是 <a href="https://github.com/gnosek/fcgiwrap">fcgiwrap</a> ，可用于将任意读写标准
+输入输出的程序或 CGI 脚本封装成 FASTCGI 协议给 nginx 转发使用。因为 nginx 本身
+不支持效率不高的 CGI ，只支持更高效的 FASTCGI ，但在对效率要求不高，或仅为快速
+原型验证测试之用，CGI 又有便捷的优势，所以这就是 fcgiwrap 存在的意义。</p>
+<p>如果要在命令行手动启动 <code>fcgiwrap</code> ，就得如下执行：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> nohup fcgiwrap</span><span style="color:#bf616a;"> -s</span><span> /var/run/fcgiwrap.sock &amp;
+</span></code></pre>
+<p>因此很多相关介绍还推荐下载另一个程序
+<a href="https://redmine.lighttpd.net/projects/spawn-fcgi">spawn-fcgi</a>
+来专门启动 fcgiwrap 。但是 spawn-fcgi 只能管启动。</p>
+<p>更好的办法当然是用 <code>systemd</code> 管理。在 fcgiwrap 的 github 源码仓库中，有个
+<code>systemd</code> 目录，有两个配置单元文件，<code>fcgiwrap.socket</code> 与 <code>fcgiwrap.service</code> ，
+直接复制到 <code>/etc/systemd/systemd/</code> 目录就行。这两个文件的内容也简单：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> cat fcgiwrap.socket
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">fcgiwrap </span><span style="color:#bf616a;">Socket
+</span><span>
+</span><span style="color:#bf616a;">[Socket]
+</span><span style="color:#bf616a;">ListenStream</span><span>=</span><span style="color:#a3be8c;">/var/run/fcgiwrap.sock
+</span><span>
+</span><span style="color:#bf616a;">[Install]
+</span><span style="color:#bf616a;">WantedBy</span><span>=</span><span style="color:#a3be8c;">sockets.target
+</span><span>
+</span><span>$</span><span style="color:#bf616a;">cat</span><span> fcgiwrap.service
+</span><span style="color:#bf616a;">[Unit]
+</span><span style="color:#bf616a;">Description</span><span>=</span><span style="color:#a3be8c;">Simple </span><span style="color:#bf616a;">CGI</span><span> Server
+</span><span style="color:#bf616a;">After</span><span>=</span><span style="color:#a3be8c;">nss-user-lookup.target
+</span><span>
+</span><span style="color:#bf616a;">[Service]
+</span><span style="color:#bf616a;">ExecStart</span><span>=</span><span style="color:#a3be8c;">/usr/sbin/fcgiwrap
+</span><span style="color:#bf616a;">User</span><span>=</span><span style="color:#a3be8c;">http
+</span><span style="color:#bf616a;">Group</span><span>=</span><span style="color:#a3be8c;">http
+</span><span>
+</span><span style="color:#bf616a;">[Install]
+</span><span style="color:#bf616a;">Also</span><span>=</span><span style="color:#a3be8c;">fcgiwrap.socket
+</span></code></pre>
+<p>其中，<code>[Server]</code> 段下 <code>User</code> 与 <code>Group</code> 最好配置成运行 <code>nginx</code> 相同的用户与组。
+然后就可用 <code>systemctl</code> 启动 socket ：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> systemctl start fcgiwrap.socket
+</span></code></pre>
+<p>这个命令只启动 socket ，不启动 fcgiwrap 的服务，等有连接时再激活 fcgiwrap 。</p>
+<p>如果觉得在输入启动命令时要输入额外的 <code>.socket</code> 很烦，也不介意直接预启动服务，
+那可以在 <code>fcgiwrap.service</code> 单元文件的 <code>[Unit]</code> 段下增加
+<code>Requires=fcgiwrap.socket</code> ，这个依赖表示启动 <code>fcgiwrap.service</code> 时会先启动
+<code>fcgiwrap.socket</code> 。于是 <code>systemctl start fcgiwrap</code> 会同时启动 socket 与
+service 。不过如果想直接启动服务，不如不要 <code>fcgiwrap.socket</code> 单元，只用
+<code>fcgiwrap.service</code> 单元，然后在它的启动命令中直接加命令行参数创建所需的
+<code>socket</code> ，即改成这样：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>ExecStart=/usr/sbin/fcgiwrap -s /var/run/fcgiwrap.sock
+</span></code></pre>
+<p>另外，可参考一下 <code>fcgiwrap.c</code> 源码，看它如何用 <code>sd_listen_fds</code> 与
+<code>SD_LISTEN_FDS_START</code> 实现从 <code>systemd</code> 传递的 socket 启动，以及当不从
+<code>systemd</code> 启动时，如何从命令行参数 <code>-s</code> 指定监听地址。</p>
+<p>然后，还要修改一下 <code>nginx.conf</code> ，以支持转发 fcgiwrap ，例如：</p>
+<pre data-lang="conf" style="background-color:#2b303b;color:#c0c5ce;" class="language-conf "><code class="language-conf" data-lang="conf"><span style="color:#b48ead;">location </span><span>/cgi-bin/ {
+</span><span>    </span><span style="color:#bf616a;">gzip </span><span style="color:#d08770;">off</span><span>;
+</span><span>    </span><span style="color:#bf616a;">root  </span><span>html;
+</span><span>    </span><span style="color:#bf616a;">fastcgi_pass  </span><span>unix:/var/run/fcgiwrap.sock;
+</span><span style="color:#b48ead;">    include</span><span> fastcgi_params;
+</span><span>    </span><span style="color:#bf616a;">fastcgi_param </span><span>SCRIPT_FILENAME  </span><span style="color:#b48ead;">$document_root$</span><span>fastcgi_script_name;
+</span><span>}
+</span></code></pre>
+<p>这里配置的 socket 地址，要与 <code>fcgiwrap.socket</code> 的配置吻合。
+<code>systemctl reload nginx</code> 后将 cgi 脚本放到 <code>/usr/local/nginx/html/cgi-bin/</code> 
+目录下，就可以通过浏览器访问了，也可用 curl，如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#bf616a;">$</span><span> curl 127.0.0.1/cgi-bin/some-test.cgi
+</span></code></pre>
+<p>注意 <code>some-test.cgi</code> 向标准输出打印的内容，要符合 http 协议，要有头部、空行与
+内容。比如：</p>
+<pre data-lang="bash" style="background-color:#2b303b;color:#c0c5ce;" class="language-bash "><code class="language-bash" data-lang="bash"><span style="color:#65737e;">#!/bin/bash
+</span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">Content-type:text/plain</span><span>&quot;
+</span><span style="color:#96b5b4;">echo </span><span>&quot;&quot;
+</span><span style="color:#96b5b4;">echo </span><span>&quot;</span><span style="color:#a3be8c;">OK test CGI, and content body</span><span>&quot;
+</span></code></pre>
+<p><code>fcgiwrap</code> 会自动处理多种回车换行格式，所以不必强行输出 <code>\r\n</code> ，按一般习惯输
+出 <code>\n</code> 即可。</p>
+<h2 id="zong-jie">总结</h2>
+<p>本文从程序运行寿命出发，讨论了三种典型的程序类型在命令行启动的推荐方式是：</p>
+<ul>
+<li>夭寿程序：很快能完成的程序，<code>./command</code></li>
+<li>长寿程序：需要运行较长时间，<code>./slow-commnd &amp;</code></li>
+<li>恒寿程序：理论上无限循环的循环，长期运行的服务， <code>nohup ./service &amp;</code></li>
+</ul>
+<p>然后，为了简化服务的启动方式并进行统一管理，讨论了不同特征类型的服务在
+<code>systemd</code> 中如何配置，主要包含：</p>
+<ul>
+<li>简单服务，<code>Type=simple</code>，主进程会阻塞在一个无限循环中</li>
+<li>自行 fork 后台化的服务，<code>Type=forking</code> ，常见于多进程架构的服务</li>
+<li>用 socket 激活的服务，一般用于访问不频繁的服务，节省机器资源</li>
+<li>与定时器联用的 <code>oneshot</code> 型夭寿程序，常用于定时任务</li>
+</ul>
+<p>最后，讨论了开源实例 <code>nginx</code> 与 <code>fcgiwrap</code> 的 <code>systemd</code> 配置。</p>
+<p>当然了，<code>systemd</code> 是个功能繁杂的服务管理系统，它所能管理的单元也不限于服务，所
+以其他未尽细节请查看相关手删或帮助：</p>
+<ul>
+<li><code>systemctl --help</code> 命令行工具使用帮助</li>
+<li><code>man systemctl</code> 命令行工具使用手册</li>
+<li><code>man systemd</code> 系统管理总述</li>
+<li><code>man systemd.unit</code> 通用单元配置说明，<code>[Unit]</code> 段</li>
+<li><code>man systemd.service</code> 服务配置说明，<code>[Service]</code> 段</li>
+<li><code>man systemd.exce</code> 服务启动配置，<code>[Service]</code> 段</li>
+<li><code>man systemd.socket</code> socket 类型配置，<code>[Socket]</code> 段</li>
+<li><code>man systemd.timer</code> 定时器类型配置，<code>[Timer]</code> 段</li>
+</ul>
+<p>同时也要注意当前系统所使用的 <code>systemd</code> 版本，高版本更新可能支持更多的配置字段
+及可选值，也就有更多功能，所以查阅当前版本配套的 <code>man</code> 手册是最权威的。</p>
+<h2 id="can-kao-zi-liao">参考资料</h2>
+<ul>
+<li>https://lloydrochester.com/post/unix/systemd_sockets/</li>
+<li>https://lloydrochester.com/post/unix/systemd_timers/</li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+      <div class="column is-2 is-hidden-mobile">
+        <aside class="menu" style="position: sticky; top: 48px">
+          <p class="heading has-text-weight-bold">目录</p>
+          <ul class="menu-list">
+            
+            <li>
+              <a id="link-fu-wu-yu-cheng-xu-you-xian-yu-wu-xian-de-hello-world" class="toc is-size-7 is-active"
+                href="https://lymslive.github.io/blog/systemd-service-practice/#fu-wu-yu-cheng-xu-you-xian-yu-wu-xian-de-hello-world">
+                服务与程序：有限与无限的 Hello World
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-cheng-xu-de-qi-dong-yao-shou-chang-shou-yu-heng-shou" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/systemd-service-practice/#cheng-xu-de-qi-dong-yao-shou-chang-shou-yu-heng-shou">
+                程序的启动：夭寿、长寿与恒寿
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-bu-tong-shou-ming-de-cheng-xu-qi-dong-fang-shi" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#bu-tong-shou-ming-de-cheng-xu-qi-dong-fang-shi">
+                    不同寿命的程序启动方式
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-guan-li-heng-shou-fu-wu-de-wen-ti" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#guan-li-heng-shou-fu-wu-de-wen-ti">
+                    管理恒寿服务的问题
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-xi-tong-de-fu-wu-guan-li-li-qi-systemd-yu-systemctl" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/systemd-service-practice/#xi-tong-de-fu-wu-guan-li-li-qi-systemd-yu-systemctl">
+                系统的服务管理利器：systemd 与 systemctl
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-wei-systemd-pei-zhi-jian-dan-de-heng-shou-cheng-xu-fu-wu" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#wei-systemd-pei-zhi-jian-dan-de-heng-shou-cheng-xu-fu-wu">
+                    为 systemd 配置简单的恒寿程序服务
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-pei-zhi-fork-yu-daemonize-fu-wu" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#pei-zhi-fork-yu-daemonize-fu-wu">
+                    配置 fork 与 daemonize 服务
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-pei-zhi-socket-hong-fa-de-fu-wu" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#pei-zhi-socket-hong-fa-de-fu-wu">
+                    配置 socket 触发的服务
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-pei-zhi-ding-shi-qi-ji-yao-shou-cheng-xu" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#pei-zhi-ding-shi-qi-ji-yao-shou-cheng-xu">
+                    配置定时器及夭寿程序
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-shi-ji-xiang-mu-de-systemd-pei-zhi-fen-xi" class="toc is-size-7" href="https://lymslive.github.io/blog/systemd-service-practice/#shi-ji-xiang-mu-de-systemd-pei-zhi-fen-xi">
+                    实际项目的 systemd 配置分析
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-zong-jie" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/systemd-service-practice/#zong-jie">
+                总结
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-can-kao-zi-liao" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/systemd-service-practice/#can-kao-zi-liao">
+                参考资料
+              </a>
+              
+            </li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;couttast-intro&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              couttast: 轻量级单元测试框架介绍
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;vnote-introspection&#x2F;">
+              vim 笔记插件 vnote 设计反思<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+<script type="text/javascript">
+  const menuBarHeight = document.querySelector("nav.navbar").clientHeight;
+  const tocItems = document.querySelectorAll(".toc");
+  const navSections = new Array(tocItems.length);
+
+  tocItems.forEach((el, i) => {
+    let id = el.getAttribute("id").substring(5);
+    navSections[i] = document.getElementById(id);
+  })
+
+  function isVisible(tocIndex) {
+    const current = navSections[tocIndex];
+    const next = tocIndex < tocItems.length - 1 ? navSections[tocIndex + 1]
+      : document.querySelectorAll("section.section").item(1);
+
+    const c = current.getBoundingClientRect();
+    const n = next.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+
+    return (c.top <= h) && (n.top - menuBarHeight >= 0);
+  }
+
+  function activateIfVisible() {
+    for (b = true, i = 0; i < tocItems.length; i++) {
+      if (b && isVisible(i)) {
+        tocItems[i].classList.add('is-active');
+        b = false;
+      } else
+        tocItems[i].classList.remove('is-active');
+    }
+  }
+
+  var isTicking = null;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        activateIfVisible();
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, false);
+</script>
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>

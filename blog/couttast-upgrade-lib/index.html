@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | couttast: 轻量级单元测试扩展静态库演化思路
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            couttast: 轻量级单元测试扩展静态库演化思路
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2024-03-30">2024-03-30</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>34 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>6602 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/cheng-xu-she-ji/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>程序设计</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C++</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/unittest/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>unittest</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <h1 id="couttast-qing-liang-ji-dan-yuan-ce-shi-kuo-zhan-jing-tai-ku-yan-hua-si-lu">couttast: 轻量级单元测试扩展静态库演化思路</h1>
+<p>作为一名 Linux C++ 程序员，我自己手搓了个单元测试库轮子，来辅助与满足日常开发
+的单元测试需求。从只有一个 <code>tinytast.hpp</code> 头文件开始，后面逐渐添加了一些外围功
+能，觉得不一定适合坚持 header-only 库的原则，就将非核心的功能写在单独的
+<code>*.cpp</code> 源文件中，编译为静态库。代码开源在 github ，国内的 gitee 也有备份。</p>
+<ul>
+<li><a href="https://github.com/lymslive/couttast">https://github.com/lymslive/couttast</a></li>
+<li><a href="https://gitee.com/lymslive/couttast">https://gitee.com/lymslive/couttast</a></li>
+</ul>
+<p>我觉得编写单元测试的问题可以从以下几个层次来讲，从微观到宏观。</p>
+<ol>
+<li>断言语句；</li>
+<li>单元测试用例设计；</li>
+<li>单元测试用例运行与管理；</li>
+<li>单元测试库、框架与集成的设计；</li>
+<li>可测试程序的一般原则。</li>
+</ol>
+<p>下面，我将结合个人开发 <code>couttast</code> 这个单元测试库的思路，谈谈本人对这些单元测试
+问题的理解。重点是前三点。</p>
+<p>题外话，我在前公司是使用过 <code>gTest</code> 的。几年前来到现公司尴尬地发现没有单元测试
+的风气，且当初项目对集成第三方库的管理一言难尽，就想从省事角度不想多引入三方库
+增加构建的麻烦。加之之前在使用 <code>gTest</code> 时也遇到一些痛点与不便，就决定自己手搓
+一个单元测试库或框架吧，根据自己实际遇到的需求逐步加料。</p>
+<p>关于 <code>tast</code> 这个词的命名，原是从尝试 (taste) 删减一个字母以便与 <code>test</code> 等长而
+来。</p>
+<span id="continue-reading"></span><h2 id="yi-wei-guan-yu-ju-de-pan-duan-yu-duan-yan">一、微观语句的判断与断言</h2>
+<p>我说测试是从尝试开始的。不妨先抛开所谓单元测试的行话，回顾下我们最初学习编程时
+是怎么测试（或调试）程序的，最原始也很有效的办法就是 <code>printf</code> 大法。所以我在
+<code>couttast</code> 库中设计的最核心的宏 <code>COUT</code> 就来源于 C++ 版的打印法门 <code>std::cout</code>
+。</p>
+<p>譬如说，我们开发个加法函数 <code>Add()</code> ，用 <code>printf</code> 大法可能就是这样写测试：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Add</span><span>(</span><span style="color:#bf616a;">int</span><span>, </span><span style="color:#bf616a;">int</span><span>);
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>** </span><span style="color:#bf616a;">argv</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> sum = </span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>);
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, sum);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>很显然，它可能就在终端打印出一个 <code>2</code> 来，你看到 <code>2</code> 被打印出来，就知道加法函数
+实现对了，否则就实现错了。</p>
+<p>但这里有个问题，只打印一个 <code>2</code> 太孤单。如果要测多种情况，用该办法简单扩展，它
+就会打印一行行数字，你还得对照源代码一行行看每个结果是否正确。更有甚者，我使用
+<code>printf</code> 经常会忘记加 <code>&quot;\n&quot;</code> ，那就更糟糕了，结果将挤成一行数字无法分辨。</p>
+<p>现在若采用 <code>couttast</code> 库的 <code>COUT</code> 宏改写这个“测试用例”或尝试用例：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">couttast/tinytast.hpp</span><span>&quot;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Add</span><span>(</span><span style="color:#bf616a;">int</span><span>, </span><span style="color:#bf616a;">int</span><span>);
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>** </span><span style="color:#bf616a;">argv</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> sum = </span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(sum);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>));
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>这将打印类似如下的输出：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum =~? 2
+</span><span>Add(1, 1) =~? 2
+</span></code></pre>
+<p>它会将表达式及其结果一起打印出来。仅就这个示例而言，你只需用其中一条 <code>COUT</code> 语
+句即可。如果要测多种情况，像这样 <code>COUT</code> 平铺下去，因为表达式与结果一起打印，也
+就能更方便直接从输出结果判断各种情况计算得对不对。</p>
+<p>另注：<code>couttast</code> 的实际输出还会在每行前有两个前导格式字符，本文叙述从略。连接
+表达式与结果的中间符号不用 <code>=</code> 或 <code>==</code> ，是因为后面的结果只是一种文本化的打印
+表示，真实值不一定是简单可打印的数字或字符串，也许是自定义对象。所以用 <code>=~</code> 表
+示匹配，而不是全等的意思。而再加 <code>?</code> 是表示结果不确定的疑问，需要进一步判断结
+果是否正确。</p>
+<p>现在，对结果是否正确的判断，仍与 <code>printf</code> 大法一样，依靠的是程序员自己的眼睛与
+大脑。好像还很低级不是？但莫急，这只是 <code>COUT</code> 宏单参数的基本用法与印象，它可以
+简单直接地扩展为双参数宏，将预期结果值也传入。例如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">couttast/tinytast.hpp</span><span>&quot;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Add</span><span>(</span><span style="color:#bf616a;">int</span><span>, </span><span style="color:#bf616a;">int</span><span>);
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>** </span><span style="color:#bf616a;">argv</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> sum = </span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(sum, </span><span style="color:#d08770;">2</span><span>);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">2</span><span>);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>输出如下：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>sum =~? 2 [OK]
+</span><span>Add(1, 1) =~? 2 [OK]
+</span></code></pre>
+<p>这与单参数 <code>COUT</code> 宏的输出结果主体一样，只是末尾多了一个 <code>[OK]</code> 标签，表示该语
+句测试通过。如果后面谁不小心改动了 <code>Add()</code> 的实现，导致 <code>1+1</code> 计算出 <code>3</code> 的结
+果了，再次运行这个测试程序就会报错，如下输出：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Add(1, 1) =~? 3 [NO]
+</span><span>Expect: 2
+</span><span>Location: （出错语句在源代码的文件行数位置）
+</span></code></pre>
+<p>所以，这其中的意义是，将判断结果是否正确的任务委托给程序（<code>couttast</code> 库）了，
+当然期望的正确值还是需要由程序员预先写在测试用例中的，但程序员只要对此分析判断
+一次，以后的重测（回归测试）就交由程序自动完成了，这就是单元测试的根本需求。</p>
+<p>用过 <code>gTest</code> 单元测试库的朋友容易想到，这里的 <code>COUT</code> 双参数宏与它的 <code>EXPECT_EQ</code>
+功能类似，即如下两条语句差不多表达同一种断言意义：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>COUT(expr, expect);
+</span><span>EXPECT_EQ(expr, expect);
+</span></code></pre>
+<p>只不过，<code>COUT</code> 的输出更冗余或更丰富一些。同时，保留单参数 <code>COUT</code> 宏，也有现实
+意义。因为实际开发中的被测函数，不会做加法这么简单（当然对自定义对象重载加法也
+可能不简单），有时候在写单元测试时，对特定输入用例，你还不能立即在头脑中反映出
+正确输出。这时，你就可以先写单参数 <code>COUT</code> ，把结果打印出来看看，验证一下，确实
+正确，再把正确结果当成预期值填回到 <code>COUT</code> 的第二参数中。</p>
+<p>可能有人会觉得这属于投机取巧行为，甚至担心有不负责的程序员，先用单参数 <code>COUT</code>
+跑一次，然后不管其输出结果正确与否，就粘贴回 <code>COUT</code> 的第二参数中，以便让单元
+测试通过。然而，这不是技术问题，所以也无法通过技术手段解决。即使是使用 <code>gTest</code>
+，也可以在断言语句前加断点，在调式器中把当前结果拷出来啊。</p>
+<p>其实还有一种情况，如边界测试。有些客户需求可能就没对边界情况作明确界定，那它就
+是未定义需求，允许未定义行为，或者说是依赖实现的确定性未定义行为。就比如 C++
+社区喜欢重造字符串库的轮子，比如要写个字符串拆分 <code>split</code> 函数，如果分隔符在开
+头或结尾怎么办，忽略还是算一个空串，这或许在两可之间。</p>
+<p>如此就可以先实现，怎么简便怎么来。写边界用例时若只从代码作理论分析，可能比较烧
+脑，那就先用单参数 <code>COUT</code> 将结果打印出来，结合具体结果再来分析这样的输出是否合
+理，是否可接受。如果可行，那就将这种实现（或 bug）当特性（feature），固化在单
+元测试用例中。</p>
+<p>如果后面交付给客户，客户觉得这样的边界处理不符合他的直觉。那就让客户明确边界需
+求啊，即使打回来修改，那其他的正常测试用例也能起到回归测试的保障作用。很多时候
+是客户不懂得提需求，对某些边界情况也不太介意，但他会问边界会发生什么。那么有设
+计边界测试用例时，就容易回答这种问题，知晓客户让他注意即可。</p>
+<p>总之，单参数的 <code>COUT</code> 似乎只算是尝试，而双参数的 <code>COUT</code> 就开始通往测试之路了。
+在 <code>couttast</code> 单元测试库中，几乎只要记这一个断言宏。对任意自定义类型，只要支持
+了 <code>&lt;&lt;</code> 与 <code>==</code> 操作符重载，也就能放在 <code>COUT</code> 宏中。至少要支持 <code>==</code> 操作，如果
+不想重载 <code>&lt;&lt;</code> 操作，则不能用单参数的 <code>COUT</code> 宏，而双参数 <code>COUT</code> 可改写如下等效
+形式：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#bf616a;">COUT</span><span>(expr == expect, </span><span style="color:#d08770;">true</span><span>);
+</span></code></pre>
+<p>同样可举一反三，用 <code>COUT</code> 来断言其他比较关系。</p>
+<h2 id="er-dan-yuan-ce-shi-yong-li-she-ji">二、单元测试用例设计</h2>
+<p>比语句级断言测试更大一层范围的是单元测试用例，它由若干条断言语句及相关上下文处
+理一起，组成对某种情况或叫用例的测试。对于普通开发用户而言，这是写单元测试的主
+要工作。</p>
+<p>单元测试也是一种程序，虽然它追求简单直白甚至达到教学入门级的代码，但它也应该遵
+循写代码的一些基本原则。当要测试的情况越来越多，显然不可能将所有断言语句如
+<code>COUT</code> 写在一个 <code>main()</code> 函数中，那就要拆分子函数了。</p>
+<p>至于如何拆分函数，那就不仅是技术问题，更是业务问题了。故这里无法具体讲怎么拆解
+，只说拆解后，再如何组织起来调用。显然，最原始的办法就是在 <code>main()</code> 函数中显式
+顺序调用这些测试子函数。而在 <code>couttast</code> 单元测试库中，提供了两个宏，让定义与调
+用单元测试用例子函数更自动化一些。简单示例如下：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#65737e;">// 用户开发库
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Add</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">b</span><span>) { reutrn a + b; }
+</span><span>
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">couttast/tinytast.hpp</span><span>&quot;
+</span><span style="color:#65737e;">// 定义单元测试用例
+</span><span style="color:#bf616a;">DEF_TAST</span><span>(test_add, &quot;</span><span style="color:#a3be8c;">加法基本测试</span><span>&quot;)
+</span><span>{
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">2</span><span>);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, -</span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">0</span><span>);
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// 自动调用测试用例
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>** </span><span style="color:#bf616a;">argv</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">RUN_TAST</span><span>(argc, argv);
+</span><span>}
+</span></code></pre>
+<p>其中，<code>DEF_TAST</code> 用于定义一个测试用例，从用户角度看，它就相当于定义一个最简单
+的 <code>void()</code> 函数，参数与返回都是 <code>void</code> ，类似于：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#65737e;">// DEF_TAST(test_add, &quot;加法基本测试&quot;)
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">test_add</span><span>() </span><span style="color:#65737e;">// 加法基本测试
+</span><span>{
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">2</span><span>);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(</span><span style="color:#bf616a;">Add</span><span>(</span><span style="color:#d08770;">1</span><span>, -</span><span style="color:#d08770;">1</span><span>), </span><span style="color:#d08770;">0</span><span>);
+</span><span>}
+</span></code></pre>
+<p>一般而言，需要用 <code>DEF_TAST</code> 定义多个测试用例，并且可以分布于不同的 <code>.cpp</code> 源文
+件中。只要在其中一个（或单独一个）源文件中写个 <code>main()</code> 函数，而在 <code>main()</code> 中
+只要调用 <code>RUN_TAST</code> 宏转发命令行参数，就可以调用所有被链接在一起的源文件中用
+<code>DEF_TAST</code> 定义的单元测试用例。</p>
+<p>用 <code>DEF_TAST</code> 定义测试用例，相比平凡的 <code>void()</code> 子函数，除了可被自动调用外，还
+有个额外好处：在运行用例前会有额外一行输出表明当前在运行哪个用例，运行完后会统
+计当前用例中有多少条断言 <code>COUT</code> 语句失败，并汇报运行时间。</p>
+<p>基本原理就这么简单，讲完了。也并不比 <code>COUT</code> 复杂多少。而 <code>COUT</code> 与 <code>DEF_TAST</code>
+这两个关键宏名合并起来，就是 <code>couttast</code> 的库名。</p>
+<p>当然了，在写具体的非平凡的单元测试用例时，可能会遇到各自的特定业务问题。但只要
+记得一条，把每个测试用例当作一个 <code>void()</code> 函数来写，让每个 <code>void()</code> 函数都可以
+像 <code>main()</code> 入口函数一样独立运行。测试程序也是一种程序，运行你自己熟知的编程习
+惯与技巧，把这些 <code>void()</code> 函数组织起来即可。</p>
+<p>另外我想指出一点的是，<code>couttast</code> 不推荐使用面向对象的方便组织单元测试用例，你
+只需写好每个 <code>void()</code> 函数，而不用考虑先如何自定义一个测试用例类（并继承库内部
+的单元测试基类）。如果有许多单元测试用例都需要写一份相同的初始化代码（与清理代
+码），把它们提取到一个单独的函数中，或类中，然后在每个测试用例的开头显式调用一
+下。例如：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">struct </span><span>TestSuit
+</span><span>{
+</span><span>    </span><span style="color:#8fa1b3;">TestTuit</span><span>()  {</span><span style="color:#65737e;">/* 初始代码 */</span><span>}
+</span><span>    </span><span style="color:#8fa1b3;">~TestTuit</span><span>() {</span><span style="color:#65737e;">/* 清理代码 */</span><span>}
+</span><span>};
+</span><span>
+</span><span style="color:#bf616a;">DEF_TAST</span><span>(TestSuit_aaa, &quot;</span><span style="color:#a3be8c;">测试 TestSuit 的一个用例</span><span>&quot;)
+</span><span>{
+</span><span>    TestSuit self;
+</span><span>    ...
+</span><span>}
+</span><span>
+</span><span style="color:#bf616a;">DEF_TAST</span><span>(TestSuit_bbb, &quot;</span><span style="color:#a3be8c;">测试 TestSuit 另一个用例</span><span>&quot;)
+</span><span>{
+</span><span>    TestSuit self;
+</span><span>    ...
+</span><span>}
+</span></code></pre>
+<p>在一般的类开发中，可能会更常见提供非平凡的构造函数，以便在构造中初始化成员状态
+。但在写单元测试中，不妨就从简单开始，在默认构造函数中给各成员赋上确定的值，用
+于其他一系列测试。当需要另一份状态数据测试时，再考虑封装个其他构造函数。</p>
+<p>这就比将测试用例（通过某种技巧）继承 <code>TestSuit</code> 类更灵活，也更直观。尤其是当要
+复用两个类的初始化代码时，也可以直接在用例函数中定义几个类对象。而继承，难道要
+祭出 C++ 的一大杀器之多重继承来踩坑么？这就是常说的组合优于继承原则。</p>
+<p>从另一实现角度看其实也与如下方式提出通用辅助测试函数的解决办法差不多：</p>
+<pre data-lang="cpp" style="background-color:#2b303b;color:#c0c5ce;" class="language-cpp "><code class="language-cpp" data-lang="cpp"><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">test_add</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">left</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">right</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">expect</span><span>)
+</span><span>{
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(left);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(right);
+</span><span>    </span><span style="color:#bf616a;">COUT</span><span>(left + right, expect);
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// 这个 DEF_TAST 其实也可以取名 test_add ，不会真与上面 void 函数重名
+</span><span style="color:#bf616a;">DEF_TAST</span><span>(test_add_basic, &quot;</span><span style="color:#a3be8c;">相加基本测试</span><span>&quot;)
+</span><span>{
+</span><span>    </span><span style="color:#bf616a;">test_add</span><span>(</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">2</span><span>);
+</span><span>    </span><span style="color:#bf616a;">test_add</span><span>(</span><span style="color:#d08770;">1</span><span>, -</span><span style="color:#d08770;">1</span><span>, </span><span style="color:#d08770;">0</span><span>);
+</span><span>    ...
+</span><span>}
+</span></code></pre>
+<p>提取出的这个 <code>test_add()</code> 函数，先用单参数 <code>COUT</code> 把操作数打印出来，再用双参数
+<code>COUT</code> 断言结果。对于简单整数相加当然是没必要的，但如果是自定义对象呢，在初始
+开发自测时，把参数一起打印出来是有调试意义的。</p>
+<p>所以，这些所谓的技巧，本质都差不多，源于初中数学的提取公因式思想，增加代码重用
+性。而重复代码的产生，在一定程度上也是从 <code>main()</code> 中拆解子函数的代价交换有关，
+毕竟所有代码写在一起，很多初始化动作就天然地只要写一次。</p>
+<p>最后，写单元测试代码时，主要谨记一个简单性原则，一个用例内以顺序结构为主，最好
+不要有分支与循环，除调用被测函数外，其他辅助测试函数的调用链不要太深。这才能达
+到以简驭繁的效果。</p>
+<h2 id="san-dan-yuan-ce-shi-yong-li-yun-xing-yu-guan-li">三、单元测试用例运行与管理</h2>
+<p>写完单元测试用例，下一步就是编译、链接生成可执行测试程序，并让它跑起来。用
+<code>couttast</code> 库编写的单元测试程序，它就是一个普通的命令行程序。最简单的运行方式
+就是不带任何参数运行，它就会按一定顺序依次执行测试源码中用 <code>DEF_TAST</code> 定义的用
+例。如果 <code>main()</code> 转发 <code>RUN_TAST</code> 返回值是 <code>0</code> ，表示失败用例数为 <code>0</code> ，则程序
+退出码也是 <code>0</code> ，也就是所有测试通过。</p>
+<p>在很多正常情况下，比如集成到自动化流程后，这个默认行为也就够了，很平淡无奇。但
+在某些情况下，可能就要有选择性地执行某个或某几个测试用例了。比如自动化测试报告
+某个测试用例失败了，那就要单独拎出这个测试用例来，在个人的开发环境中重新跑一遍
+，排查问题。又比如在开发过程中，不想每次全量跑所有测试用例，那可能耗时比较长，
+只想跑自己新加的几个测试用例。</p>
+<p>所以，我认为作为内含许多测试用例的命令行程序，它的命令行参数最重要的作用就是指
+定运行哪个或哪些测试用例。在 <code>couttast</code> 中，对命令行位置参数就是这么解释的。位
+置参数就是不带 <code>--</code> 前导的纯参数，带 <code>--</code> 的参数（对）也经常叫选项。此外，为了
+方便用户，<code>couttast</code> 不要求输入测试用例的全名，可以只输入部分字符串，测试用例
+中包含这个子串的视为匹配用例，会被执行。</p>
+<p>我对 <code>gTest</code> 的一个痛点记忆，就是要指定运行某个（某些）测试用例比较麻烦，
+<code>--gtest_filter</code> 选项参数格式还挺复杂。而且测试用例是按随机顺序执行的，它的
+随机哲学是想保证测试用例的独立性，避免特定执行次序的依赖性。初看起来这没什么毛
+病，但这个组合王炸就曾在我当年工作中造成很大麻烦。</p>
+<p>事情是这样的，有 <code>n</code> 个单元测试用例的测试程序，不带参数默认跑，会报一两个不通
+过的失败用例，但单独跑那个失败用例却又能通过。那原因应该是某些用例互相影响了，
+关键是如何更方便地找出互有影响的用例。程序员容易想到用二分法找问题。假设
+<code>n=10</code> ，第 50 号用例失败了，单测 50 号没问题。那问题就在前 50 个用例，再二分
+验一下 <code>26-50</code> 以及 <code>1-24,50</code> 用例。但悲剧的是 <code>gTest</code> 它没有很好的办法筛选出
+特定的 25 个用例，而即使恰巧能通过什么通配语法筛出来，它还是随机顺序跑的，也就
+意味着可能复现不了。因为原因可能是需要某两个（甚至某三个用例）按特定顺序执行才
+会触发 bug 。最后我们只能采用巨麻烦的笨办法，修改 <code>main()</code> 函数，调用 <code>gTest</code>
+内部的 api 加入特定的测试用例，先猜哪两个用例可能有互有影响，修改 <code>main()</code> 重
+编译跑一下，猜错了重新修改、编译、运行……</p>
+<p>我不知道现在 <code>gTest</code> 对此类问题有没更好的解决办法了，反正当年是对此事印象深刻
+。若非此事，我也没足够的动力放着 <code>gTest</code> 不用转而自己从头造个单元测试的轮子。
+如果用 <code>couttast</code> 遇到类似问题，只要把猜测有影响的用例名按顺序粘贴到命令行重跑
+就能排查——我觉得这是很符合直觉的尝试方案。</p>
+<p>同时我也不觉得随机顺序是重要特性。我在 <code>couttast</code> 内部只是采用最常用的
+<code>std::map</code> 保存测试用例，所以恰好有序，默认就有序运行，那就让它有序，没必要费
+劲特地随机化。用户难不成还能利用这“漏洞”使原来不通过的测试用例变成通过不成，
+动机收益何在？以及可能反向的收益，还能期望利用随机顺序的测试用例来发现被测目标
+软件（或库）的潜在 bug ，听起来也不怎么靠谱吧。</p>
+<p>除了最重要的位置参数用于筛选指定测试用例外，<code>couttast</code> 也支持一些选项参数。比
+如 <code>--list</code> 列出所有测试用例名，也是有序的，与默认运行的所有用例顺序一样。大写
+的 <code>--List</code> 则列出更详细的用例信息，包括 <code>DEF_TAST</code> 定义时传入的描叙性第二参数
+。这就使得 <code>couttast</code> 有了基本的管理用例功能，可以较方便地导出测试用例一览表。</p>
+<p>此外，<code>couttast</code> 的默认输出信息可能冗余度比较大，因为我认为单元测试也是开发的
+一个辅助工具，所以默认输出详尽一点。但开发与自测完成，提交到测试阶段，可能就没
+必要打印太多输出了。因此有选项 <code>--cout=[fail|silent|none]</code> 来精减输出：其中
+<code>fail</code> 表示 <code>COUT</code> 双参数断言时只打印失败的语句，不打印成功的语句；<code>silent</code> 输
+出得比 <code>fail</code> 还少，但失败的语句还是有必要打印的；<code>none</code> 是真的什么都不打印了
+，但仍可以通过退出码零与非零来判断测试是否通过。在集成到自动化测试流程中，调用
+脚本加上 <code>--cout=silent</code> 参数可能是比较合适的。</p>
+<h2 id="si-dan-yuan-ce-shi-ku-de-she-ji-yu-ji-cheng">四、单元测试库的设计与集成</h2>
+<p>对于普通开发，对这层可不必太关注，重点应关注前两层单元测试用例的编写，以及了解
+所用测试框架（或库）的使用，如命令行参数的意义与用法。</p>
+<p>所以我也只简单谈谈开发 <code>couttast</code> 单元测试库过程的一些想法。缘由前面几节已有涉
+及，最开始为了简单方便，就写了个单个头文件的 header-only 。刚开始了解到 C++ 的
+header-only 库时，也像面向对象一样，觉得它很酷很方便。但后来又有了不同的反思，
+面向对象不是唯一，header-only 库也有它的不足，对维护与使用也都有它特定的麻烦。</p>
+<p>所以我在后来为 <code>couttast</code> 补充一些非核心的扩展功能时，就没再坚持 header-only
+，而是写到独立的 <code>.cpp</code> 中编译成静态库。但核心功能还是保持在一个单头文件
+<code>tinytast.hpp</code> 中，也能单独使用。这符合二八定律，用少量代码完成大部分功能。</p>
+<p>所以即使是扩展了静态库，也保持了轻量与无依赖。因为我觉得单元测试库的设计与单元
+测试用例的设计一样，都要保持简单。如果测试代码本身复杂了，那就增加引入 bug 的
+风险，大大削减了测试的作用与意义。其他库可能是功能越强大越好，但单元测试库，可
+能未必如此。</p>
+<p>尤其是，C++ 的库依赖也一直是老大难的问题，菱形依赖更是天坑。这才是单元测试工
+具库需要保持轻量无依赖的重要原因。因此，即使你觉得 <code>couttast</code> 不合你的口味，也
+应尽量选用无依赖的库，避免后面不经意间引入菱形依赖导致库冲突的错误，那就很冤。
+这种情况一旦出现，就很难排查，因为被测代码没问题，测试代码也没问题，合在一起就
+出问题了。</p>
+<p>集成是指将单元测试程序集成至其他高阶流程中，例如自动化 CICD ，自动化测试应是其
+中一步。基于 linux 开发的命令行程序，都是很容易集成的。</p>
+<h2 id="wu-ke-ce-shi-cheng-xu-de-yi-ban-yuan-ze">五、可测试程序的一般原则</h2>
+<p>最后，再简单聊一点非技术的观点。</p>
+<p>其实，单元测试本身是没有价值的，有价值的是被测程序。这是一种依附关系，正所谓皮
+之不存，毛之焉附。如果被测程序本身是一坨，单元测试再怎么玩也难以屎上雕花。</p>
+<p>所以单元测试最最重要的一点，是被测程序具有可测试性。可测性是可维护性代码的重要
+质量指标。可测试性，从微观上讲也不难理解，就是不要写成一坨，需要恰当的分解，每
+个子函数（类、模块）职责单一明确，有易控制的输入输出。</p>
+<p>对于分解的粒度，我推崇一个简单粗暴的数量级划分。对于 shell ，就适合写单行命令
+行，对于脚本语言，每个函数适合写 10 行数量级，而对于 C++ 语言，每个函数适合写
+100 行量级，每个源文件在 1000 行左右。</p>
+<p>对于 TDD ，测试驱动开发，我认为也只是个美好的理论，实际项目中严格遵循 TDD 未必
+合适。我更推荐双向奔赴的过程，先做基本框架设计，再写单元测试用例，再完善代码设
+计……如此交错，直到完成开发目标。一份良好设计的软件代码，与其单元测试代码，理
+想情况下，就正如 DNA 双螺旋那样，相辅相成，互为补益纠正，共同保障软件朝正确可
+控的方向演化与进化。</p>
+<!--
+https://www.zhihu.com/question/27313846/answer/3450173301
+<hr>
+
+末了，再回答一下题主列出的几个问题。
+
+    1. 大牛们都是怎么测的，要用什么工具吗？
+
+我不是大牛，我只是曾经用过 gTest ，后来根据自己的需求手搓了个简易轻量的单元测
+试库。在用 cmake 管理项目构建时，也了解过 cmake 捎带的 ctest ，不过它更像是用
+于系统测试的，不是单元测试的。或者说 ctest 的作用有点像在文本第三节讲的那层，
+而不能指导更微观的写单元测试用例。但从另一方面看，单元测试用例太琐碎，能在更粗
+粒度上作系统测试也不错。
+
+    2. 对于 GUI 的部分一般怎么测?
+
+严格讲，单元测试属白盒测试，而我认为 GUI 测试属于黑盒测试。多年前我记得用过按
+键精灵玩游戏，或许可以用于将点点点的重复工作自动化，但那也该主要是测试部门的工
+作。但是模拟点击窗体位置的工具与库应该也存在，现在哪家好我不清楚。而 GUI 下面的
+数据功能，适合用单元测试，所以架构设计上要求解耦。
+
+    3. 想系统的从零开始学学 UnitTest 应该怎么做？
+
+我搓的这个 `couttast` 单元测试库就适合从零开始学单元测试，因为我也是从零开始的
+，强调测试的简易性。核心头文件 `tinytast.hpp` 现在只有 600 行左右还包括一些注
+释，有一定 C++ 基础的话，比读本文中文文章可能还更快读完。仓库里面也有一些示例
+程序及对 `couttast` 库本身的单元测试用例可供参考。
+-->
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;hex-and-binary-digital-usage&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              漫谈二进制与十六进制在计算机中的运用
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,1511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  
+  
+  
+  
+
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://lymslive.github.io/deep-thought.css" rel="stylesheet" />
+  
+<link href="/page-patch.css" rel="stylesheet" />
+
+
+  <title>
+    
+沉思涧 | C++ 命名空间理解与践行
+
+  </title>
+
+  
+  
+  
+
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;lymslive.github.io">沉思涧</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;">
+            首页
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog">
+            博客
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;book">
+            书册
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;think">
+            文思
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;white">
+            白学
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;tags">
+            标签
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;categories">
+            归类
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            C++ 命名空间理解与践行
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>七阶子</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-12-14">2023-12-14</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>61 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>12077 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  归类：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/categories/cheng-xu-she-ji/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>程序设计</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  标签：
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://lymslive.github.io/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C++</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2" id="article-content">
+            <p>众所周知，C++ 算是 C 的超集，提供了非常丰富的高级特性。对一般 C++ 开发者而言，
+并不要求精通 C++ 的每个特性，而应该按需学习与强化。在众多特性中，也许命名空间
+是很不起眼，平平无奇那个。但假如做个思想实验，摒弃 C++ 绝大部分特性，只保留一
+个特性加到 C 语言中，哪个最有助于改善 C 语言项目的开发体验与维护体验？</p>
+<p>我觉得不是类（虽然 C with class 也是 C++ 的一种实用范式），也不是模板，或其他
+奇淫巧技，而是命名空间。就因为 C 语言中几乎只有一个全局的命名空间，所有函数、
+结构体等类型，以及可能必要的全局变量，都塞在同一个空间，对维护大型项目而言
+太拥挤太可怕了，很容易出现命名冲突。C++ 的命名空间（namespace）就是为解决这个
+问题设计的，后现代大多数语言都有的模块（module）或包（package）的一个作用也能
+解决命名冲突，但更主要的作用是从项目整体宏观上抽象出模块的分组与组织。</p>
+<span id="continue-reading"></span><h2 id="cong-c-ming-ming-qian-zhui-dao-c-ming-ming-kong-jian">从 C 命名前缀到 C++ 命名空间</h2>
+<p>在纯 C 中，为了保持语言特性的简单，对该问题的妥协策略或推荐实践是在抽象出模块
+后为每个函数（及结构体）的命名添加统一的代表模块的前缀，例如：</p>
+<pre data-lang="c" style="background-color:#2b303b;color:#c0c5ce;" class="language-c "><code class="language-c" data-lang="c"><span style="color:#bf616a;">mymod_method</span><span>();
+</span><span style="color:#bf616a;">mymod_another_method</span><span>();
+</span></code></pre>
+<p>而在 C++ 中利用命名空间的对应用法大约像这样：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span>mymod::</span><span style="color:#8fa1b3;">method</span><span>();
+</span><span>mymod::</span><span style="color:#8fa1b3;">another_method</span><span>();
+</span></code></pre>
+<p>初看起来，从客户代码使用方角度，使用命名空间似乎比统一前缀没有显著的不同，不外
+是将一个下划线 <code>_</code> 替换为两个冒号 <code>::</code>，总长度写起来还多了一个字符。其他一些流
+行语言也有只用一个点 <code>.</code> 来分隔模块名的，但这可能易与类成员引用（视觉）混淆，
+各有利弊吧，不过是具体语言设计的偏好选择。</p>
+<p>然而，命名空间与命名前缀是有本质不同的，设计思想上的不同。相同的前缀只是个表象，
+并且命名空间的前缀在具体使用中有可能被简化或省略。命名空间是在 modern C++(11)
+之前就已支持的语法特性，下文的内容除特别指明外，绝大部分也适用 C++11 之前的版
+本标准。</p>
+<h2 id="c-ming-ming-kong-jian-ji-ben-gai-nian-xiang-jie">C++ 命名空间基本概念详解</h2>
+<p>在 C++ 可以用 <code>namespace</code> 打开一个命名空间，其后接一个空间名，然后是一对大括号，
+大括号内可以是其他任何合法 C++ 代码，包括嵌套的命名空间。不同命名空间里面的标
+识符不会产生名字冲突，也不会与全局空间（不在任何命令空间里）的标识符产生冲突。
+例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// sample1.cpp
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">1</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>() { </span><span style="color:#b48ead;">return</span><span> value_; }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) { value_ = value; }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>physic
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">2</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>() { </span><span style="color:#b48ead;">return</span><span> value_; }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) { value_ = value; }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">0</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main </span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    math::</span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">111</span><span>);
+</span><span>    physic::</span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">222</span><span>);
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">333</span><span>;
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in math: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, math::</span><span style="color:#bf616a;">GetValue</span><span>());
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in physic: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, physic::</span><span style="color:#bf616a;">GetValue</span><span>());
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in local: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, value_);
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in global: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, ::value_);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>编译该示例，运行，得如下输出：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>value in math: 111
+</span><span>value in physic: 222
+</span><span>value in local: 333
+</span><span>value in global: 0
+</span></code></pre>
+<p>几点说明：</p>
+<ul>
+<li>命名空间的名字本身也需要一个合法的标识符，不能与它所在的命名空间内的其他标识
+符重名。</li>
+<li>命名空间的大括号后面不需要有分号，当然有分号也不会错，只当是空语句。这与类定
+义后面必须有分号不同。<code>namespace</code> 后面的 <code>{}</code> 可认为与 <code>if</code> 或 <code>for</code> 类似，
+代表一个词法范围，并不是像 <code>class</code> 定义什么实体。</li>
+<li>命名空间限定符 <code>::</code> 前面一般是某个命名空间的名字，而全局空间没有名字，所以直
+接以 <code>::</code> 开头。但在不会出现名字隐藏的情况下，全局空间的 <code>::</code> 前缀可省略。</li>
+<li><code>main</code> 函数不能放在命名空间中。或者说在默认情况下，C 程序的入口是全局空间的
+那个 <code>main</code> 函数，当然也可以从中调用其他自定义命名空间内的 <code>main</code> 函数。</li>
+</ul>
+<h3 id="ming-ming-kong-jian-yin-cang-shi-xian-yu-duo-ci-da-kai">命名空间隐藏实现与多次打开</h3>
+<p>命名空间没有权限控制，只要在词法范围可见，都能访问。词法范围通俗理解就是当编译
+器顺序扫描源文件（编译单元）时，一对对大括号分隔的范围。在上例中我们特意只使用
+<code>math</code> 与 <code>physics</code> 命名空间内的函数，而没使用它定义的 <code>value_</code> 变量，只是君子
+约定，自立的规范，实际上编译器不能阻止我们直接访问其变量。</p>
+<p>但是我们可以按常用的 C/C++ 技法，将声名与实现分离在头文件与源文件中，从而达到
+隐藏实现的目的。例如先将 <code>math</code> 与 <code>physic</code> 两个命名空间的代码单独放在一个源文
+件中，不妨名之为 <code>science.cpp</code>：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// science.cpp
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">1</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>() { </span><span style="color:#b48ead;">return</span><span> value_; }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) { value_ = value; }
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>physic
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">2</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>() { </span><span style="color:#b48ead;">return</span><span> value_; }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) { value_ = value; }
+</span><span>}
+</span></code></pre>
+<p>然后在包含 <code>main</code> 的主源文件中，删除对变量 <code>value_</code> 的定义，并将函数的实现去掉，
+只留下声明：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// sample2.cpp
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>physic
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">0</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main </span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    math::</span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">111</span><span>);
+</span><span>    physic::</span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">222</span><span>);
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">333</span><span>;
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in math: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, math::</span><span style="color:#bf616a;">GetValue</span><span>());
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in physic: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, physic::</span><span style="color:#bf616a;">GetValue</span><span>());
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in local: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, value_);
+</span><span>    </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">value in global: </span><span style="color:#d08770;">%d</span><span style="color:#96b5b4;">\n</span><span>&quot;, ::value_);
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>这样，就能保证在主文件 <code>sample2.cpp</code> 中不能访问 <code>math::value_</code> 了。编译时要将
+两个文件一起编译链接，如 <code>g++ sample2.cpp science.cpp</code> 。</p>
+<p>在实践中，<code>sample2.cpp</code> 文件前半部分有包含声明语句的两个命名空间部分，应该单独
+写在一个头文件中，比如 <code>science.h</code> ，然后可以多处 <code>include</code> 它，包括在
+<code>science.cpp</code> 的最开始，按习惯也该 <code>include</code> 它，虽然在本例中并无必要。</p>
+<p>分离实现后，如果实在想在其他文件访问 <code>science.cpp</code> 的内部变量 <code>math:value_</code> ，
+则可以在 <code>science.h</code> 中相应的命名空间中添加 <code>extern</code> 声明，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">extern int</span><span> value_;
+</span><span>}
+</span></code></pre>
+<p>虽然 <code>extern</code> 变量并不是良好的项目实践，但放在各个命名空间内的 <code>extern</code> 变量总
+比在 C 语言中全部是全局的 <code>extern</code> 变量要好管理得多，更有种被封装的安全感。</p>
+<p>如此，在编译 <code>science.cpp</code> 时，展开 <code>science.h</code> 后，编译器看到的内容会出现多次
+用 <code>namespace</code> 关键字引导相同的命名空间，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// 展开 science.h
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">extern int</span><span> value_;
+</span><span>}
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>);
+</span><span>}
+</span><span style="color:#65737e;">// ...
+</span><span style="color:#65737e;">// 展开 science.h 结束
+</span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">1</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>() { </span><span style="color:#b48ead;">return</span><span> value_; }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) { value_ = value; }
+</span><span>}
+</span><span style="color:#65737e;">// ...
+</span></code></pre>
+<p>这是合法的。因为 <code>namespace</code> 关键字的意思它不是定义或创建命名空间，并不会重复
+定义命名空间，它只是打开命名空间，继续往里面添加代码。所以可以在同一个源文件
+（编译单元）中多次打开与关闭某个命名空间，只要保证在同一个命名空间中不会对同一
+个实体（变量，函数，类等）进行重复定义，但可以重复声明。也无需在某处预先创建命
+名空间，当然也可以只跟个空大括号假装在创建命名空间，统一列在一起或许对项目管理
+有清晰规范之意味。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// 本项目将创建、划分为以下命名空间：
+</span><span style="color:#b48ead;">namespace </span><span>math {}
+</span><span style="color:#b48ead;">namespace </span><span>physic {}
+</span></code></pre>
+<p>虽然原则上我们只应修改自己规划创建的命名空间，但理论上也可以打开来自标准库
+或三方库的命名空间，往里面扩充代码，只需警惕在更新库时可能会发生潜在的符号冲突。
+一个比较安全有实用的例子是在头文件的前向声明。如果库本身没有提供简单的前向声明
+头文件（或你未在意而不知道），那就可以在头文件中手动打开其命名空间，写上自己要
+用到的类前向声明，然后在源文件中才真正包含库的完整头文件。</p>
+<p>譬如说，你定义了一个类，用到 <code>std::string</code> 来作字节缓冲，并且只在需要时才用到，
+所以成员是 <code>std::string*</code> 指针类型，如果你觉得 <code>&lt;string&gt;</code> 头文件太大有洁癖，那
+就可以手动打开 <code>std</code> 命名空间，添加前向声明。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// CMyClass.h
+</span><span style="color:#b48ead;">namespace </span><span>std
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">string</span><span>;
+</span><span>}
+</span><span>
+</span><span style="color:#65737e;">// 但不应该将自己定义的类塞到 std 空间
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">CMyClass
+</span><span style="color:#eff1f5;">{
+</span><span style="color:#eff1f5;">    std::string</span><span>* </span><span style="color:#bf616a;">m_pBuffer</span><span style="color:#eff1f5;">;
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// todo
+</span><span style="color:#eff1f5;">}</span><span>;
+</span><span>
+</span><span style="color:#65737e;">// CMyClass.cpp
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">string</span><span>&gt;
+</span><span style="color:#65737e;">// 类实现代码
+</span></code></pre>
+<p>当然，这是个假想的例子。标准容器我们一般直接用值，而不是间接的指针，只有指针才
+能前向声明。但道理仍是这个道理。另一个例子是在低版本 C++ 中临时模拟高版本 C++
+标准库才提供的功能。比如你由于某些难以启齿的原因还必须使用 C++98 ，但又觉得
+C++11 有个 <code>std::to_string()</code> 很好用，那么就不妨自己打开 <code>std</code> 命名空间，自己
+写个简单的 <code>std::to_string()</code> 实现（数字转字符串）。当然，为了避免将来升级到
+C++11 （以上）时出现编译错误，最好将自己加的实现用条件编译判断 C++ 版本号。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>std
+</span><span>{
+</span><span style="color:#b48ead;">#if</span><span> __cplusplus &lt; 201103L
+</span><span>    string </span><span style="color:#8fa1b3;">to_string</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>) </span><span style="color:#65737e;">// 注：可用模板支持多种数值类型
+</span><span>    {
+</span><span>        stringstream oss;
+</span><span>        oss &lt;&lt; value;
+</span><span>        </span><span style="color:#b48ead;">return</span><span> oss.</span><span style="color:#bf616a;">str</span><span>();
+</span><span>    }
+</span><span style="color:#b48ead;">#endif
+</span><span>}
+</span></code></pre>
+<p>总之，命名空间是开放的，C++ 是灵活的，需要程序员自己把握。</p>
+<h3 id="yin-ru-ming-ming-kong-jian-de-shi-yong-using">引入命名空间的使用： using</h3>
+<p>再次回顾 C 风格的命名前缀，若以全名使用命名空间内的变量如 <code>math::value_</code> 并不
+比命名前缀 <code>math_value_</code> 精简。但在同一个命名空间引用其他变量，可以省略命名空
+间限定符，达到精简书写的目的。比如在各自命名空间内对 <code>GetValue()</code> 函数的实现，
+就可以直接使用 <code>value_</code> ，若只能用 C 风格前缀，则无论在哪都必须明确写成
+<code>math_value_</code> 或 <code>physic_value_</code> 。</p>
+<p>像这样 C++ 命名空间内省略前缀的另一个好处是，将部分代码拷到另一个命名空间后可
+以不改变量名，保持更多的命名风格统一。</p>
+<p>在命名空间外，或使用用其他命名空间的符号时，C++ 也有语法功能可以省略命名空间限定
+符 <code>::</code>，精简书写。这就是用关键字 <code>using</code> 引入命名空间符号的作用，但
+这个功能注意也不得滥用，得慎用。<code>using</code> 又主要分为两种用法：</p>
+<ul>
+<li>导入全部符号，<code>using namespace xxx;</code> 其中 <code>xxx</code> 为某个命名空间的名字。</li>
+<li>导入指定符号，<code>using xxx::symbol;</code> 其中 <code>symbol</code> 为某空间内具体的某个符号。</li>
+<li>别名导入符号，<code>using sym = xxx::symbol;</code> 可为指定导入的符号改换名字。</li>
+</ul>
+<p>全部导入，原术语叫 using directive ，指定导入叫 using declaration，别名导入类
+似 <code>typedef</code> ，但比 <code>typedef</code> 强的地方是还能带模板参数，所以也叫 alias
+template 。别名导入是 C++11 的功能，此前就用 <code>typedef</code> 吧。</p>
+<p>全部导入的示例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// sample3.cpp
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">iostream</span><span>&gt;
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main </span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">using namespace</span><span> math;
+</span><span>        </span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">111</span><span>);
+</span><span>        std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in math: </span><span>&quot; &lt;&lt; </span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; std::endl;
+</span><span>    }
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">using namespace</span><span> physic;
+</span><span>        </span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">222</span><span>);
+</span><span>        std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in pyhsic: </span><span>&quot; &lt;&lt; </span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; std::endl;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">using namespace</span><span> std;
+</span><span>    cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in math: </span><span>&quot; &lt;&lt; math::</span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; endl;
+</span><span>    cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in math: </span><span>&quot; &lt;&lt; physic::</span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; endl;
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>被 <code>using</code> 导入的符号的有效范围，就在写 <code>using</code> 语句的那个作用域内，即它所在那
+个大括号范围内，更准确点，是从写下 <code>using</code> 语句开始到闭大括号之间。若 <code>using</code>
+不在任何大括号内，那就是作用于当前文件（编译单元）之后的范围。所以在上例中，在
+<code>using namespace std</code> 之前，必须写全名 <code>std::cout</code> 与 <code>std::endl</code> ，在那之前才
+能简写为 <code>cout</code> 与 <code>endl</code> 。而前面的 <code>using namespace math</code> 与 <code>using namespace physic</code> 在离开大括号后又不可见了，故又必须加上 <code>::</code> 限定符写全名。</p>
+<p>为什么说 <code>using</code> 要慎用？因为滥用 <code>using</code> 也可能导致符号冲突。不能因为贪图书写
+的简便而使命名空间的划分形同虚设，那就本末倒置了。比如，在上例中，我们不能将
+<code>using namespace math</code> 与 <code>using namespace physic</code> 这两个语句并列写在同一个作
+用范围，因为它们之间有相同的符号。</p>
+<p>特别地，我们也不能滥用标准命名空间 <code>using namespace std</code> ，因为 <code>std</code> 包含了太
+多的符号，很可能一不小心就冲突了。底线是只能在一个 <code>.cpp</code> 源文件中使用该语句，
+红线是不能在头文件中使用。因为我们无法保证在将来这个头文件会有多少个源文件
+<code>include</code> 它。</p>
+<p>所以，在较大的文件级作用域，更建议只使用指定导入的 <code>using</code> 语法，只导入当前真
+的需要使用的部分符号。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// sample4.cpp
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">iostream</span><span>&gt;
+</span><span style="color:#65737e;">// using namespace std; //&lt; 不建议使用
+</span><span style="color:#b48ead;">using</span><span> std::cout;
+</span><span style="color:#b48ead;">using</span><span> std::endl;
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main </span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">using namespace</span><span> math;
+</span><span>        </span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">111</span><span>);
+</span><span>        cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in math: </span><span>&quot; &lt;&lt; </span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; endl;
+</span><span>    }
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">using namespace</span><span> physic;
+</span><span>        </span><span style="color:#bf616a;">SetValue</span><span>(</span><span style="color:#d08770;">222</span><span>);
+</span><span>        cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">value in pyhsic: </span><span>&quot; &lt;&lt; </span><span style="color:#bf616a;">GetValue</span><span>() &lt;&lt; endl;
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">0</span><span>;
+</span><span>}
+</span></code></pre>
+<p>很多 C++ 教程的示例代码，都会不假思索地将 <code>using namespace std</code> 当作起手式，实
+在是流毒无穷。那只不过因为教学性质的代码为了精简写法，以突出当前上下文要讲解的
+语法点。但在实际工程项目中请三思而后用，当然个人玩具项目代码随意。</p>
+<p>据个人的开发习惯，是几乎不对 <code>std</code> 使用 <code>using</code> 的，全都显式写上 <code>std::</code> 前缀
+，这能很直观地表示所用符号（函数或类）来自标准库。尤其是对于一些不太常用的标准
+库，别人不一定能一眼就意识到它是被收录于标准库的东西。所以始终多写几个字符的标
+准库前缀是值得的，只有在嵌套模板容器中会显得特别长可能引起不适感，如 <code>std:: map&lt;std::string, std::string&gt;</code> ，对于这种，尤其用 <code>using</code> 省前缀写成
+<code>map&lt;string, string&gt;</code> ，不如就用 <code>typedef</code> 重定义或 <code>using</code> 别名导入为更有针对
+性的类型名，例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">using </span><span>SStrMap = std::map&lt;std::string, std::string&gt;;
+</span><span style="color:#65737e;">// 等效 typedef
+</span><span style="color:#65737e;">// typedef std::map&lt;std::string, std::string&gt; SStrMap;
+</span><span>
+</span><span style="color:#b48ead;">template</span><span>&lt;</span><span style="color:#b48ead;">typename</span><span> T&gt;
+</span><span style="color:#b48ead;">using </span><span>StrMap = std::map&lt;std::string, T&gt;;
+</span><span>
+</span><span style="color:#65737e;">// later use:
+</span><span style="color:#65737e;">// StrMap&lt;int&gt; 等效 std::map&lt;std::string, int&gt;;
+</span></code></pre>
+<h3 id="lei-yu-ming-ming-kong-jian-de-xiang-guan-xing">类与命名空间的相关性</h3>
+<p>首先要意识到一个事情，C++ 的类也起着命名空间的作用，想想不同类可以有同名成员，
+这就显而易见。另外，类的静态成员（与方法）在类外使用的形式，也与命名空间完全相
+似。举个例子：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">static double</span><span> PI;
+</span><span>};
+</span><span>
+</span><span style="color:#b48ead;">double</span><span> Circle::PI = </span><span style="color:#d08770;">3.14159</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    Circle c;
+</span><span>    c.</span><span style="color:#bf616a;">r </span><span>= </span><span style="color:#d08770;">2.0</span><span>;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> s = Circle::PI * c.</span><span style="color:#bf616a;">r </span><span>* c.</span><span style="color:#bf616a;">r</span><span>;
+</span><span>    </span><span style="color:#65737e;">// 注：c.PI 也是允许的
+</span><span>}
+</span></code></pre>
+<p>这里，我们定义了一个表示圆形的类 <code>Circle</code> 。为简单起见，用 <code>struct</code> 关键字了，
+在 C++ 中它与 <code>class</code> 几乎是同义词，除了默认的访问权限为 <code>public</code> 。另外直接用
+单字母符号表示圆心坐标与半径了，正常项目命名规范应该是有意义的单词，不过若只为
+解决数学问题的项目，用对应数学符号的单字母或许也是可接受的。</p>
+<p>关注点在于 <code>Circle::PI</code> 的用法，与命名空间是相同的。事实上，从业务抽象角度考虑，
+圆周率不仅用在圆形类，其他数学领域也是经常用到的，所以将其放在 <code>math</code> 命名空间
+应该更合适，那么使用圆周率就该写成 <code>math::PI</code> 。两者写法并无本质区别，脱离上下
+文单看这句，无法获知 <code>PI</code> 是来源于某个命名空间还是某个类的静态成员。</p>
+<p>类与命名空间的最大区别是，类在运行时可以定义实例变量，如上例的 <code>c</code> ，那也就相
+当于创建了一个运行时命名空间，每个 <code>c</code> 变量有其独立的空间隔离表示其成员的符号
+<code>x</code> 、 <code>y</code> 与 <code>r</code> 。为了区分这种运行期与编译期的名字隔离，C++ 择用了不同的分隔
+符，单点 <code>.</code> 与双冒号号 <code>::</code> ，而命名空间的符号解析，更像类的静态成员，可在编
+译期确定，所以也用 <code>::</code> 。事实上，类在 C++ 一开始就有的，命名空间是后来版本添
+加的，类的功能很多，命名空间可以认为是将类的一部分功能再抽象独立出来，从更宏观
+的角度专门做名字隔离的工作。</p>
+<p>再注意到一个事实，类的方法可以在类外定义，在语法上定义每个方法时都还要加上类名
+与 <code>::</code> 限定符。从命名空间理解，那也就相当于重新打开了该类代表的命名空间，所以
+在方法体大括号内就可以直接使用该类或命名空间内的符号了。例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">static double</span><span> PI;
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">Area</span><span>();
+</span><span>};
+</span><span>
+</span><span>Circle::PI = </span><span style="color:#d08770;">3.14159</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">double </span><span>Circle::</span><span style="color:#8fa1b3;">Area</span><span>()
+</span><span>{ </span><span style="color:#65737e;">// 打开命名空间 Circle
+</span><span>  </span><span style="color:#b48ead;">return</span><span> PI * r * r;
+</span><span>} </span><span style="color:#65737e;">// 关闭命名空间 Circle
+</span></code></pre>
+<p>再严格点说，方法的返回值类型 <code>double</code> 写在 <code>Circle::</code> 前面，所以返回值类型不在
+该类的命名空间，当然这是个内置浮点类型，所以毫无违和感觉。但如果方法的返回类型
+也是在类内定义的子类型，那写法就该不一样了。假设我们要为 <code>Circle</code> 类添加一系列
+的变换方法，每个方法返回自身引用，以方便链式调用，就如支持如下写法：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span>Circle c;
+</span><span>c.</span><span style="color:#bf616a;">resize</span><span>(</span><span style="color:#d08770;">3.0</span><span>).</span><span style="color:#bf616a;">scale</span><span>(</span><span style="color:#d08770;">1.5</span><span>).</span><span style="color:#bf616a;">move</span><span>(</span><span style="color:#d08770;">3.0</span><span>, </span><span style="color:#d08770;">4.0</span><span>);
+</span></code></pre>
+<p>为实现这个目的，我们增加一个 <code>typedef</code> 类型，用 <code>SelfType</code> 表示自身类型，这样
+看起来与 <code>return *this</code> 更登对，意图更明显。在类内定义这些方法很直观，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// ...
+</span><span>    </span><span style="color:#b48ead;">typedef</span><span> Circle SelfType;
+</span><span>
+</span><span>    SelfType&amp; </span><span style="color:#8fa1b3;">resize</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">a_r</span><span>)
+</span><span>    {
+</span><span>        r = a_r;
+</span><span>        </span><span style="color:#b48ead;">return </span><span>*</span><span style="color:#bf616a;">this</span><span>;
+</span><span>    }
+</span><span>};
+</span></code></pre>
+<p>但当你移到类外定义时，返回值就得写成 <code>Circle::SelfType</code>：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span>Circle::SelfType&amp; Circle::</span><span style="color:#8fa1b3;">resize</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">a_r</span><span>)
+</span><span>{
+</span><span>  r = a_r;
+</span><span>  </span><span style="color:#b48ead;">return </span><span>*</span><span style="color:#bf616a;">this</span><span>;
+</span><span>}
+</span></code></pre>
+<p>若省略类名前缀就会报告 <code>SelfType</code> 未定义，因为编译器在扫描到返回值时，还未进入
+到 <code>Circle</code> 类的命名空间。但是如果用 C++11 语法，返回值可以写在后面（前面须用
+<code>auto</code> 占位），那就不用加类名前缀了，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">auto </span><span>Circle::</span><span style="color:#8fa1b3;">resize</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">a_r</span><span>) -&gt; SelfType&amp;
+</span><span>{
+</span><span>    r = a_r;
+</span><span>    </span><span style="color:#b48ead;">return </span><span>*</span><span style="color:#bf616a;">this</span><span>;
+</span><span>}
+</span></code></pre>
+<p>可以认为，当编译器看到 <code>Cirle::</code> 就知道打开命名空间了，所以不但后置返回类型，
+而且参数的类型也可以使用类内的子类型。例如实现赋值操作符，可以这么写：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>{
+</span><span>    </span><span style="color:#65737e;">// ...
+</span><span>    </span><span style="color:#b48ead;">typedef</span><span> Circle SelfType;
+</span><span>    SelfType&amp; </span><span style="color:#8fa1b3;">operator=</span><span>(</span><span style="color:#b48ead;">const</span><span> SelfType&amp; </span><span style="color:#bf616a;">that</span><span>);
+</span><span>};
+</span><span>
+</span><span style="color:#b48ead;">auto </span><span>Circle::</span><span style="color:#8fa1b3;">operator=</span><span>(</span><span style="color:#b48ead;">const</span><span> SelfType&amp; </span><span style="color:#bf616a;">that</span><span>) -&gt; SelfType&amp;
+</span><span>{
+</span><span>    </span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">x </span><span>= that.</span><span style="color:#bf616a;">x</span><span>;
+</span><span>    </span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">y </span><span>= that.</span><span style="color:#bf616a;">y</span><span>;
+</span><span>    </span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">r </span><span>= that.</span><span style="color:#bf616a;">r</span><span>;
+</span><span>    </span><span style="color:#b48ead;">return </span><span>*</span><span style="color:#bf616a;">this</span><span>;
+</span><span>}
+</span></code></pre>
+<p>参考类方法可移出类外定义的写法，命名空间内的函数定义也可移到外面，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int</span><span> value_ = </span><span style="color:#d08770;">1</span><span>;
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">GetValue</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>);
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">int </span><span>math::</span><span style="color:#8fa1b3;">GetValue</span><span>()
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">return</span><span> value_;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span>math::</span><span style="color:#8fa1b3;">SetValue</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">value</span><span>)
+</span><span>{
+</span><span>    value_ = value;
+</span><span>}
+</span><span>``
+</span><span>
+</span><span>这是允许的语法，能通过编译。但一般没必要这么写，因为 `namespace` 关键字只是
+</span><span>打开空间，所以可以分开在头文件内声明空间内的函数，而在源文件重新打开空间定义函
+</span><span>数实现。而 `</span><span style="color:#b48ead;">class</span><span>` 或 `</span><span style="color:#b48ead;">struct</span><span>` 关键字是定义类，所以无法像命名空间那样重新定义
+</span><span>类，只好分别针对每个方法用 `::` 打开与类关联的命名空间，完成方法实现代码。如果
+</span><span>说命名空间的函数定义移到外面的写法有什么优点的话，我唯一想到的是可以减少缩进层
+</span><span>次，对于复杂函数与嵌套命名空间，缩进太多也是难看。
+</span><span>
+</span><span>基于命名空间与类的相似性，再考虑一种特殊的类，只有静态方法或成员的类。在某个宣
+</span><span>称一切皆类的语言中，因其无法定义自由函数，就很容易就定义出这样的类，大约长这样
+</span><span>子：
+</span><span>
+</span><span>```c++
+</span><span style="color:#b48ead;">class </span><span style="color:#ebcb8b;">CMath
+</span><span style="color:#eff1f5;">{
+</span><span style="color:#b48ead;">public</span><span style="color:#eff1f5;">:
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">static int </span><span style="color:#8fa1b3;">Add</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">a</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">b</span><span style="color:#eff1f5;">) { </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> a </span><span>+</span><span style="color:#eff1f5;"> b; }
+</span><span style="color:#eff1f5;">    </span><span style="color:#b48ead;">static int </span><span style="color:#8fa1b3;">Sub</span><span style="color:#eff1f5;">(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">a</span><span style="color:#eff1f5;">, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">b</span><span style="color:#eff1f5;">) { </span><span style="color:#b48ead;">return</span><span style="color:#eff1f5;"> a </span><span>-</span><span style="color:#eff1f5;"> b; }
+</span><span style="color:#eff1f5;">    </span><span style="color:#65737e;">// ...
+</span><span style="color:#eff1f5;">}</span><span>;
+</span></code></pre>
+<p>这是合法的 C++ 代码，但没必要这样写，用 <code>namespace</code> 是更好的选择，不必反复写
+<code>static</code> 关键字。故可改写成：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>math
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Add</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">b</span><span>) { </span><span style="color:#b48ead;">return</span><span> a + b; }
+</span><span>    </span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">Sub</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">a</span><span>, </span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">b</span><span>) { </span><span style="color:#b48ead;">return</span><span> a - b; }
+</span><span>    </span><span style="color:#65737e;">// ...
+</span><span>}
+</span></code></pre>
+<h3 id="ming-ming-kong-jian-yu-lei-de-qian-tao">命名空间与类的嵌套</h3>
+<p>命名空间与类都可以嵌套，形成多层次的作用域空间，这是很直接的语法扩展。</p>
+<p>最常见的是将类放在某个命名空间，而类也起着命名空间的作用。如上节定义的
+<code>Circle</code> 类，就很适合放在 <code>math</code> 命名空间。而 <code>math</code> 与 <code>physic</code>命名空间也可以
+再放在另一个更大的命名空间，不妨取名<code>sci</code> 。于是代码框架形如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>sci
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">namespace </span><span>math
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> PI = </span><span style="color:#d08770;">3.14159</span><span>;
+</span><span>        </span><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>        {
+</span><span>            </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>            </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>            </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>            </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">Area</span><span>() { </span><span style="color:#b48ead;">return</span><span> PI * r * r; }
+</span><span>            </span><span style="color:#b48ead;">static double </span><span style="color:#8fa1b3;">Area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return</span><span> PI * r * r; }
+</span><span>        };
+</span><span>    }
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">namespace </span><span>phsyic
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> G = </span><span style="color:#d08770;">9.80</span><span>;
+</span><span>        </span><span style="color:#65737e;">// ...
+</span><span>    }
+</span><span>}
+</span></code></pre>
+<p>类 <code>Circle</code> 定义在嵌套的命名空间中，在外部使用该类时也只要用命名空间限定符
+<code>::</code> 依次给出空间名即可，并如其他难度：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    sci::math::Circle c;
+</span><span>    c.</span><span style="color:#bf616a;">r </span><span>= </span><span style="color:#d08770;">2.0</span><span>;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">c.Area() = </span><span>&quot; &lt;&lt; c.</span><span style="color:#bf616a;">Area</span><span>() &lt;&lt; std::endl;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">Circle::Area(3.0) = </span><span>&quot; &lt;&lt; sci::math::Circle::</span><span style="color:#bf616a;">Area</span><span>(</span><span style="color:#d08770;">3.0</span><span>) &lt;&lt; std::endl;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">c.Area(3.0) = </span><span>&quot; &lt;&lt; c.</span><span style="color:#bf616a;">Area</span><span>(</span><span style="color:#d08770;">3.0</span><span>) &lt;&lt; std::endl;
+</span><span>}
+</span></code></pre>
+<p>如果真嫌全限定的名字太长，在合适的地方可以考虑使用 <code>using</code> 。另外在上例特意在
+<code>Circle</code> 类中重载了成员函数与静态函数都取名 <code>Area</code> 。请注意在无实例情况下通过
+<code>::</code> 级联取到静态函数是很长的路径，但也能通过定义一个实例来访问静态方法，这也
+极大化简了写法，每个实例自成空间且与类空间有镜像关系。</p>
+<p>类可以放在命名空间中，但反过来，命名空间却不能放在类中。事实上，命名空间也不能
+放在函数中，它只能放在全局空间或其他命名空间中。如果需要在类中定义一个类似子空
+间的东西，可以定义为子类。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#b48ead;">namespace </span><span>sci { </span><span style="color:#b48ead;">namespace </span><span>math {
+</span><span style="color:#b48ead;">double</span><span> PI = </span><span style="color:#d08770;">3.14159</span><span>;
+</span><span>
+</span><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>    </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>Impl
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">static double </span><span style="color:#8fa1b3;">Area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return</span><span> PI * r * r;}
+</span><span>    };
+</span><span>    </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">Area</span><span>() { </span><span style="color:#b48ead;">return </span><span>Impl::</span><span style="color:#bf616a;">Area</span><span>(</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">r</span><span>); }
+</span><span>    </span><span style="color:#b48ead;">static double </span><span style="color:#8fa1b3;">Area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return </span><span>Impl::</span><span style="color:#bf616a;">Area</span><span>(r); }
+</span><span>};
+</span><span>}}
+</span></code></pre>
+<p>这里，全静态方法的类 <code>Impl</code> 却是可以伪装成一个子命名空间。</p>
+<p>子空间可以看到父级以上空间的符号，可以直接使用，除非各级之间存在同名符号产生符
+号隐藏，则需要用全限定名明确使用哪个，这实际项目中应极力避免，不要自找麻烦。
+父空间不能直接看到子空间内的符号，需要用限定符逐级进入子空间以引用其符号。</p>
+<p>事实上，命名空间嵌套的语法并不难，难的是对实际项目的业务功能抽象，如何用命名空
+间来组织代码能提高代码可读性与可维护性。这可能是与设计类继承体系不同的思维方式
+，而类的继承思想已逐渐被新兴语言抛弃了。</p>
+<h3 id="ni-ming-kong-jian-yu-ming-zi-ti-sheng">匿名空间与名字提升</h3>
+<p>前文多次提到，全局空间就是没有命名空间。还有另一个命名空间，它虽然有用
+<code>namespace</code> 开辟一个命名空间，却是没有名字，直接跟一对大括号，这就是匿名空间。
+匿名空间不能被其他源文件（编译单元）所访问，因为它没有名字，无法用 <code>using</code> 导
+入。所以只能在当前文件访问，并且无需 <code>::</code> 限定符，相当于 C 语言文件级的静态函
+数（内部链接）。</p>
+<p>其实匿名空间就是用来完美取代静态函数的，当文件内有多个静态函数时，用匿名空间封
+装可精简重复的 <code>static</code> 关键字。更重要的是，在 C++ 中，<code>static</code> 关键字是被滥用
+的，有多重涵义，以致可以当作 C++ 初级面试题了。所以在有其他方法可不用 <code>static</code>
+时尽量不用 <code>static</code> 。</p>
+<p>仍取上节的示例，假如我们觉得 <code>Circle::Impl</code> 内部类的求面积函数比较通用，想提到
+（限当前文件）全局作用域来，或者说可以从其他地方抄个 C 函数的实现来，那就可以
+放在文件开头的匿名空间中。如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// anonymous.cpp
+</span><span style="color:#b48ead;">namespace </span><span style="color:#65737e;">// static
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return </span><span style="color:#d08770;">3.14159 </span><span>* r * r;}
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>sci { </span><span style="color:#b48ead;">namespace </span><span>math {
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>        </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>        </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>        </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">Area</span><span>() { </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">area</span><span>(</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">r</span><span>); }
+</span><span>        </span><span style="color:#b48ead;">static double </span><span style="color:#8fa1b3;">Area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">area</span><span>(r); }
+</span><span>    };
+</span><span>}}
+</span></code></pre>
+<p>另外说明一下，这里将匿名空间的求面积函数名改为小写的 <code>area</code> ，需要与
+<code>Cirle::Area</code> 方法名区分，否则虽能编译通过，却会在调用 <code>Circle::Area</code> 函数时发
+生无限递归，因为就近原则，里面的 <code>Area</code> 方法名会屏蔽外面匿名空间的 <code>Area</code> 函数
+名，那就始终调用自己了。如果不改名，也可以用 <code>::Area</code> 访问全局函数避免递归自身，
+因为匿名空间的符号在全局空间也可见。</p>
+<p>其实，匿名空间不仅可以放在全局空间中，也可以放在其他命名空间中，其本质意义是在
+匿名空间内定义的符号也自己提升到父空间中可见。自 C++11 后，还有另一个命名空间
+叫内联空间（在 <code>namespace</code> 关键字前加 <code>inline</code>），也可以将自身内部的符号提升到
+父空间中。但是内联空间与匿名空间不同的是它仍然有名字，仍然可以给出包括自身空间
+名的全限定名称来访问，但匿名空间内的符号因其无名只能通过父空间来访问。另外内联
+空间在其他文件也可访问，即可进行外部链接。</p>
+<p>内联命名空间的主要作用是版本控制。默认版本或当前版本可以省略版本名只用到父空间
+的限定名，但也允许指定版本的空间名使用全限定名。仍以之前求圆面积的实现举例，还
+是将其放到 <code>math</code> 命名空间，然后将不同精度的圆周率计算划分为不同版本：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// inline.cpp
+</span><span style="color:#b48ead;">namespace </span><span>sci { </span><span style="color:#b48ead;">namespace </span><span>math {
+</span><span>    </span><span style="color:#b48ead;">namespace </span><span>v1
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> PI = </span><span style="color:#d08770;">3.14</span><span>;
+</span><span>        </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return</span><span> PI * r * r;}
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">inline namespace </span><span>v2
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> PI = </span><span style="color:#d08770;">3.14159</span><span>;
+</span><span>        </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return</span><span> PI * r * r;}
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>Circle
+</span><span>    {
+</span><span>        </span><span style="color:#b48ead;">double</span><span> x;
+</span><span>        </span><span style="color:#b48ead;">double</span><span> y;
+</span><span>        </span><span style="color:#b48ead;">double</span><span> r;
+</span><span>        </span><span style="color:#b48ead;">double </span><span style="color:#8fa1b3;">Area</span><span>() { </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">area</span><span>(</span><span style="color:#bf616a;">this</span><span>-&gt;</span><span style="color:#bf616a;">r</span><span>); }
+</span><span>        </span><span style="color:#b48ead;">static double </span><span style="color:#8fa1b3;">Area</span><span>(</span><span style="color:#b48ead;">double </span><span style="color:#bf616a;">r</span><span>) { </span><span style="color:#b48ead;">return </span><span style="color:#bf616a;">area</span><span>(r); }
+</span><span>    };
+</span><span>}}
+</span><span>
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">iostream</span><span>&gt;
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    sci::math::Circle c;
+</span><span>    c.</span><span style="color:#bf616a;">r </span><span>= </span><span style="color:#d08770;">2.0</span><span>;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">c.Area() = </span><span>&quot; &lt;&lt; c.</span><span style="color:#bf616a;">Area</span><span>() &lt;&lt; std::endl;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">v1 area = </span><span>&quot; &lt;&lt; sci::math::v1::</span><span style="color:#bf616a;">area</span><span>(c.</span><span style="color:#bf616a;">r</span><span>) &lt;&lt; std::endl;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">v2 area = </span><span>&quot; &lt;&lt; sci::math::v2::</span><span style="color:#bf616a;">area</span><span>(c.</span><span style="color:#bf616a;">r</span><span>) &lt;&lt; std::endl;
+</span><span>    std::cout &lt;&lt; &quot;</span><span style="color:#a3be8c;">v? area = </span><span>&quot; &lt;&lt; sci::math::</span><span style="color:#bf616a;">area</span><span>(c.</span><span style="color:#bf616a;">r</span><span>) &lt;&lt; std::endl;
+</span><span>}
+</span></code></pre>
+<p>该示例输出为：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>c.Area() = 12.5664
+</span><span>v1 area = 12.56
+</span><span>v2 area = 12.5664
+</span><span>v? area = 12.5664
+</span></code></pre>
+<p>因为 <code>math</code> 空间下面的 <code>v2</code> 空间被标记为 <code>inline</code> ，所以 <code>v2</code> 空间算是当前版本
+的默认实现，其内的符号在父空间 <code>math</code> 直接可见，也即有 <code>math::PI == math::v2::PI == 3.14159</code> 。</p>
+<p>内联空间对库开发者比较有用，可用于保持兼容性。而匿名空间对普通开发者比较实用，
+C 风格的静态函数可弃之了。</p>
+<p>在 C++ 还有另外一个语法结构，可以将词法作用域（大括号）内部的符号名字提到上层
+作用域，那就是沿袭 C 的枚举 <code>enum</code> 。事实上，旧式枚举类型还可以省略名字，但不
+管有无名字，其中的各个枚举项都是父空间可见的常量。于是，省略名字的枚举类型就相
+当于匿名命名空间，有名字的枚举类型就相当于内联命名空间。在没有充分意识到枚举项
+提升作用域的情况下，就容易造成枚举常量的命名冲突。因此，旧式枚举项在命名上常见
+统一加上它们所属的枚举类型的名字前缀并大写。于是，在 <code>c++11</code> 又加入一种枚举类
+类型，也叫有范围的枚举（scoped enumeration），语法是在 <code>enum</code> 关键字与枚举类型
+名之间再添加 <code>class</code> 或 <code>struct</code> 关键字。几种不同风格的枚举示例如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// enum.cpp
+</span><span style="color:#b48ead;">namespace </span><span>parent
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">enum </span><span>{ </span><span style="color:#d08770;">FALSE</span><span>, </span><span style="color:#d08770;">TRUE </span><span>};
+</span><span>    </span><span style="color:#b48ead;">enum </span><span>InLine { ZERO, ONE, TWO };
+</span><span>    </span><span style="color:#b48ead;">enum class </span><span>LoveColor { RED, GREEN, BLUE };
+</span><span>    </span><span style="color:#b48ead;">enum class </span><span>HateColor { RED, GREEN, BLUE };
+</span><span>}
+</span></code></pre>
+<p>其中，父空间的 <code>parent::FALSE</code> 与 <code>parent::TRUE</code> 常量来自匿名枚举，内联枚举提
+供了 <code>parent::ZERO</code> 至 <code>parent::TOW</code> 的常量符号，而 <code>parent::LoveColor::RED</code>
+与 <code>parent::HateColor::RED</code> 枚举项在各自不同的子空间，互不影响。如果后两个枚举
+类型去掉 <code>class</code> 关键字，就会造成 <code>parent</code> 空间的名字冲突。此外提一句，旧式枚
+举弱类型，可隐式转换当整数用，新式枚举是强类型，有 <code>class</code> 的类型特征，不能隐
+式转为整数，如果真要当作整数用，要用 <code>static_cast&lt;int&gt;</code> 显式转换。</p>
+<h2 id="c-xiang-mu-li-yong-ming-ming-kong-jian-de-shi-jian-tan-tao">C++ 项目利用命名空间的实践探讨</h2>
+<p>以上讲了 C++ 命名空间的语法特性。下面谈谈在实际项目中可以如何利用命名空间更好
+地组织代码，主要是个人的经验与尝试，不敢说最佳实践。与设计模式不同，或可称之为
+设计章法，比具体的设计模式更粗粒度更宏观一层的。又有点像开发规范，但是不纠结于
+命名、格式之类的细枝末节。</p>
+<h3 id="ji-ben-yuan-ze">基本原则</h3>
+<ol>
+<li>所有 C++ 代码应该封装在某个命名空间，全局空间只保留给 C 库。</li>
+<li>头文件除了命名空间分隔，只应包含简单的 C 语法元素，C++ 的复杂功能实现隔离隐
+藏在源文件。</li>
+<li>尽量保持头文件的简单性，其他源文件用不到元素，决不声明在头文件中。</li>
+</ol>
+<p>以上所列几点是指导原则，尽量达到的目标，但也不应是教条，可根据具体遇到的问题作
+一定的规范调整。若按此原则，从外部接口看，那就是 C with namespace 的 C++ 开发
+范式。</p>
+<p>先看第一点，应无疑异，不难达成。应该没有纯粹的 C++ ，但凡正常有实用的 C++ 项目，
+几乎不可避免要链接 <code>libc</code> 吧，还有用 C 写的操作系统的系统调用。既然 C 必定是伴
+生的，那就将 C 代码留在全局空间，而将所有自己写的 C++ 用命名空间保护起来。</p>
+<p>使用的第三方 C++ 库，也优先使用有命名空间的。有些第三方 C++ 库还支持配置让用户
+选个命名空间名字。如果有简短精巧的工具库没有命名空间，可以拉源码修改重编译，给
+其套个命名空间也非难事。第三方 C 库，那就让它待在全局空间，优秀的 C 库，导出的
+函数一般有统一前缀。</p>
+<p>如果某个功能既有第三方 C++ 库，又有 C 库，我推荐使用 C 库。除了 C 库一般更稳定
+可靠外，我还认为 C++ 是个性化很强的语言，别人的封装不一定适合自己，不如就直接
+拿 C 库来，只用其中自己需要的功能，如果必要，再浅封装那部分用得上的功能，封装
+的过程也是学习吃透 C 库的过程。</p>
+<p>此外，在调用标准 <code>libc</code> 库或系统函数，或其他名字很短的 C 函数时，建议加上 <code>::</code>
+前缀显式表明将调用全局空间的函数，避免意外地被当前空间的同名函数屏蔽。标准 C
+库的大多函数在 C++ 的 <code>std</code> 空间也有同名函数，如 <code>std::printf</code> 等，我的建议是
+仍用 C 的函数 <code>printf</code> 或在需要时写作 <code>::printf</code>，而不用 <code>std::printf</code> 。</p>
+<p>第三点也容易理解与达成。主要难点是后续修改后要维护一致性会麻烦点，如有外
+部检测工具辅助会省事不少。头文件是 C/C++ 的特色与即成史实，向来被其他语言鄙视。
+但我认为头文件也不是一无是处，浏览头文件的声明，有提纲挈领的作用，而看其他没有
+头文件的先进语言的模块源代码，不可避免要与实现细节一起看，要么人工过滤找重点，
+要么使用文档工具提取单独的文档。所以要规范 C/C++ 头文件，以简约为第一要务，扬
+长避短。从某种意义看，头文件就是针对与其对应的源文件所写的 <code>export</code> 语句，故只
+应导出真正想导出的元素（即要公开给别的源文件使用的接口），除此之外，不为该目的
+服务的废话都不应该存在，当然，注释文档不算废话。</p>
+<p>比较复杂的是第二点，重点讨论一下，也就是在头文件中，具体允许什么存在。</p>
+<p>若按纯净 C 的要求，头文件的主角就是函数声明，以及函数参数或返回值需要的结构体
+类型与枚举类型。因为当函数参数非常多时，用结构体显然是更好的组织方式，比如配置
+选项可以有很多。在头文件定义的结构体，以传参（输入输出）为主要目的，与源文件实
+现中对业务抽象而定义的结构体与类，可以不尽相同，各有侧重。</p>
+<p>头文件也尽量不要包含其他头文件，否则会形成复杂的头文件依赖。在管理第三方库不善
+时，头文件的包含顺序还可能引发 Bug 。所以如果函数需要用到来自其他头文件或第三
+方库的类型时，尽量使用指针或引用，这样就能自己加上前向声明，然后只在实现源文件
+中真正包含所需的头文件。头文件的理想状态是最多只包含必要的标准库头文件，甚至
+标准库头文件也不需要，就是纯粹地给他所服务的源文件导出声明。</p>
+<p>尤其要说明的是，不要在头文件中定义 C++ 类。因为类其实是个很复杂的东西，即使开
+局一个简单的类，将来也可能变得很复杂。把类定义放在头文件中，就无法真正做到导出
+声明与隐藏实现的分离。只在源文件中定义类，把类当作一种实现手段，而不是一种接口，
+接口只用 C 函数交互理论上也就够了。</p>
+<p>这里试举一例说明如何将 C++ 类定义隐藏在源文件中。假设我们要开发一个模块（业务
+抽象的模块，不是 C++20 的模块技术），规划放在 <code>mymod</code> 命名空间，其中绝大部分功
+能可通过一个类 <code>CMyClass</code> 来实现。那么头文件可以只有前向声明，及几个自由函数：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-class.h
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>CMyClass;
+</span><span>    CMyClass* </span><span style="color:#8fa1b3;">GetInstance</span><span>();
+</span><span>    CMyClass* </span><span style="color:#8fa1b3;">NewObject</span><span>(</span><span style="color:#65737e;">/* init-args */</span><span>);
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">FreeObject</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>);
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>);
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>);
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>然后在源文件完整实现类，并将导出的自由函数转发为类方法调用：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-class.cpp
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span style="color:#b48ead;">struct </span><span>CMyClass {
+</span><span>    </span><span style="color:#8fa1b3;">CMyClass</span><span>(</span><span style="color:#65737e;">/* init-args */</span><span>);
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>() { </span><span style="color:#65737e;">/* todo */ </span><span>}
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>() { </span><span style="color:#65737e;">/* todo */ </span><span>}
+</span><span>
+</span><span>    </span><span style="color:#65737e;">// data member ...
+</span><span>};
+</span><span>
+</span><span>CMyClass* </span><span style="color:#8fa1b3;">GetInstance</span><span>() {
+</span><span>    </span><span style="color:#b48ead;">static</span><span> CMyClass </span><span style="color:#bf616a;">instance</span><span>(</span><span style="color:#65737e;">/* defalut-args */</span><span>);
+</span><span>    </span><span style="color:#b48ead;">return </span><span>&amp;instance;
+</span><span>}
+</span><span>
+</span><span>CMyClass* </span><span style="color:#8fa1b3;">NewObject</span><span>(</span><span style="color:#65737e;">/* init-args */</span><span>) {
+</span><span>    CMyClass* pObject = </span><span style="color:#b48ead;">new </span><span style="color:#bf616a;">CMyclass</span><span>(</span><span style="color:#65737e;">/* init-args */</span><span>);
+</span><span>    </span><span style="color:#b48ead;">return</span><span> pObject;
+</span><span>}
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">FreeObject</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>) {
+</span><span>    </span><span style="color:#b48ead;">delete</span><span> pObject;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>) {
+</span><span>    pObject-&gt;</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>}
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>(CMyClass* </span><span style="color:#bf616a;">pObject</span><span>) {
+</span><span>    pObject-&gt;</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>}
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>可以看到，头文件很精简，甚至不需包含标准库文件，而源文件也不必包含自己的头文件
+（当然按习惯最好加上），那个头文件只是给别的源文件包含使用的。</p>
+<p>创建对象专门由一个函数 <code>NewObject</code> 来负责，按设计模式高大上的词汇，这也相当于
+Builder 模式。当获得一个对象后，就按 C 函数的方式将该对象传为第一个参数，用以
+完成其他工作。试想如果将参数 <code>pObject</code> 改名为 <code>self</code> （当然不能用 <code>this</code> ），
+那是不是更有感觉了呢。对象用完，再调用 <code>FreeObject</code> 函数释放对象。如果当初在
+工厂函数 <code>NewObject</code> 中返回的不是原始指针，而是 <code>std::unique_ptr&lt;CMyClass&gt;</code> ，
+那不必提供释放函数了。<code>unique_ptr</code> 是零成本抽象，与原始指针一样性能，不过本文
+重点不在智能指针，不再细谈。</p>
+<p>此外，也很容易实现所谓的单例模式，只要在头文件中只保留 <code>GetInstance</code> 函数，删
+掉 <code>NewObject</code> 函数声明即可，别人就无法创建第二个实例了。其实我是不太推荐严格
+地在类设计加以限制只能创建一个实例的，保不准啥时候突然就有多实例的需求了。笔者
+在工作中就曾接到一个优化需求，要去单例化，很蛋疼。所以，与其使用单例模式，不如
+使用有默认实例的模式。</p>
+<p>需要将一些自由函数转调类方法，可能会让人觉得繁琐。但这也正要求我们仔细设计接口，
+只导出必要的对外接口，不需要把类的每个方法都冗余地写个自由函数转发。不要把类设
+计本身当作目标，不能为设计了一个复杂完备的类而沾沾自喜，写一堆实际用不上的方法
+是没必要的。</p>
+<p>再看头文件的几个函数声明，这其实就是 C 语言模拟面向对象的基本方式。不过我们既
+然是在写 C++ ，在源文件的具体实现中，就没必要自缚手脚了。在 C 语言模拟多态会复
+杂点，虽然也能办到，但这也不是本文的重点。要实现这点，不妨将第二条原则稍放开，
+也允许充当接口的纯虚类定义，它里面只有虚函数方法。</p>
+<p>将上例改成支持多态，头文件形如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-interface.h
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>Interface {
+</span><span>        </span><span style="color:#b48ead;">virtual </span><span style="color:#8fa1b3;">~Interface</span><span>() {}
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Foo</span><span>() = </span><span style="color:#d08770;">0</span><span>;
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Bar</span><span>() = </span><span style="color:#d08770;">0</span><span>;
+</span><span>    };
+</span><span>    Interface* </span><span style="color:#8fa1b3;">CreateObject</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">arg</span><span>);
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">FreeObject</span><span>(Interface* </span><span style="color:#bf616a;">pObject</span><span>);
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>源文件形如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-interface.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">hide-interface.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>CHisClass : </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">Interface </span><span>{
+</span><span>        </span><span style="color:#8fa1b3;">CHisClass</span><span>() {}
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Foo</span><span>() </span><span style="color:#b48ead;">override </span><span>{ </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">CHisClass::Foo</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Bar</span><span>() </span><span style="color:#b48ead;">override </span><span>{ </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">CHisClass::Bar</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>    };
+</span><span>
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>CHerClass : </span><span style="color:#b48ead;">public </span><span style="color:#a3be8c;">Interface </span><span>{
+</span><span>        </span><span style="color:#8fa1b3;">CHerClass</span><span>() {}
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Foo</span><span>() </span><span style="color:#b48ead;">override </span><span>{ </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">CHerClass::Foo</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>        </span><span style="color:#b48ead;">virtual void </span><span style="color:#8fa1b3;">Bar</span><span>() </span><span style="color:#b48ead;">override </span><span>{ </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">CHerClass::Bar</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>    };
+</span><span>
+</span><span>    Interface* </span><span style="color:#8fa1b3;">CreateObject</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">arg</span><span>) {
+</span><span>        </span><span style="color:#b48ead;">if </span><span>(arg == </span><span style="color:#d08770;">1</span><span>) {
+</span><span>            </span><span style="color:#b48ead;">return new </span><span style="color:#bf616a;">CHisClass</span><span>();
+</span><span>        } </span><span style="color:#b48ead;">else </span><span>{
+</span><span>            </span><span style="color:#b48ead;">return new </span><span style="color:#bf616a;">CHerClass</span><span>();
+</span><span>        }
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">FreeObject</span><span>(Interface* </span><span style="color:#bf616a;">pObject</span><span>) {
+</span><span>        </span><span style="color:#b48ead;">delete</span><span> pObject;
+</span><span>    }
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>这里将 <code>NewObject()</code> 函数改成 <code>CreateObject()</code> ，并且实现上根据参数创建不同的
+具体子类，这就更像工厂函数了。然后也不需要其他自由函数来转发对象方法了，因为在
+创建出对象后，可以直接使用接口方法了，一个使用的示例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// use-interface.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">hide-interface.h</span><span>&quot;
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    mymod::Interface* p = mymod::</span><span style="color:#bf616a;">CreateObject</span><span>(</span><span style="color:#d08770;">1</span><span>);
+</span><span>    p-&gt;</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>    mymod::</span><span style="color:#bf616a;">FreeObject</span><span>(p);
+</span><span>    p = mymod::</span><span style="color:#bf616a;">CreateObject</span><span>(</span><span style="color:#d08770;">2</span><span>);
+</span><span>    p-&gt;</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>    mymod::</span><span style="color:#bf616a;">FreeObject</span><span>(p);
+</span><span>}
+</span></code></pre>
+<p>输出：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>CHisClass::Foo
+</span><span>CHerClass::Bar
+</span></code></pre>
+<p>这用起来就更有面向对象的特征了，但这不应成为追求目标。在 C++ 中，如非必要，也
+不建议滥用虚函数多态继承。对于不需多态的简单类，就按前面的 <code>hide-class.h</code> 示例
+隐藏实现即可，用 C 风格的函数转发对象方法也没问题。如果定要支持用户用对象的方
+法，也可以通过常见的 <code>Impl</code> 内部类实现。</p>
+<p>例如头文件可这么写：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-impl.h
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span style="color:#b48ead;">struct </span><span>CMyClass
+</span><span>{
+</span><span>    </span><span style="color:#8fa1b3;">CMyClass</span><span>();
+</span><span>    </span><span style="color:#8fa1b3;">~CMyClass</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>();
+</span><span>
+</span><span style="color:#b48ead;">private</span><span>:
+</span><span>    </span><span style="color:#b48ead;">struct </span><span>Impl;
+</span><span>    Impl* pImpl = </span><span style="color:#d08770;">nullptr</span><span>;
+</span><span>};
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>源文件这么写：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-impl.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">hide-impl.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&lt;</span><span style="color:#a3be8c;">stdio.h</span><span>&gt;
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span style="color:#b48ead;">struct </span><span>CMyClass::Impl {
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>() { </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Impl::Foo</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>() { </span><span style="color:#96b5b4;">printf</span><span>(&quot;</span><span style="color:#a3be8c;">Impl::Bar</span><span style="color:#96b5b4;">\n</span><span>&quot;); }
+</span><span>};
+</span><span>
+</span><span>CMyClass::</span><span style="color:#8fa1b3;">CMyClass</span><span>() {
+</span><span>    pImpl = </span><span style="color:#b48ead;">new</span><span> Impl;
+</span><span>}
+</span><span>CMyClass::</span><span style="color:#8fa1b3;">~CMyClass</span><span>() {
+</span><span>    </span><span style="color:#b48ead;">delete</span><span> pImpl;
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span>CMyClass::</span><span style="color:#8fa1b3;">Foo</span><span>() {
+</span><span>    pImpl-&gt;</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>}
+</span><span style="color:#b48ead;">void </span><span>CMyClass::</span><span style="color:#8fa1b3;">Bar</span><span>() {
+</span><span>    pImpl-&gt;</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>}
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>如果不想将内部实现定义成子类 <code>CMyClass::Impl</code> ，也可以直接在同级命名空间定义个
+辅助类 <code>mymod::CMyClassImpl</code> ，并无太大差别，我推荐用子类，更显空间层次感。对
+该类的一个使用示例如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// use-imple.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">hide-impl.h</span><span>&quot;
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>()
+</span><span>{
+</span><span>    mymod::CMyClass obj;
+</span><span>    obj.</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>    obj.</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>}
+</span></code></pre>
+<p>输出：</p>
+<pre style="background-color:#2b303b;color:#c0c5ce;"><code><span>Impl::Foo
+</span><span>Impl::Bar
+</span></code></pre>
+<p>这看起来与常规使用类对象没啥区别了。但是再审视一下在头文件 <code>hide-impl.h</code> 定义
+的 <code>CMyClass</code> 类，若非教程示例性代码，可能就没那么简单了。它定义了构造函数，那
+就是非平凡 (non-trivial) 类了，而且既然定义构造与析构，那四件套（或六件套）的
+其他套装还要不要定义呢？就是拷贝构造函数，拷贝赋值函数，移动构造函数与移动赋值
+函数。一般来说，类中有指针成员，那这六件套都得考虑，否则这个类暴露给了用户，说
+不准哪天就给你捅出漏子来。在这里，那个唯一的 <code>pImpl</code> 指针，可以改用智能指针
+<code>std:: unique_ptr</code> 免写析构函数，但也没有降低太多复杂度。所以说，C++ 的类是个
+很复杂的东西，不如全移到源文件去，隔离用户，不给用户压力。</p>
+<p>不妨再分析一下业务需求。假设用户代码（其他源文件）的典型用法，就是创建该类的一
+个对象，再依次调用其 <code>Foo</code> 与 <code>Bar</code> 两道工序方法，那其实在头文件甚至不用暴露这
+个类的存在，只要在源文件中再添加一个函数 <code>Work</code>，组合这样的工序流，如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// hide-class.cpp
+</span><span style="color:#b48ead;">namespace </span><span>mymod {
+</span><span style="color:#65737e;">// ...
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Work</span><span>(</span><span style="color:#65737e;">/* arguments */</span><span>)
+</span><span>{
+</span><span>    CMyClass </span><span style="color:#bf616a;">obj</span><span>(</span><span style="color:#65737e;">/* arguments */</span><span>);
+</span><span>    obj.</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>    obj.</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>}
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span></code></pre>
+<p>然后在头文件中只要导出 <code>Work</code> 这一个函数，其余的都用不上删了，然后在外面也就只
+要调用 <code>mymod::Work</code> 函数能完成任务就行，完全不用管它内部是用类来实现还是其他
+什么来实现。</p>
+<p>所以，在头文件该写什么，要根据具体项目分析而定。总之以导出最小化为原则，以函数
+为主，不要有类。如果项目复杂，可以允许有纯数据的结构体（传参），或纯虚函数的
+接口类。其实若不限纯 C 语法的话，（在命名空间内）也不妨有重载函数声明，新式的
+枚举类 <code>enum class</code> ，以及 <code>std::function</code> 类型代替函数指针用于设置回调函数
+参数（这或可代替虚函数表实现多态需求）……这些 C++ 特性，也不会增加太大的复杂
+性及影响声明与实现的分离布局。</p>
+<h3 id="mu-biao-wei-ke-zhi-xing-wen-jian-de-xiang-mu">目标为可执行文件的项目</h3>
+<p>C++ 项目按最终编译的成品分，主要分有两类，一是可执行文件，二是动态链接库，其实
+还有一类是静态库，不过那几乎是将各个目标文件的简单打包，故此不多作讨论。</p>
+<p>先看可执行文件，它需要一个入口 <code>main</code> 函数，这是唯一例外的自己写的却不能放入
+命名空间的函数，但我们可以尽可能将它写得简单，只一行转调。比如我们可以设计一个
+命名空间来代表整个应用程序，不妨叫 <code>app</code> （或 <code>exe</code> ？），将程序的主要入口逻辑
+写在该空间的一个函数，也可以叫 <code>main</code> ，不过这个单词较为敏感，我更喜欢取名为
+<code>run</code> 。然后在全局空间的 <code>main</code> 就只要写一行调用，并且之后基本不需改动了。大致
+结构形如：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// app.cpp
+</span><span style="color:#b48ead;">namespace </span><span>app {
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">run</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[]) </span><span style="color:#65737e;">// main
+</span><span>{
+</span><span>    </span><span style="color:#65737e;">// todo: 命令行参数与配置解析
+</span><span>    </span><span style="color:#65737e;">// todo：业务逻辑处理
+</span><span>}
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span><span>
+</span><span style="color:#b48ead;">int </span><span style="color:#8fa1b3;">main</span><span>(</span><span style="color:#b48ead;">int </span><span style="color:#bf616a;">argc</span><span>, </span><span style="color:#b48ead;">char</span><span>* </span><span style="color:#bf616a;">argv</span><span>[])
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">return </span><span>app::</span><span style="color:#bf616a;">run</span><span>();
+</span><span>}
+</span></code></pre>
+<p>如果涉及比较复杂的命令行参数或配置处理，可以增设一个子空间 <code>app::cli</code> 或
+<code>app::conf</code> 。至于业务逻辑该怎么划分命名空间，那是具体项目具体分析了，这其实是
+需求分析与整体设计，与 C++ 语言的关系并不是很密切。</p>
+<h3 id="mu-biao-wei-dong-tai-lian-jie-ku-de-xiang-mu">目标为动态链接库的项目</h3>
+<p>动态链接库的项目，其实也有些必须的代码必须放到全局空间来，那就是需要导出的 C
+函数，可以被其他程序链接或运行时加载的函数最好用 C 接口。这部分函数一般还要用
+<code>extern C</code> 声明，避免 C++ 对函数符号的修饰。</p>
+<p>可以专门设计一个命名空间 <code>dll</code> 来承接欲导出的动态链接库函数，并根据 C 习惯为这
+些导出 C 函数取个统一前缀。比如头文件大致如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// dll.h
+</span><span style="color:#b48ead;">namespace </span><span>dll
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>();
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span><span>
+</span><span style="color:#b48ead;">#ifdef</span><span> __cplusplus
+</span><span style="color:#b48ead;">extern </span><span>&quot;</span><span style="color:#a3be8c;">C</span><span>&quot;
+</span><span>{
+</span><span style="color:#b48ead;">#endif
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">mydll_foo</span><span>();
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">mydll_bar</span><span>();
+</span><span style="color:#b48ead;">#ifdef</span><span> __cplusplus
+</span><span>}
+</span><span style="color:#b48ead;">#endif
+</span></code></pre>
+<p>源文件大致如下：</p>
+<pre data-lang="c++" style="background-color:#2b303b;color:#c0c5ce;" class="language-c++ "><code class="language-c++" data-lang="c++"><span style="color:#65737e;">// dll.cpp
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">dll.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">foo.h</span><span>&quot;
+</span><span style="color:#b48ead;">#include </span><span>&quot;</span><span style="color:#a3be8c;">bar.h</span><span>&quot;
+</span><span>
+</span><span style="color:#b48ead;">namespace </span><span>dll
+</span><span>{
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Foo</span><span>()
+</span><span>    {
+</span><span>        foo::</span><span style="color:#bf616a;">Work</span><span>();
+</span><span>    }
+</span><span>    </span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">Bar</span><span>()
+</span><span>    {
+</span><span>        bar::</span><span style="color:#bf616a;">Work</span><span>();
+</span><span>    }
+</span><span>} </span><span style="color:#65737e;">// end of namespace
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">mydll_foo</span><span>()
+</span><span>{
+</span><span>    dll::</span><span style="color:#bf616a;">Foo</span><span>();
+</span><span>}
+</span><span>
+</span><span style="color:#b48ead;">void </span><span style="color:#8fa1b3;">mydll_bar</span><span>()
+</span><span>{
+</span><span>    dll::</span><span style="color:#bf616a;">Bar</span><span>();
+</span><span>}
+</span></code></pre>
+<p>以上，<code>extern C</code> 只要在头文件声明即可，在源文件实现时可不加，如不确定，也可加
+上。此外更常见的是将 <code>extern C</code> 及其前后大括号放在条件编译中，这是考虑当作纯 C
+编译时没有 <code>extern C</code> 语法。于是总体上看，由 <code>extern C</code> 导出的 C 函数转调 <code>dll</code> 
+空间的相应函数，但实际业务肯定也不可能全写在 <code>dll</code> 命名空间，一般是分在其他命
+名空间，因此 <code>app</code> 空间的函数也只做一层转发而已。</p>
+<p>另外注意，用 gcc 编译 linux 的动态链接库 <code>.so</code> 时，符号是默认导出的，而在
+windows 编译动态链接库 <code>.dll</code> 时，符号是默认不导出的。因此，要精确控制只导出那
+些设计为要导出的 C 函数，需要添加额外属性标注及调整相关编译链接参数，具体技术
+细节就非本文想涉及的了。</p>
+<h2 id="zong-jie">总结</h2>
+<p>本文在厘清 C++ 有关命名空间的相关语法特性的基础，结合实际开发经验，尝试提出
+“C with namespace”的 C++ 开发范式，在面向对象编程思想出现反思潮的当下，C
+with namespace 也许是比 C with class 更简单易用的一种范式。命名空间不仅是避免
+符号冲突的手段，更是对业务抽象进行模块化划分的体现。因此，合理使用命名空间，再
+结合严格规范的头文件与源文件进行声明与实现的分离，能有效地改善 C++ 项目代码的
+组织结构，提升代码可读性与可维护性。</p>
+<p>在计算机编程界，自从 C++ 在 C 语言的基础上发展壮大以来，期间常有新兴语言诞生，
+宣称自己是“更好的 C”，其拥趸者更是热切期待它们能取代万恶复杂的 C++。事实上，
+C++ 从来就是更好的 C 。作为多范式编程语言，C++ 可以自由应对灵活多变的需求。如
+果觉得 C++ 太复杂了，也可以有意识地在实际的具体的项目为之做减法。本文从相当宏
+观的项目代码组织层面上，提出用命名空间及隐藏实现来隔离 C++ 的复杂度，希望能为
+广大 C++ 开发者提供一种思想启迪。</p>
+<h2 id="fu-lu-shi-li-yuan-ma-can-kao">附录：示例源码参考</h2>
+<ul>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./sample1.cpp">sample1.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./sample2.cpp">sample2.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./science.cpp">science.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./science.h">science.h</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./shape.cpp">shape.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./nested.cpp">nested.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./anonymous.cpp">anonymous.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./inline.cpp">inline.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./enum.cpp">enum.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-class.cpp">hide-class.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-class.h">hide-class.h</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-interface.cpp">hide-interface.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-interface.h">hide-interface.h</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./use-interface.cpp">use-interface.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-impl.cpp">hide-impl.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./hide-impl.h">hide-impl.h</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./use-impl.cpp">use-impl.cpp</a></li>
+<li><a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./dll.cpp">dll.cpp</a> <a href="https://lymslive.github.io/blog/cpp-namespace-pratical/./dll.h">dll.h</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+      <div class="column is-2 is-hidden-mobile">
+        <aside class="menu" style="position: sticky; top: 48px">
+          <p class="heading has-text-weight-bold">目录</p>
+          <ul class="menu-list">
+            
+            <li>
+              <a id="link-cong-c-ming-ming-qian-zhui-dao-c-ming-ming-kong-jian" class="toc is-size-7 is-active"
+                href="https://lymslive.github.io/blog/cpp-namespace-pratical/#cong-c-ming-ming-qian-zhui-dao-c-ming-ming-kong-jian">
+                从 C 命名前缀到 C++ 命名空间
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-c-ming-ming-kong-jian-ji-ben-gai-nian-xiang-jie" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/cpp-namespace-pratical/#c-ming-ming-kong-jian-ji-ben-gai-nian-xiang-jie">
+                C++ 命名空间基本概念详解
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-ming-ming-kong-jian-yin-cang-shi-xian-yu-duo-ci-da-kai" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#ming-ming-kong-jian-yin-cang-shi-xian-yu-duo-ci-da-kai">
+                    命名空间隐藏实现与多次打开
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-yin-ru-ming-ming-kong-jian-de-shi-yong-using" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#yin-ru-ming-ming-kong-jian-de-shi-yong-using">
+                    引入命名空间的使用： using
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-lei-yu-ming-ming-kong-jian-de-xiang-guan-xing" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#lei-yu-ming-ming-kong-jian-de-xiang-guan-xing">
+                    类与命名空间的相关性
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-ming-ming-kong-jian-yu-lei-de-qian-tao" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#ming-ming-kong-jian-yu-lei-de-qian-tao">
+                    命名空间与类的嵌套
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-ni-ming-kong-jian-yu-ming-zi-ti-sheng" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#ni-ming-kong-jian-yu-ming-zi-ti-sheng">
+                    匿名空间与名字提升
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-c-xiang-mu-li-yong-ming-ming-kong-jian-de-shi-jian-tan-tao" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/cpp-namespace-pratical/#c-xiang-mu-li-yong-ming-ming-kong-jian-de-shi-jian-tan-tao">
+                C++ 项目利用命名空间的实践探讨
+              </a>
+              
+              <ul>
+                
+                <li>
+                  <a id="link-ji-ben-yuan-ze" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#ji-ben-yuan-ze">
+                    基本原则
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-mu-biao-wei-ke-zhi-xing-wen-jian-de-xiang-mu" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#mu-biao-wei-ke-zhi-xing-wen-jian-de-xiang-mu">
+                    目标为可执行文件的项目
+                  </a>
+                </li>
+                
+                <li>
+                  <a id="link-mu-biao-wei-dong-tai-lian-jie-ku-de-xiang-mu" class="toc is-size-7" href="https://lymslive.github.io/blog/cpp-namespace-pratical/#mu-biao-wei-dong-tai-lian-jie-ku-de-xiang-mu">
+                    目标为动态链接库的项目
+                  </a>
+                </li>
+                
+              </ul>
+              
+            </li>
+            
+            <li>
+              <a id="link-zong-jie" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/cpp-namespace-pratical/#zong-jie">
+                总结
+              </a>
+              
+            </li>
+            
+            <li>
+              <a id="link-fu-lu-shi-li-yuan-ma-can-kao" class="toc is-size-7 "
+                href="https://lymslive.github.io/blog/cpp-namespace-pratical/#fu-lu-shi-li-yuan-ma-can-kao">
+                附录：示例源码参考
+              </a>
+              
+            </li>
+            
+          </ul>
+        </aside>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;analyse-log-with-perl&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              用 perl 统计分析日志应用实战
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;lymslive.github.io&#x2F;blog&#x2F;rapidjson-deepin-learn-practice&#x2F;">
+              深入浅出理解 rapidjson 与实践<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Contact
+        <a class="has-text-black" href="mailto:403708621@qq.com" target="_blank">
+          <span class="icon is-large" title="Email">
+            <i class="far fa-envelope fa-lg"></i>
+          </span>
+        </a>
+        Issue
+        <a class="has-text-github" href="https://github.com/lymslive/lymslive.github.io/issues" target="_blank">
+          <span class="icon is-large" title="GitHub">
+            <i class="fab fa-github fa-lg"></i>
+          </span>
+        </a>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+        with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  
+  
+  
+  <script src="https://lymslive.github.io/elasticlunr.min.js"></script>
+  <script src="https://lymslive.github.io/search_index.en.js"></script><script src="https://lymslive.github.io/js/site.js"></script>
+
+  
+
+<script type="text/javascript">
+  const menuBarHeight = document.querySelector("nav.navbar").clientHeight;
+  const tocItems = document.querySelectorAll(".toc");
+  const navSections = new Array(tocItems.length);
+
+  tocItems.forEach((el, i) => {
+    let id = el.getAttribute("id").substring(5);
+    navSections[i] = document.getElementById(id);
+  })
+
+  function isVisible(tocIndex) {
+    const current = navSections[tocIndex];
+    const next = tocIndex < tocItems.length - 1 ? navSections[tocIndex + 1]
+      : document.querySelectorAll("section.section").item(1);
+
+    const c = current.getBoundingClientRect();
+    const n = next.getBoundingClientRect();
+    const h = (window.innerHeight || document.documentElement.clientHeight);
+
+    return (c.top <= h) && (n.top - menuBarHeight >= 0);
+  }
+
+  function activateIfVisible() {
+    for (b = true, i = 0; i < tocItems.length; i++) {
+      if (b && isVisible(i)) {
+        tocItems[i].classList.add('is-active');
+        b = false;
+      } else
+        tocItems[i].classList.remove('is-active');
+    }
+  }
+
+  var isTicking = null;
+  window.addEventListener('scroll', () => {
+    if (!isTicking) {
+      window.requestAnimationFrame(() => {
+        activateIfVisible();
+        isTicking = false;
+      });
+      isTicking = true;
+    }
+  }, false);
+</script>
+
+
+
+
+
+  
+<script src="https://lymslive.github.io/js/chinese-format.js"></script>
+
+</body>
+
+</html>
