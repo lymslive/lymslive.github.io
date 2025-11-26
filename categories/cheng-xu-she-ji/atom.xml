@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - 程序设计</title>
+    <link href="https://lymslive.github.io/categories/cheng-xu-she-ji/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-11-25T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/categories/cheng-xu-she-ji/atom.xml</id>
+    <entry xml:lang="en">
+        <title>AI 结对编程 C++ 后端造轮子初体验</title>
+        <published>2025-11-25T00:00:00+00:00</published>
+        <updated>2025-11-25T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/ai-coding-first-practise/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/ai-coding-first-practise/</id>
+        
+        <content type="html">&lt;h1 id=&quot;ai-jie-dui-bian-cheng-c-hou-duan-zao-lun-zi-chu-ti-yan&quot;&gt;AI 结对编程 C++ 后端造轮子初体验&lt;&#x2F;h1&gt;
+&lt;p&gt;AI 编程已经火了好一阵子了。但我作为一个后端码农，更习惯于命令行工具，所以对于
+那些 AI 插件、AI IDE 都没深度使用。直到以 Claude Code 为代表的 ai-cli 命令行编
+程工具出现，才感觉能对上胃口了。然而我又是个穷鬼，平时又没强烈的愿望科学上网，
+所以又观望了一阵，再等等国内平替（山寨） AI 编程命令行工具出现。&lt;&#x2F;p&gt;
+&lt;p&gt;然后某一天，瞅着鹅厂推出了 codebuddy ，就安装了尝试一下，这才算开始正八经体验
+AI 辅助编程。此前所在公司也曾强推 AI 插件工具，下达 AI 使用指标，那不太算数的
+。因为历屎沉积的项目比较大，AI 代写的效果并不妙，但可作为一种新的补全手段。&lt;&#x2F;p&gt;
+&lt;p&gt;于是我抽出一个较小的基础库功能，创建独立仓库，尝试利用 AI 进行重构、迭代与优化
+。那是很常见的 json 数据处理功能，我们的项目仓库中此前拖了好几个 json 开源库并
+存，最近入库的是 yyjson ，据说其性能在第一梯度。但是 yyjson 是纯 C 库，其 api
+使用有点繁琐，我不太喜欢。所以想自己再做一层 C++ 封装，尤其是想实现操作符重载
+的特色，以达到常用 json 操作只需使用操作符而不涉及具名方法。此外，易用性抽象与
+高性能的平衡也是考虑重点。&lt;&#x2F;p&gt;
+&lt;p&gt;总之，目标是能回生产实用的 json 操作库，而不是为了测评 AI Agent 或模型的 demo
+玩具。项目地址是
+&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;xyjson&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;xyjson&lt;&#x2F;a&gt; 。&lt;&#x2F;p&gt;
+&lt;p&gt;我的开发环境是 Windows 10 WSL ，主要 Agent 工具就是 codebuddy 国内版，模型使用
+以 deepseek 居多。codebuddy 曾有两周免费的国际版体验，也用了。此外，前段时间
+MinMax 模型免费，也试用过一段时间 Claude Code 。样本经验并不多，我很难评各个的
+优缺点，只能说本质上是同类工具，用自己顺手顺眼的就行。&lt;&#x2F;p&gt;
+&lt;p&gt;经过开始一段时间的摸索后，我逐渐形成了一种工作流。说起来也简单，就是把自己的需
+求、设计与灵感写在一个 &lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 中，提交给 Agent 完成后再让它写个
+&lt;code&gt;task_log.md&lt;&#x2F;code&gt; 任务日志。&lt;&#x2F;p&gt;
+&lt;p&gt;其实最开始这两个文件不叫这名的，有个意外事件。原本我只想维护一个文件，命名为
+&lt;code&gt;ai_request.md&lt;&#x2F;code&gt; 。我将自己的需求写个二级标题，本意是想叫 AI 在原文件的需求二级
+章节下加三级标题记录完成情况。结果在输入框 &lt;code&gt;@ai_request.md&lt;&#x2F;code&gt; 提交后，它居然给我
+新建了一就名叫 &lt;code&gt;@ai_request.md&lt;&#x2F;code&gt; 的文件来记录工作日志。&lt;&#x2F;p&gt;
+&lt;p&gt;我一度很无语，但思索片刻后，觉得这样分开也好，我写我的文档，它写它的文档，双线
+并行不要混在一起。但是文件名要改一下，总不能在文件名中顶着 &lt;code&gt;@&lt;&#x2F;code&gt; 作案。于是我写
+&lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 作为原始需求，AI 写 &lt;code&gt;task_log.md&lt;&#x2F;code&gt; 作为工作汇报。&lt;&#x2F;p&gt;
+&lt;p&gt;两个文档都在二级标题中标上 ID ，虽然都基于日期生成，但格式略有不同。
+&lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 中的叫需求 ID ，格式是 &lt;code&gt;yyyy-mm-dd&#x2F;n&lt;&#x2F;code&gt; ，后缀是 1 2 3 这样的递
+增序号，这是面向手写的自然计数。&lt;code&gt;task_log.md&lt;&#x2F;code&gt; 中叫任务 ID，生成格式是
+&lt;code&gt;yyyymmdd-hhmmss&lt;&#x2F;code&gt; ，在写日志时让它用 &lt;code&gt;date&lt;&#x2F;code&gt; 命令自动生成。这是两套 ID，不过在
+任务完成后也会在 &lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 加个三级标题，标注 &lt;code&gt;DONE:&lt;&#x2F;code&gt; 关联任务 ID。有时我
+也还会在这个子标题下备注一些内容。&lt;&#x2F;p&gt;
+&lt;p&gt;然后围绕这两个文档的管理，我使用最多的是 Agent 工具的自定义命令，也就是 &lt;code&gt;&#x2F;&lt;&#x2F;code&gt; 命
+令，并且配合自已专门开发的脚本使用。此外，那些貌似高级的 MCP 呀 Skill 都没派上
+用场。&lt;&#x2F;p&gt;
+&lt;p&gt;首先我定义了一个 &lt;code&gt;&#x2F;pop&lt;&#x2F;code&gt; 命令，就是从 &lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 中读取一个 &lt;code&gt;TODO&lt;&#x2F;code&gt; 需求扔给
+Agent 去做。&lt;code&gt;.xxx&#x2F;commands&#x2F;pop.md&lt;&#x2F;code&gt; 文档中写的就是总体工作流的提示词。其中可写
+明调用一个脚本读取 &lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 的一节需求内容，脚本就放在 &lt;code&gt;script&#x2F;todo.pl&lt;&#x2F;code&gt;
+。我习惯使用 perl 这个曾经的王者来处理文本文件，当然脚本也是由 Agent 写的，我
+能看懂并在必要时一起帮忙 debug 就行。这个脚本也同时用于更新某个需求的 &lt;code&gt;DONE&lt;&#x2F;code&gt;
+状态（传入不同参数）。&lt;&#x2F;p&gt;
+&lt;p&gt;我曾想过为不同类型的任务定义不同的 &lt;code&gt;pop&lt;&#x2F;code&gt; 命令，比如 &lt;code&gt;pop1&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;pop2&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;pop3&lt;&#x2F;code&gt; ，写
+上不同的提示词。自定义命名的元数据中有描叙字段，在输入时有提示，所以虽然命名类
+似，但能区分，主要是想快捷输入。但是我遇到一个 bug ，当输入 &lt;code&gt;&#x2F;pop3 arg&lt;&#x2F;code&gt; 时，它
+解析成 &lt;code&gt;&#x2F;pop 3 arg&lt;&#x2F;code&gt; 了，把 &lt;code&gt;3&lt;&#x2F;code&gt; 当成 &lt;code&gt;&#x2F;pop&lt;&#x2F;code&gt; 命令的第一个参数了。我不知道这是不
+是 codebuddy 特有的 bug 以及后来有没修复。反正我改为使用前缀区分了，简单任务使
+用 &lt;code&gt;&#x2F;simpop&lt;&#x2F;code&gt; 命令，也没搞那么多复杂变种命令了。&lt;&#x2F;p&gt;
+&lt;p&gt;也有少量需求，可能太简单或太复杂，不适合交于 AI 完成，最后纯手工完成了，也就手
+工标上 &lt;code&gt;DONE&lt;&#x2F;code&gt;。于是我又写了个 &lt;code&gt;&#x2F;gc&lt;&#x2F;code&gt; 自定义命令，自己执行 &lt;code&gt;git add&lt;&#x2F;code&gt; 添加待提交
+文件后，让 AI 帮忙写个提交消息做最后提交。我以前自己 &lt;code&gt;git commit &lt;&#x2F;code&gt; 只会写单行
+，懒得写多行提交消息，麻烦，这事就可以让 AI 代劳。&lt;&#x2F;p&gt;
+&lt;p&gt;此外，我在 &lt;code&gt;script&lt;&#x2F;code&gt; 子目录下还开发一些其他辅助脚本。比如，我发现单头文件越来越
+大后，AI 经常将代码加在不是我想要的地方，而且我很难跟它说清楚要写在这里或那里
+。于是我在头文件中制定了一种标题系统，用脚本自动更新目录（TOC）。还有同步文档
+的示例与单元测试，保证文档的示例可编译可运行的正确性。可能有些单元测试框架工具
+就支持这种功能，但我使用的自研轮做单元测试，也就是需要另行开发脚本同步 &lt;code&gt;.md&lt;&#x2F;code&gt;
+示例与 &lt;code&gt;.cpp&lt;&#x2F;code&gt; 的用例。有 AI 来开发脚本这事的性价比大大提升了。&lt;&#x2F;p&gt;
+&lt;p&gt;最后，若说我这个 xyjson 项目有多少代码是 AI 写的，这很难估计。我觉得很多地方宣
+扬有多少百分比由 AI 生成的，可能都出于宣传广告目的，说多少百分比都可以，反正怎
+么算的解释权在自己手上。就比如我这个项目的真正产出就只有一个 &lt;code&gt;xyjson.h&lt;&#x2F;code&gt; 头文件
+，现在 v1 版本也就 4000 行左右，除去注释空行纯代码可能还不到 3000 行。其中的每
+一行代码可能都经过 AI 的手，也经过我的手，这怎么算。单元测试与辅助脚本倒是以
+AI 生成为主，我 review 后没大问题就接受了。真要给个中肯的比值的话，可以看
+&lt;code&gt;task_todo.md&lt;&#x2F;code&gt; 与 &lt;code&gt;task_log.md&lt;&#x2F;code&gt; 这两个代表人机协作的文档的行数，总体来说，后者
+多一些。&lt;&#x2F;p&gt;
+&lt;p&gt;不过我又发现一个现象，我在这个项目的文档接收率远比代码接收率低。也许，在应付式
+交差工作中，AI 写文档（文案）比写代码容易，毕竟 AI 很能水字数，而代码还可能编
+不过。但是，在有个性追过的场合中，AI 写文档反而比写代码难了，因为代码有标准，
+可验收，但文档没标准，不知该如何验收。反正我让它写了几版用户指南与 api 文档，
+都不满意，最后自己重写算了。所以，我对 AI 写小说、写文学也还存疑。&lt;&#x2F;p&gt;
+&lt;p&gt;至于 AI 编程能否提升效率的问题，也分场合。在非严肃场合，比如一次性脚本、demo
+玩具之类，效率提升极大，是能很快生成。而在有质量追求的严肃场合，AI 就未必能提
+升效率了，但是能提升质量上限。将人从大量重复琐碎的事务中解放出来，让人去做更有
+价值、更有创造性的工作，AI 编程的意义仍是巨大的，当是软件工程的一个里程碑革新
+。&lt;&#x2F;p&gt;
+&lt;p&gt;最后谈一下 AI 辅助编程的术语名称，氛围编程太玄学，我觉得还是结对编程最合适，也
+不必新造词汇与概念了。只是以前在公司的牛马，一个人恨不得当几个人用，哪有人力来
+安排多人结对编程。但有 AI 就不一样，一个人与 AI 结对编程，性价比挺好。另一方面
+，大部分人的精力也是有限的，哪能一个打十个，你想一个人管十个 AI 干活？又不知会
+不会增加程序员的猝死率。&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试扩展静态库演化思路</title>
+        <published>2024-03-30T00:00:00+00:00</published>
+        <updated>2024-03-30T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-upgrade-lib/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-upgrade-lib/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;couttast-qing-liang-ji-dan-yuan-ce-shi-kuo-zhan-jing-tai-ku-yan-hua-si-lu&quot;&gt;couttast: 轻量级单元测试扩展静态库演化思路&lt;&#x2F;h1&gt;
+&lt;p&gt;作为一名 Linux C++ 程序员，我自己手搓了个单元测试库轮子，来辅助与满足日常开发
+的单元测试需求。从只有一个 &lt;code&gt;tinytast.hpp&lt;&#x2F;code&gt; 头文件开始，后面逐渐添加了一些外围功
+能，觉得不一定适合坚持 header-only 库的原则，就将非核心的功能写在单独的
+&lt;code&gt;*.cpp&lt;&#x2F;code&gt; 源文件中，编译为静态库。代码开源在 github ，国内的 gitee 也有备份。&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&quot;&gt;https:&#x2F;&#x2F;gitee.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;我觉得编写单元测试的问题可以从以下几个层次来讲，从微观到宏观。&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;断言语句；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例设计；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试用例运行与管理；&lt;&#x2F;li&gt;
+&lt;li&gt;单元测试库、框架与集成的设计；&lt;&#x2F;li&gt;
+&lt;li&gt;可测试程序的一般原则。&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;下面，我将结合个人开发 &lt;code&gt;couttast&lt;&#x2F;code&gt; 这个单元测试库的思路，谈谈本人对这些单元测试
+问题的理解。重点是前三点。&lt;&#x2F;p&gt;
+&lt;p&gt;题外话，我在前公司是使用过 &lt;code&gt;gTest&lt;&#x2F;code&gt; 的。几年前来到现公司尴尬地发现没有单元测试
+的风气，且当初项目对集成第三方库的管理一言难尽，就想从省事角度不想多引入三方库
+增加构建的麻烦。加之之前在使用 &lt;code&gt;gTest&lt;&#x2F;code&gt; 时也遇到一些痛点与不便，就决定自己手搓
+一个单元测试库或框架吧，根据自己实际遇到的需求逐步加料。&lt;&#x2F;p&gt;
+&lt;p&gt;关于 &lt;code&gt;tast&lt;&#x2F;code&gt; 这个词的命名，原是从尝试 (taste) 删减一个字母以便与 &lt;code&gt;test&lt;&#x2F;code&gt; 等长而
+来。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 奇淫技巧之耦断丝连：临时 C 字符串</title>
+        <published>2024-01-04T00:00:00+00:00</published>
+        <updated>2024-01-04T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/cut-and-restore-cstr/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/cut-and-restore-cstr/</id>
+        
+        <summary type="html">&lt;h1 id=&quot;c-qi-yin-ji-qiao-zhi-ou-duan-si-lian-lin-shi-c-zi-fu-chuan&quot;&gt;C++ 奇淫技巧之耦断丝连：临时 C 字符串&lt;&#x2F;h1&gt;
+&lt;p&gt;这里想分享一个许是微不足道 (trivial) 的问题及其解决思路。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>深入浅出理解 rapidjson 与实践</title>
+        <published>2023-12-21T00:00:00+00:00</published>
+        <updated>2023-12-21T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/rapidjson-deepin-learn-practice/</id>
+        
+        <summary type="html">&lt;p&gt;众所周知，JSON 是通用对象表示法。原全称是 JavaScript Object Notation ，是从
+javascript 语言流行开来的。json 在 javascript 源码中就是合法的对象字面量表示，
+可认为是后者的一个子集，语法更严格，但也更简单，基本可望文生义。后来也有人提出
+json5 的扩展语法，能支持注释等，更接近 javascript 的语法（但仍不完全一样），但
+也不如标准 json 那样流行，简单够用。&lt;&#x2F;p&gt;
+&lt;p&gt;如今，几乎所有流行与不流行的编程语言都支持 json ，能将 json 文本串解析为各自语
+言内部的对象模型表示。这是通过库来实现的，不能像 javascript 那样直接将 json 粘
+贴到源代码中就是合法对象（一般可用在 &lt;code&gt;=&lt;&#x2F;code&gt; 作右值常量），虽然有的语言可能有语法
+糖能在源代码中通过对 json 串作少量的修饰而转化为内部对象，但本质上也是经过了库
+解析。而事实上，对于大对象，长 json 串，即使 javascript 也不会直接嵌在源代码中，
+而是先从外部读入字符串，再通过 &lt;code&gt;JSON&lt;&#x2F;code&gt; 库将其解析为对象。&lt;&#x2F;p&gt;
+&lt;p&gt;Json 的字符串文本表示，也叫对象的序列化，而将 json 文本转为语言内部对象的工作
+叫反序列化。各大语言的 json 库的基本功能或主要功能就是这两个方面。本文将讨论的
+C++ ，更是有许多不同的 json 库。笔者使用最多的是 rapidjson 库，这是个老牌的经
+典 json 库，在 modern C++11 之前就存在的高性能 json 库，至今也在一众 C++ 常见
+json 库的前一梯队。所以笔者强烈推荐这个 C++ 开源库，它是 head-only 库，只要下载
+头文件，很容易集成进自己项目就发挥作用。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 命名空间理解与践行</title>
+        <published>2023-12-14T00:00:00+00:00</published>
+        <updated>2023-12-14T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/cpp-namespace-pratical/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/cpp-namespace-pratical/</id>
+        
+        <summary type="html">&lt;p&gt;众所周知，C++ 算是 C 的超集，提供了非常丰富的高级特性。对一般 C++ 开发者而言，
+并不要求精通 C++ 的每个特性，而应该按需学习与强化。在众多特性中，也许命名空间
+是很不起眼，平平无奇那个。但假如做个思想实验，摒弃 C++ 绝大部分特性，只保留一
+个特性加到 C 语言中，哪个最有助于改善 C 语言项目的开发体验与维护体验？&lt;&#x2F;p&gt;
+&lt;p&gt;我觉得不是类（虽然 C with class 也是 C++ 的一种实用范式），也不是模板，或其他
+奇淫巧技，而是命名空间。就因为 C 语言中几乎只有一个全局的命名空间，所有函数、
+结构体等类型，以及可能必要的全局变量，都塞在同一个空间，对维护大型项目而言
+太拥挤太可怕了，很容易出现命名冲突。C++ 的命名空间（namespace）就是为解决这个
+问题设计的，后现代大多数语言都有的模块（module）或包（package）的一个作用也能
+解决命名冲突，但更主要的作用是从项目整体宏观上抽象出模块的分组与组织。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>vim 笔记插件 vnote 设计反思</title>
+        <published>2023-12-03T00:00:00+00:00</published>
+        <updated>2023-12-03T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/vnote-introspection/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/vnote-introspection/</id>
+        
+        <summary type="html">&lt;p&gt;几年前，刚转行为专职程序员不久时，出于对 vim 的喜爱与信仰，自己开发了一个 vim
+插件，以支持在 vim 环境内记笔记及管理笔记。我知道市面上有不少笔记软件，但记笔
+记这事是很个性化的东西，而且很多吹成云笔记的产品，把个人笔记上传到人家服务器上，
+怎么都觉得有点敏感。所以我决定就用 vim 在本地写 markdown 文本笔记，要怎么上传
+至 github 托管仓库，也是自己能完全控制的。基于这个出发点，我自行设计并开发
+vnote 插件，虽然基本只是给自己用吧，当初也乐此不疲。&lt;&#x2F;p&gt;
+&lt;p&gt;但是再过几年回头再看，这个插件软件可能设计的不尽如人意。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>couttast: 轻量级单元测试框架介绍</title>
+        <published>2022-04-05T00:00:00+00:00</published>
+        <updated>2022-04-05T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/couttast-intro/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/couttast-intro/</id>
+        
+        <summary type="html">&lt;!-- # couttast: 轻量级单元测试框架介绍 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;笔者在之前一家公司的项目中曾经规范使用过 google test 作为单元测试。只是在实践
+使用过程中也偶有不便，于是开始着手再造个轮子，从自己的习惯用法写个轻量级单
+元测试框架（库）。&lt;&#x2F;p&gt;
+&lt;p&gt;项目地址 &lt;a href=&quot;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast.git&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;lymslive&#x2F;couttast&lt;&#x2F;a&gt; 。
+初版是仅有 500 余行的头文件（head-only lib），无依赖，也不要求 C++11 ，自以为麻雀虽小，
+五脏俱全。&lt;&#x2F;p&gt;
+&lt;p&gt;取名源于两个单词拼接：&lt;code&gt;cout&lt;&#x2F;code&gt; 就是 &lt;code&gt;C++&lt;&#x2F;code&gt; 众所周知的那个 &lt;code&gt;std::cout&lt;&#x2F;code&gt;，&lt;code&gt;taste&lt;&#x2F;code&gt;
+却不是 &lt;code&gt;test&lt;&#x2F;code&gt; 。在软件工程中，“测试”可能是个严肃的专业术语，但“尝试”不妨轻
+松点，不必望而生畏。又为了与 &lt;code&gt;test&lt;&#x2F;code&gt; 这母长度相同，误写成了 &lt;code&gt;tast&lt;&#x2F;code&gt; 。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>C++ 中 Json 操作符重载设计探讨</title>
+        <published>2021-10-29T00:00:00+00:00</published>
+        <updated>2021-10-29T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/json-operator-overload/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/json-operator-overload/</id>
+        
+        <summary type="html">&lt;!-- # C++ 中 Json 操作符重载设计探讨 --&gt;
+&lt;!-- lymslive &#x2F; 2021-10-29 --&gt;
+&lt;!-- ## 引言 --&gt;
+&lt;p&gt;Json 在业界实践中颇受欢迎。实现 Json 的 C&#x2F;C++ 库也相当多，其 API 虽大同小异，
+却也不尽相同。笔者目前推崇的是 rapidjson 库，因其效率一流，是 C++ 程序员应该追
+求的一个目标。但在使用过程中又不免觉得 rapidjson 的使用 API 不够友好，尤其是设
+值修改时要多传一个内存分配器参数（Allocator），当然这也是它为了效率实现的一种
+交换。&lt;&#x2F;p&gt;
+&lt;p&gt;于是我想到了操作符重载。我在想当年的 C++ 教材学习上也算一块重要且有趣的内容了
+，然而在实际工作中，使用 C++ 操作符重载的场合很少。主要是操作符重载容易误解，
+经常不如规范选用的函数名那么能望文生义。这就说明操作符重载需要经过审慎的设计，
+要让操作符重载尽可能合理，且能让使用团队达成共识。&lt;&#x2F;p&gt;
+&lt;p&gt;而 Json 作为通用的数据结构抽象，越发显得重要与流行广泛，它不同与对具体业务的抽
+象，因此我认为对 Json 设计一套操作符重载，定义一些操作符号对于 Json 的意义，以
+简化对 Json 数据的操作，那是值得探讨的。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>

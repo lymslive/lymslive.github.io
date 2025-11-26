@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>沉思涧 - 脚本运用</title>
+    <link href="https://lymslive.github.io/categories/jiao-ben-yun-yong/atom.xml" rel="self" type="application/atom+xml"/>
+    <link href="https://lymslive.github.io"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-12-13T00:00:00+00:00</updated>
+    <id>https://lymslive.github.io/categories/jiao-ben-yun-yong/atom.xml</id>
+    <entry xml:lang="en">
+        <title>用 perl 统计分析日志应用实战</title>
+        <published>2023-12-13T00:00:00+00:00</published>
+        <updated>2023-12-13T00:00:00+00:00</updated>
+        <author>
+          <name>Unknown</name>
+        </author>
+        <link rel="alternate" href="https://lymslive.github.io/blog/analyse-log-with-perl/" type="text/html"/>
+        <id>https://lymslive.github.io/blog/analyse-log-with-perl/</id>
+        
+        <summary type="html">&lt;!-- # 用 perl 统计分析日志应用实例 --&gt;
+&lt;p&gt;文本处理还是 perl 强，这是它发家的基本盘。我自学会 perl 后，每当有文本处理需求，
+第一想到的还是 perl 。比如现在我在日常工作中就会用它来做如下的事情：&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;代码生成&lt;&#x2F;li&gt;
+&lt;li&gt;配置格式转换&lt;&#x2F;li&gt;
+&lt;li&gt;日志分析&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;本文讲一下用 perl 进行简单日志分析的实战。&lt;&#x2F;p&gt;
+&lt;p&gt;背景问题：大凡服务都会写日志，当我们发现在生产日志上发现某行错误日志频繁打印时，
+就要引起警惕。最初的观察可能只要用 &lt;code&gt;grep&lt;&#x2F;code&gt; 类工具抽取相应日志行，有个直观的印象。
+但如果要提取每行日志的关键信息，比如订单号、客户号或设备号之类，并根据该关键字
+统计频度呢？那简单的 &lt;code&gt;grep&lt;&#x2F;code&gt; 工具可能就不好使了。&lt;&#x2F;p&gt;
+</summary>
+        
+    </entry>
+</feed>
